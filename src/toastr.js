@@ -17,7 +17,7 @@ angular.module('toastr', [])
     };
   })
 
-  .factory('toastrStack', ['$compile', '$document', function($compile, $document) {
+  .factory('toastrStack', ['$compile', '$document', '$timeout', function($compile, $document, $timeout) {
     var container;
 
     var toastrStack = {
@@ -26,20 +26,29 @@ angular.module('toastr', [])
 
     return toastrStack;
 
-    function notify(options) {
+    function notify(message, title, options) {
       container = _getContainer(options);
 
       var angularDomEl = angular.element('<div toastr-alert></div>');
-      angularDomEl.attr('title', 'Hello');
-      angularDomEl.attr('message', 'World');
-      angularDomEl.attr('toastrType', 'success');
+      angularDomEl.attr('title', message);
+      angularDomEl.attr('message', title);
+      angularDomEl.attr('toastrType', options.type);
       var toastrDomEl = $compile(angularDomEl)(options.scope);
-      console.log(toastrDomEl.prop('outerHTML'));
       container.append(toastrDomEl);
+
+      $timeout(function() {
+        removeToast();
+      }, 3000);
+
+      function removeToast() {
+        toastrDomEl.remove();
+      }
     }
 
     function _getContainer(options) {
       // TODO: Use options
+      if(container) return container; // If the container is there, don't create it.
+
       container = angular.element('<div></div>');
       container.attr('id', 'toast-container');
       container.addClass('toast-top-right');
@@ -55,13 +64,38 @@ angular.module('toastr', [])
 
       $get: ['$rootScope', 'toastrStack', function($rootScope, toastrStack) {
         var toastr = {
-          success: success
+          error: error,
+          info: info,
+          success: success,
+          warning: warning
         };
 
         return toastr;
 
-        function success(toastrOptions) {
-          toastrStack.notify({
+        function error(message, title) {
+          toastrStack.notify(message, title, {
+            type: 'error',
+            scope: $rootScope.$new()
+          });
+        }
+
+        function info(message, title) {
+          toastrStack.notify(message, title, {
+            type: 'info',
+            scope: $rootScope.$new()
+          });
+        }
+
+        function success(message, title) {
+          toastrStack.notify(message, title, {
+            type: 'success',
+            scope: $rootScope.$new()
+          });
+        }
+
+        function warning(message, title) {
+          toastrStack.notify(message, title, {
+            type: 'warning',
             scope: $rootScope.$new()
           });
         }
