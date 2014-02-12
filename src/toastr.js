@@ -1,11 +1,12 @@
 angular.module('toastr', [])
 
-  .directive('toastrAlert', function() {
+  .directive('toastrAlert', ['$timeout', 'toastr', function($timeout, toastr) {
     return {
       scope: {
         toastrtype: '@',
         title: '@',
-        message: '@'
+        message: '@',
+        index: '@'
       },
       replace: true,
       template: '<div class="{{toastrClass}}">' +
@@ -13,10 +14,34 @@ angular.module('toastr', [])
                     '<div class="toast-message">{{message}}</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
-        scope.toastrClass = attrs.toastrtype || '';
+        scope.toastrClass = attrs.toastrclass || '';
+
+        var timeout = createTimeout();
+
+        element.on('mouseenter', function() {
+          if (timeout) {
+            $timeout.cancel(timeout);
+          }
+        });
+
+        element.on('click', function() {
+          scope.$apply(function() {
+            toastr.remove(scope.index);
+          });
+        });
+
+        element.on('mouseleave', function() {
+          timeout = createTimeout();
+        });
+
+        function createTimeout() {
+          return $timeout(function() {
+            toastr.remove(scope.index);
+          }, 4000);
+        }
       }
     };
-  })
+  }])
 
   .provider('toastr', function() {
     var toastrProvider = {
@@ -33,12 +58,15 @@ angular.module('toastr', [])
         toastClass: 'toast'
       },
 
-      $get: ['$compile', '$document', '$rootScope', '$timeout', function($compile, $document, $rootScope, $timeout) {
-        var container;
+      $get: ['$compile', '$document', '$rootScope', function($compile, $document, $rootScope) {
+        var container, index = 0, toastrs = [];
+
+        var options = toastrProvider.options;
 
         var toastr = {
           error: error,
           info: info,
+          remove: remove,
           success: success,
           warning: warning
         };
@@ -47,25 +75,25 @@ angular.module('toastr', [])
 
         function error(message, title) {
           _notify(message, title, {
-            type: toastrProvider.options.iconClasses.error
+            type: options.iconClasses.error
           });
         }
 
         function info(message, title) {
           _notify(message, title, {
-            type: toastrProvider.options.iconClasses.info
+            type: options.iconClasses.info
           });
         }
 
         function success(message, title) {
           _notify(message, title, {
-            type: toastrProvider.options.iconClasses.success
+            type: options.iconClasses.success
           });
         }
 
         function warning(message, title) {
           _notify(message, title, {
-            type: toastrProvider.options.iconClasses.warning
+            type: options.iconClasses.warning
           });
         }
 
@@ -80,24 +108,46 @@ angular.module('toastr', [])
           return container;
         }
 
-        function _notify(message, title, options) {
+        function _notify(message, title, extra) {
           container = _getContainer();
+
+          var newToastr = {
+            index: index++
+          };
 
           var angularDomEl = angular.element('<div toastr-alert></div>');
           angularDomEl.attr('title', title);
           angularDomEl.attr('message', message);
-          angularDomEl.attr('toastrType', options.type);
-          var toastrDomEl = $compile(angularDomEl)($rootScope.$new());
+          angularDomEl.attr('toastrclass', extra.type);
+          angularDomEl.attr('index', newToastr.index);
+
+          var toastrDomEl = $compile(angularDomEl)($rootScope);
+
+          newToastr.el = toastrDomEl;
+
+          toastrs.push(newToastr);
+
           container.append(toastrDomEl);
+        }
 
-          $timeout(function() {
-            removeToast();
-          }, 4000);
+        function remove(toastIndex) {
+          var toast = findToast(toastIndex);
 
-          function removeToast() {
-            toastrDomEl.remove();
-            if (container.children().length === 0) {
-              container.remove();
+          var ind = toastrs.indexOf(toast);
+
+          toast.el.remove();
+
+          toastrs.splice(ind, 1);
+
+          if (container.children().length === 0) {
+            container.remove();
+          }
+
+          function findToast(toastIndex) {
+            for (var i = 0; i < toastrs.length; i++) {
+              if (toastrs[i].index == toastIndex) {
+                return toastrs[i];
+              }
             }
           }
         }
