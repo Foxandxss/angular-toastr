@@ -86,8 +86,8 @@ angular.module('toastr', [])
           container = _getContainer();
 
           var angularDomEl = angular.element('<div toastr-alert></div>');
-          angularDomEl.attr('title', message);
-          angularDomEl.attr('message', title);
+          angularDomEl.attr('title', title);
+          angularDomEl.attr('message', message);
           angularDomEl.attr('toastrType', options.type);
           var toastrDomEl = $compile(angularDomEl)($rootScope.$new());
           container.append(toastrDomEl);
