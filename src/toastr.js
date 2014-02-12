@@ -59,15 +59,13 @@ angular.module('toastr', [])
 
         function success(message, title) {
           _notify(message, title, {
-            type: toastrProvider.options.iconClasses.success,
-            scope: $rootScope.$new()
+            type: toastrProvider.options.iconClasses.success
           });
         }
 
         function warning(message, title) {
           _notify(message, title, {
-            type: toastrProvider.options.iconClasses.warning,
-            scope: $rootScope.$new()
+            type: toastrProvider.options.iconClasses.warning
           });
         }
 
