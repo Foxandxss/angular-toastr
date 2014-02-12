@@ -98,6 +98,9 @@ angular.module('toastr', [])
 
           function removeToast() {
             toastrDomEl.remove();
+            if (container.children().length === 0) {
+              container.remove();
+            }
           }
         }
       }]
