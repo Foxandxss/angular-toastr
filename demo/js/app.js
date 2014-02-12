@@ -1,4 +1,9 @@
 angular.module('app', ['toastr'])
+
+  .config(function(toastrProvider) {
+    toastrProvider.options.positionClass = 'toast-bottom-right';
+  })
+
   .controller('MainCtrl', function($scope, $timeout, toastr) {
     toastr.success('I am fox', 'Hello');
     $timeout(function() { // Simulate delay
