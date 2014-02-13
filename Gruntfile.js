@@ -11,7 +11,7 @@ module.exports = function(grunt) {
           yuicompress: true
         },
         files: {
-          "dist/toastr.min.css": "src/toastr.less"
+          "dist/angular-toastr.min.css": "src/toastr.less"
         }
       }
     },
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
     uglify: {
       prod: {
         files: {
-          "dist/toastr.min.js": "src/toastr.js"
+          "dist/angular-toastr.min.js": "src/toastr.js"
         }
       }
     },
