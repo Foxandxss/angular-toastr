@@ -1,6 +1,6 @@
 angular.module('toastr', [])
 
-  .directive('toastrAlert', ['$timeout', 'toastr', function($timeout, toastr) {
+  .directive('toastrAlert', ['$timeout', 'toastr', 'toastrConfig', function($timeout, toastr, toastrConfig) {
     return {
       scope: {
         toastrtype: '@',
@@ -9,14 +9,17 @@ angular.module('toastr', [])
         index: '@'
       },
       replace: true,
-      template: '<div class="{{toastrClass}}">' +
-                    '<div ng-if="title" class="toast-title">{{title}}</div>' +
-                    '<div class="toast-message">{{message}}</div>' +
+      template: '<div class="{{toastClass}} {{toastrType}}" ng-click="close()">' +
+                    '<div ng-if="title" class="{{titleClass}}">{{title}}</div>' +
+                    '<div class="{{messageClass}}">{{message}}</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
-        scope.toastrClass = attrs.toastrclass || '';
+        scope.toastrType = attrs.toastrtype || '';
+        scope.toastClass = toastrConfig.toastClass;
+        scope.titleClass = toastrConfig.titleClass;
+        scope.messageClass = toastrConfig.messageClass;
 
-        var timeout = createTimeout();
+        var timeout = createTimeout(toastrConfig.timeOut);
 
         element.on('mouseenter', function() {
           if (timeout) {
@@ -24,20 +27,18 @@ angular.module('toastr', [])
           }
         });
 
-        element.on('click', function() {
-          scope.$apply(function() {
-            toastr.remove(scope.index);
-          });
-        });
+        scope.close = function() {
+          toastr.remove(scope.index);
+        };
 
         element.on('mouseleave', function() {
-          timeout = createTimeout();
+          timeout = createTimeout(toastrConfig.extendedTimeOut);
         });
 
-        function createTimeout() {
+        function createTimeout(time) {
           return $timeout(function() {
             toastr.remove(scope.index);
-          }, 4000);
+          }, time);
         }
       }
     };
@@ -45,14 +46,18 @@ angular.module('toastr', [])
 
   .constant('toastrConfig', {
     containerId: 'toast-container',
+    extendedTimeOut: 1000,
     iconClasses: {
       error: 'toast-error',
       info: 'toast-info',
       success: 'toast-success',
       warning: 'toast-warning'
     },
+    messageClass: 'toast-message',
     positionClass: 'toast-top-right',
     target: 'body',
+    timeOut: 5000,
+    titleClass: 'toast-title',
     toastClass: 'toast'
   })
 
@@ -118,7 +123,7 @@ angular.module('toastr', [])
         angularDomEl.attr('title', title);
       }
       angularDomEl.attr('message', message);
-      angularDomEl.attr('toastrclass', extra.type);
+      angularDomEl.attr('toastrtype', extra.type);
       angularDomEl.attr('index', newToastr.index);
 
       var toastrDomEl = $compile(angularDomEl)($rootScope);
@@ -141,6 +146,7 @@ angular.module('toastr', [])
 
       if (container.children().length === 0) {
         container.remove();
+        container = null;
       }
 
       function findToast(toastIndex) {

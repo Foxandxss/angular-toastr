@@ -2,6 +2,7 @@ angular.module('app', ['toastr'])
 
   .config(function(toastrConfig) {
     toastrConfig.positionClass = 'toast-bottom-right';
+//    toastrConfig.timeOut = 500;
   })
 
   .controller('MainCtrl', function($scope, $timeout, toastr) {
