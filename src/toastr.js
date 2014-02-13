@@ -10,7 +10,7 @@ angular.module('toastr', [])
       },
       replace: true,
       template: '<div class="{{toastrClass}}">' +
-                    '<div class="toast-title">{{title}}</div>' +
+                    '<div ng-if="title" class="toast-title">{{title}}</div>' +
                     '<div class="toast-message">{{message}}</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
@@ -43,116 +43,112 @@ angular.module('toastr', [])
     };
   }])
 
-  .provider('toastr', function() {
-    var toastrProvider = {
-      options: {
-        containerId: 'toast-container',
-        iconClasses: {
-          error: 'toast-error',
-          info: 'toast-info',
-          success: 'toast-success',
-          warning: 'toast-warning'
-        },
-        positionClass: 'toast-top-right',
-        target: 'body',
-        toastClass: 'toast'
-      },
+  .constant('toastrConfig', {
+    containerId: 'toast-container',
+    iconClasses: {
+      error: 'toast-error',
+      info: 'toast-info',
+      success: 'toast-success',
+      warning: 'toast-warning'
+    },
+    positionClass: 'toast-top-right',
+    target: 'body',
+    toastClass: 'toast'
+  })
 
-      $get: ['$compile', '$document', '$rootScope', function($compile, $document, $rootScope) {
-        var container, index = 0, toastrs = [];
+  .factory('toastr', ['$compile', '$document', '$rootScope', 'toastrConfig', function($compile, $document, $rootScope, toastrConfig) {
+    var container, index = 0, toastrs = [];
 
-        var options = toastrProvider.options;
+    var options = toastrConfig;
 
-        var toastr = {
-          error: error,
-          info: info,
-          remove: remove,
-          success: success,
-          warning: warning
-        };
-
-        return toastr;
-
-        function error(message, title) {
-          _notify(message, title, {
-            type: options.iconClasses.error
-          });
-        }
-
-        function info(message, title) {
-          _notify(message, title, {
-            type: options.iconClasses.info
-          });
-        }
-
-        function success(message, title) {
-          _notify(message, title, {
-            type: options.iconClasses.success
-          });
-        }
-
-        function warning(message, title) {
-          _notify(message, title, {
-            type: options.iconClasses.warning
-          });
-        }
-
-        function _getContainer() {
-          if(container) return container; // If the container is there, don't create it.
-
-          container = angular.element('<div></div>');
-          container.attr('id', toastrProvider.options.containerId);
-          container.addClass(toastrProvider.options.positionClass);
-          var body = $document.find(toastrProvider.options.target).eq(0);
-          body.append(container);
-          return container;
-        }
-
-        function _notify(message, title, extra) {
-          container = _getContainer();
-
-          var newToastr = {
-            index: index++
-          };
-
-          var angularDomEl = angular.element('<div toastr-alert></div>');
-          angularDomEl.attr('title', title);
-          angularDomEl.attr('message', message);
-          angularDomEl.attr('toastrclass', extra.type);
-          angularDomEl.attr('index', newToastr.index);
-
-          var toastrDomEl = $compile(angularDomEl)($rootScope);
-
-          newToastr.el = toastrDomEl;
-
-          toastrs.push(newToastr);
-
-          container.append(toastrDomEl);
-        }
-
-        function remove(toastIndex) {
-          var toast = findToast(toastIndex);
-
-          var ind = toastrs.indexOf(toast);
-
-          toast.el.remove();
-
-          toastrs.splice(ind, 1);
-
-          if (container.children().length === 0) {
-            container.remove();
-          }
-
-          function findToast(toastIndex) {
-            for (var i = 0; i < toastrs.length; i++) {
-              if (toastrs[i].index == toastIndex) {
-                return toastrs[i];
-              }
-            }
-          }
-        }
-      }]
+    var toastr = {
+      error: error,
+      info: info,
+      remove: remove,
+      success: success,
+      warning: warning
     };
 
-    return toastrProvider;
-  });
+    return toastr;
+
+    function error(message, title) {
+      _notify(message, title, {
+        type: options.iconClasses.error
+      });
+    }
+
+    function info(message, title) {
+      _notify(message, title, {
+        type: options.iconClasses.info
+      });
+    }
+
+    function success(message, title) {
+      _notify(message, title, {
+        type: options.iconClasses.success
+      });
+    }
+
+    function warning(message, title) {
+      _notify(message, title, {
+        type: options.iconClasses.warning
+      });
+    }
+
+    function _getContainer() {
+      if(container) return container; // If the container is there, don't create it.
+
+      container = angular.element('<div></div>');
+      container.attr('id', options.containerId);
+      container.addClass(options.positionClass);
+      var body = $document.find(options.target).eq(0);
+      body.append(container);
+      return container;
+    }
+
+    function _notify(message, title, extra) {
+      container = _getContainer();
+
+      var newToastr = {
+        index: index++
+      };
+
+      var angularDomEl = angular.element('<div toastr-alert></div>');
+      if (title) {
+        angularDomEl.attr('title', title);
+      }
+      angularDomEl.attr('message', message);
+      angularDomEl.attr('toastrclass', extra.type);
+      angularDomEl.attr('index', newToastr.index);
+
+      var toastrDomEl = $compile(angularDomEl)($rootScope);
+
+      newToastr.el = toastrDomEl;
+
+      toastrs.push(newToastr);
+
+      container.append(toastrDomEl);
+    }
+
+    function remove(toastIndex) {
+      var toast = findToast(toastIndex);
+
+      var ind = toastrs.indexOf(toast);
+
+      toast.el.remove();
+
+      toastrs.splice(ind, 1);
+
+      if (container.children().length === 0) {
+        container.remove();
+      }
+
+      function findToast(toastIndex) {
+        for (var i = 0; i < toastrs.length; i++) {
+          if (toastrs[i].index == toastIndex) {
+            return toastrs[i];
+          }
+        }
+      }
+    }
+  }]);
