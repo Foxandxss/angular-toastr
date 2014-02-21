@@ -1,4 +1,4 @@
-angular.module('toastr', [])
+angular.module('toastr', ['ngAnimate'])
 
   .directive('toastrAlert', ['$timeout', 'toastr', 'toastrConfig', function($timeout, toastr, toastrConfig) {
     return {
@@ -61,8 +61,9 @@ angular.module('toastr', [])
     toastClass: 'toast'
   })
 
-  .factory('toastr', ['$compile', '$document', '$rootScope', 'toastrConfig', function($compile, $document, $rootScope, toastrConfig) {
+  .factory('toastr', ['$animate', '$compile', '$document', '$rootScope', 'toastrConfig', '$q', function($animate, $compile, $document, $rootScope, toastrConfig, $q) {
     var container, index = 0, toastrs = [];
+    var containerDefer = $q.defer();
 
     var options = toastrConfig;
 
@@ -100,39 +101,41 @@ angular.module('toastr', [])
       });
     }
 
-    function _getContainer() {
-      if(container) return container; // If the container is there, don't create it.
+    function _setContainer() {
+      if(container) return containerDefer.promise; // If the container is there, don't create it.
 
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
       var body = $document.find(options.target).eq(0);
-      body.append(container);
-      return container;
+      $animate.enter(container, body, null, function() {
+        containerDefer.resolve();
+      });
+      return containerDefer.promise;
     }
 
     function _notify(message, title, extra) {
-      container = _getContainer();
+      _setContainer().then(function() {
+        var newToastr = {
+          index: index++
+        };
 
-      var newToastr = {
-        index: index++
-      };
+        var angularDomEl = angular.element('<div toastr-alert></div>');
+        if (title) {
+          angularDomEl.attr('title', title);
+        }
+        angularDomEl.attr('message', message);
+        angularDomEl.attr('toastrtype', extra.type);
+        angularDomEl.attr('index', newToastr.index);
 
-      var angularDomEl = angular.element('<div toastr-alert></div>');
-      if (title) {
-        angularDomEl.attr('title', title);
-      }
-      angularDomEl.attr('message', message);
-      angularDomEl.attr('toastrtype', extra.type);
-      angularDomEl.attr('index', newToastr.index);
+        var toastrDomEl = $compile(angularDomEl)($rootScope);
 
-      var toastrDomEl = $compile(angularDomEl)($rootScope);
+        newToastr.el = toastrDomEl;
 
-      newToastr.el = toastrDomEl;
+        toastrs.push(newToastr);
 
-      toastrs.push(newToastr);
-
-      container.append(toastrDomEl);
+        $animate.enter(toastrDomEl, container, null, function() {});
+      });
     }
 
     function remove(toastIndex) {
@@ -140,7 +143,9 @@ angular.module('toastr', [])
 
       var ind = toastrs.indexOf(toast);
 
-      toast.el.remove();
+      if (toast) { // Avoid clicking when fading out
+        $animate.leave(toast.el);
+      }
 
       toastrs.splice(ind, 1);
 
