@@ -1,0 +1,11 @@
+{
+  "framework" : "jasmine",
+  "launch_in_dev" : ["Chrome"],
+  "src_files" : [
+    "demo/vendor/angular.js",
+    "demo/vendor/angular-animate.js",
+    "test/helpers/angular-mocks.js",
+    "gen/toastr.js",
+    "gen/toastr_spec.js"
+  ]
+}

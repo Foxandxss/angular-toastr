@@ -1,0 +1,3 @@
+describe('toastr', function() {
+
+});

@@ -25,15 +25,19 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      main: {
+      source: {
         src: 'src/toastr.js',
         dest: 'gen/toastr.js'
+      },
+      test: {
+        src: 'test/toastr_spec.js',
+        dest: 'gen/toastr_spec.js'
       }
     },
 
     watch: {
       scripts: {
-        files: 'src/**/*',
+        files: ['src/**/*', 'test/**/*_spec.js'],
         tasks: ['default']
       }
     },
@@ -46,6 +50,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-testem');
 
   grunt.registerTask('default', ['less:dev', 'copy']);
   grunt.registerTask('prod', ['less:prod', 'uglify']);
