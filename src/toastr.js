@@ -148,6 +148,7 @@ angular.module('toastr', ['ngAnimate'])
 
       if (toast) { // Avoid clicking when fading out
         $animate.leave(toast.el, function() {
+          toast.scope.$destroy();
           toastrs.splice(ind, 1);
           if (container && container.children().length === 0) {
             container.remove();
