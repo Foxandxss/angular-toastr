@@ -2,6 +2,7 @@
   "framework" : "jasmine",
   "launch_in_dev" : ["Chrome"],
   "src_files" : [
+    "test/helpers/jquery.js",
     "demo/vendor/angular.js",
     "demo/vendor/angular-animate.js",
     "test/helpers/angular-mocks.js",

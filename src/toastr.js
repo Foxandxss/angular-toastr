@@ -144,14 +144,14 @@ angular.module('toastr', ['ngAnimate'])
       var ind = toastrs.indexOf(toast);
 
       if (toast) { // Avoid clicking when fading out
-        $animate.leave(toast.el);
-      }
-
-      toastrs.splice(ind, 1);
-
-      if (container.children().length === 0) {
-        container.remove();
-        container = null;
+        $animate.leave(toast.el, function() {
+          toastrs.splice(ind, 1);
+          if (container && container.children().length === 0) {
+            container.remove();
+            container = null;
+            containerDefer = $q.defer();
+          }
+        });
       }
 
       function findToast(toastIndex) {
