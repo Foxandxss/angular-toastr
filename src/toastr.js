@@ -2,24 +2,21 @@ angular.module('toastr', ['ngAnimate'])
 
   .directive('toastrAlert', ['$timeout', 'toastr', 'toastrConfig', function($timeout, toastr, toastrConfig) {
     return {
-      scope: {
-        toastrtype: '@',
-        title: '@',
-        message: '@',
-        index: '@'
-      },
       replace: true,
-      template: '<div class="{{toastClass}} {{toastrType}}" ng-click="close()">' +
+      template: '<div class="{{toastClass}} {{toastrtype}}" ng-click="close()">' +
                     '<div ng-if="title" class="{{titleClass}}">{{title}}</div>' +
                     '<div class="{{messageClass}}">{{message}}</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
-        scope.toastrType = attrs.toastrtype || '';
+        var timeout;
+
         scope.toastClass = toastrConfig.toastClass;
         scope.titleClass = toastrConfig.titleClass;
         scope.messageClass = toastrConfig.messageClass;
 
-        var timeout = createTimeout(toastrConfig.timeOut);
+        scope.init = function() {
+          timeout = createTimeout(toastrConfig.timeOut);
+        };
 
         element.on('mouseenter', function() {
           if (timeout) {
@@ -115,27 +112,33 @@ angular.module('toastr', ['ngAnimate'])
     }
 
     function _notify(message, title, extra) {
+      var newToastr = {
+        index: index++,
+        scope: $rootScope.$new()
+      };
+
+      var angularDomEl = angular.element('<div toastr-alert></div>');
+      if (title) {
+        newToastr.scope.title = title;
+      }
+
+      newToastr.scope.message = message;
+      newToastr.scope.toastrtype = extra.type;
+      newToastr.scope.index = newToastr.index;
+
+      var toastrDomEl = $compile(angularDomEl)(newToastr.scope);
+
+      newToastr.el = toastrDomEl;
+
+      toastrs.push(newToastr);
+
       _setContainer().then(function() {
-        var newToastr = {
-          index: index++
-        };
-
-        var angularDomEl = angular.element('<div toastr-alert></div>');
-        if (title) {
-          angularDomEl.attr('title', title);
-        }
-        angularDomEl.attr('message', message);
-        angularDomEl.attr('toastrtype', extra.type);
-        angularDomEl.attr('index', newToastr.index);
-
-        var toastrDomEl = $compile(angularDomEl)($rootScope);
-
-        newToastr.el = toastrDomEl;
-
-        toastrs.push(newToastr);
-
-        $animate.enter(toastrDomEl, container, null, function() {});
+        $animate.enter(toastrDomEl, container, null, function() {
+          newToastr.scope.init();
+        });
       });
+
+      return newToastr;
     }
 
     function remove(toastIndex) {

@@ -105,7 +105,6 @@ describe('toastr', function() {
     $rootScope.$digest();
     animationFlush();
     var noOfToastrs = $document.find('body > #toast-container > .toast').length;
-    console.log(noOfToastrs);
     return _findToastr(noOfToastrs -1);
   }
 
