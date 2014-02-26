@@ -168,6 +168,26 @@ describe('toastr', function() {
       expect(toast).toHaveType('warning');
       timeoutFlush();
     });
+
+    it('allows to manually close a toastr in code', function() {
+      var toast = openToastr('success', 'foo');
+      expect($document).toHaveToastrOpen(1);
+      toastr.close(toast);
+      $rootScope.$digest();
+      expect($document).toHaveToastrOpen(0);
+      animationFlush();
+      expect($document).not.toHaveToastrContainer();
+    });
+
+    it('allows to close all toasts at once', function() {
+      openToastrs(10);
+      expect($document).toHaveToastrOpen(10);
+      toastr.close();
+      $rootScope.$digest();
+      expect($document).toHaveToastrOpen(0);
+      animationFlush();
+      expect($document).not.toHaveToastrContainer();
+    });
   });
 
   describe('container', function() {

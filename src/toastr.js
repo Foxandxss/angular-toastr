@@ -65,6 +65,7 @@ angular.module('toastr', ['ngAnimate'])
     var options = toastrConfig;
 
     var toastr = {
+      close: close,
       error: error,
       info: info,
       remove: remove,
@@ -73,6 +74,17 @@ angular.module('toastr', ['ngAnimate'])
     };
 
     return toastr;
+
+    /* Public API */
+    function close(toast) {
+      if (toast) {
+        remove(toast.index);
+      } else {
+        for (var i = 0; i < toastrs.length; i++) {
+          remove(toastrs[i].index);
+        }
+      }
+    }
 
     function error(message, title) {
       return _notify(message, title, {
@@ -98,6 +110,7 @@ angular.module('toastr', ['ngAnimate'])
       });
     }
 
+    /* Internal functions */
     function _setContainer() {
       if(container) return containerDefer.promise; // If the container is there, don't create it.
 
