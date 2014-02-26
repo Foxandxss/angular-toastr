@@ -75,25 +75,25 @@ angular.module('toastr', ['ngAnimate'])
     return toastr;
 
     function error(message, title) {
-      _notify(message, title, {
+      return _notify(message, title, {
         type: options.iconClasses.error
       });
     }
 
     function info(message, title) {
-      _notify(message, title, {
+      return _notify(message, title, {
         type: options.iconClasses.info
       });
     }
 
     function success(message, title) {
-      _notify(message, title, {
+      return _notify(message, title, {
         type: options.iconClasses.success
       });
     }
 
     function warning(message, title) {
-      _notify(message, title, {
+      return _notify(message, title, {
         type: options.iconClasses.warning
       });
     }

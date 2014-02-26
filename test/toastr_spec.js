@@ -25,13 +25,13 @@ describe('toastr', function() {
       },
 
       toHaveTitle: function() {
-        var title = this.actual.find('.toast-title');
+        var title = this.actual.el.find('.toast-title');
         return title.length === 1;
       },
 
       toHaveType: function(type) {
         var typeClass = 'toast-' + type;
-        return this.actual.hasClass(typeClass);
+        return this.actual.el.hasClass(typeClass);
       },
 
       toHaveToastrWithMessage: function(message, toastr) {
@@ -97,15 +97,15 @@ describe('toastr', function() {
   }
 
   function openToastr(type, message, title) {
+    var toast;
     if (title) {
-      toastr[type](message, title);
+      toast = toastr[type](message, title);
     } else {
-      toastr[type](message);
+      toast = toastr[type](message);
     }
     $rootScope.$digest();
     animationFlush();
-    var noOfToastrs = $document.find('body > #toast-container > .toast').length;
-    return _findToastr(noOfToastrs -1);
+    return toast;
   }
 
   function openToastrs(noOfToastr) {
