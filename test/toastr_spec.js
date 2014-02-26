@@ -16,7 +16,7 @@ describe('toastr', function() {
     this.addMatchers({
       toHaveToastContainer: function() {
         var containerDomEl = this.actual.find('body > #toast-container');
-        return containerDomEl.length === 1
+        return containerDomEl.length === 1;
       },
 
       toHaveToastOpen: function(noOfToastr) {
@@ -80,19 +80,19 @@ describe('toastr', function() {
     }).toThrow(new Error('No deferred tasks to be flushed'));
   }
 
-  function clickToast(toast) {
-    var toast = _findToast(toast);
+  function clickToast(noOfToast) {
+    var toast = _findToast(noOfToast);
     toast.click();
     $rootScope.$digest();
   }
 
-  function hoverToast(toast) {
-    var toast = _findToast(toast);
+  function hoverToast(noOfToast) {
+    var toast = _findToast(noOfToast);
     toast.trigger('mouseenter');
   }
 
-  function leaveToast(toast) {
-    var toast = _findToast(toast);
+  function leaveToast(noOfToast) {
+    var toast = _findToast(noOfToast);
     toast.trigger('mouseleave');
   }
 
@@ -246,6 +246,6 @@ describe('toastr', function() {
       leaveToast();
       timeoutFlush();
       expect($document).toHaveToastOpen(0);
-    })
+    });
   });
 });

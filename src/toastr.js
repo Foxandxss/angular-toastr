@@ -112,7 +112,7 @@ angular.module('toastr', ['ngAnimate'])
 
     /* Internal functions */
     function _setContainer() {
-      if(container) return containerDefer.promise; // If the container is there, don't create it.
+      if(container) { return containerDefer.promise; } // If the container is there, don't create it.
 
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
@@ -173,7 +173,7 @@ angular.module('toastr', ['ngAnimate'])
 
       function findToast(toastIndex) {
         for (var i = 0; i < toasts.length; i++) {
-          if (toasts[i].index == toastIndex) {
+          if (toasts[i].index === toastIndex) {
             return toasts[i];
           }
         }
