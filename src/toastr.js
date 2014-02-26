@@ -1,9 +1,9 @@
 angular.module('toastr', ['ngAnimate'])
 
-  .directive('toastrAlert', ['$timeout', 'toastr', 'toastrConfig', function($timeout, toastr, toastrConfig) {
+  .directive('toast', ['$timeout', 'toastr', 'toastrConfig', function($timeout, toastr, toastrConfig) {
     return {
       replace: true,
-      template: '<div class="{{toastClass}} {{toastrtype}}" ng-click="close()">' +
+      template: '<div class="{{toastClass}} {{toastType}}" ng-click="close()">' +
                     '<div ng-if="title" class="{{titleClass}}">{{title}}</div>' +
                     '<div class="{{messageClass}}">{{message}}</div>' +
                 '</div>',
@@ -59,7 +59,7 @@ angular.module('toastr', ['ngAnimate'])
   })
 
   .factory('toastr', ['$animate', '$compile', '$document', '$rootScope', 'toastrConfig', '$q', function($animate, $compile, $document, $rootScope, toastrConfig, $q) {
-    var container, index = 0, toastrs = [];
+    var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
     var options = toastrConfig;
@@ -80,8 +80,8 @@ angular.module('toastr', ['ngAnimate'])
       if (toast) {
         remove(toast.index);
       } else {
-        for (var i = 0; i < toastrs.length; i++) {
-          remove(toastrs[i].index);
+        for (var i = 0; i < toasts.length; i++) {
+          remove(toasts[i].index);
         }
       }
     }
@@ -125,44 +125,44 @@ angular.module('toastr', ['ngAnimate'])
     }
 
     function _notify(message, title, extra) {
-      var newToastr = {
+      var newToast = {
         index: index++,
         scope: $rootScope.$new()
       };
 
-      var angularDomEl = angular.element('<div toastr-alert></div>');
+      var angularDomEl = angular.element('<div toast></div>');
       if (title) {
-        newToastr.scope.title = title;
+        newToast.scope.title = title;
       }
 
-      newToastr.scope.message = message;
-      newToastr.scope.toastrtype = extra.type;
-      newToastr.scope.index = newToastr.index;
+      newToast.scope.message = message;
+      newToast.scope.toastType = extra.type;
+      newToast.scope.index = newToast.index;
 
-      var toastrDomEl = $compile(angularDomEl)(newToastr.scope);
+      var toastrDomEl = $compile(angularDomEl)(newToast.scope);
 
-      newToastr.el = toastrDomEl;
+      newToast.el = toastrDomEl;
 
-      toastrs.push(newToastr);
+      toasts.push(newToast);
 
       _setContainer().then(function() {
         $animate.enter(toastrDomEl, container, null, function() {
-          newToastr.scope.init();
+          newToast.scope.init();
         });
       });
 
-      return newToastr;
+      return newToast;
     }
 
     function remove(toastIndex) {
       var toast = findToast(toastIndex);
 
-      var ind = toastrs.indexOf(toast);
+      var ind = toasts.indexOf(toast);
 
       if (toast) { // Avoid clicking when fading out
         $animate.leave(toast.el, function() {
           toast.scope.$destroy();
-          toastrs.splice(ind, 1);
+          toasts.splice(ind, 1);
           if (container && container.children().length === 0) {
             container.remove();
             container = null;
@@ -172,9 +172,9 @@ angular.module('toastr', ['ngAnimate'])
       }
 
       function findToast(toastIndex) {
-        for (var i = 0; i < toastrs.length; i++) {
-          if (toastrs[i].index == toastIndex) {
-            return toastrs[i];
+        for (var i = 0; i < toasts.length; i++) {
+          if (toasts[i].index == toastIndex) {
+            return toasts[i];
           }
         }
       }

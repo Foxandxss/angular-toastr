@@ -14,14 +14,14 @@ describe('toastr', function() {
 
   beforeEach(function() {
     this.addMatchers({
-      toHaveToastrContainer: function() {
+      toHaveToastContainer: function() {
         var containerDomEl = this.actual.find('body > #toast-container');
         return containerDomEl.length === 1
       },
 
-      toHaveToastrOpen: function(noOfToastr) {
-        var toastrDomEls = this.actual.find('body > #toast-container > .toast');
-        return toastrDomEls.length === noOfToastr;
+      toHaveToastOpen: function(noOfToastr) {
+        var toastDomEls = this.actual.find('body > #toast-container > .toast');
+        return toastDomEls.length === noOfToastr;
       },
 
       toHaveTitle: function() {
@@ -34,26 +34,26 @@ describe('toastr', function() {
         return this.actual.el.hasClass(typeClass);
       },
 
-      toHaveToastrWithMessage: function(message, toastr) {
-        var contentToCompare, toastrDomEl = this.actual.find('body > #toast-container > .toast').eq(toastr || 0);
+      toHaveToastWithMessage: function(message, toast) {
+        var contentToCompare, toastDomEl = this.actual.find('body > #toast-container > .toast').eq(toast || 0);
 
         this.message = function() {
-          return '"Expected "' + angular.mock.dump(toastrDomEl) + '" to be open with "' + message + '".';
+          return '"Expected "' + angular.mock.dump(toastDomEl) + '" to be open with "' + message + '".';
         };
 
-        contentToCompare = toastrDomEl.find('.toast-message').eq(0).html();
+        contentToCompare = toastDomEl.find('.toast-message').eq(0).html();
 
         return contentToCompare === message;
       },
 
-      toHaveToastrWithTitle: function(title, toastr) {
-        var contentToCompare, toastrDomEl = this.actual.find('body > #toast-container > .toast').eq(toastr || 0);
+      toHaveToastWithTitle: function(title, toast) {
+        var contentToCompare, toastDomEl = this.actual.find('body > #toast-container > .toast').eq(toast || 0);
 
         this.message = function() {
-          return '"Expected "' + angular.mock.dump(toastrDomEl) + '" to be open with "' + title + '".';
+          return '"Expected "' + angular.mock.dump(toastDomEl) + '" to be open with "' + title + '".';
         };
 
-        contentToCompare = toastrDomEl.find('.toast-title').eq(0).html();
+        contentToCompare = toastDomEl.find('.toast-title').eq(0).html();
 
         return contentToCompare === title;
       }
@@ -65,8 +65,8 @@ describe('toastr', function() {
     body.find('#toast-container').remove();
   });
 
-  function _findToastr(toastr) {
-    return $document.find('body > #toast-container > .toast').eq(toastr || 0);
+  function _findToast(toast) {
+    return $document.find('body > #toast-container > .toast').eq(toast || 0);
   }
 
   // Needed when we want to run the callback of enter or leave.
@@ -80,23 +80,23 @@ describe('toastr', function() {
     }).toThrow(new Error('No deferred tasks to be flushed'));
   }
 
-  function clickToastr(toastr) {
-    var toastr = _findToastr(toastr);
-    toastr.click();
+  function clickToast(toast) {
+    var toast = _findToast(toast);
+    toast.click();
     $rootScope.$digest();
   }
 
-  function hoverToastr(toastr) {
-    var toastr = _findToastr(toastr);
-    toastr.trigger('mouseenter');
+  function hoverToast(toast) {
+    var toast = _findToast(toast);
+    toast.trigger('mouseenter');
   }
 
-  function leaveToastr(toastr) {
-    var toastr = _findToastr(toastr);
-    toastr.trigger('mouseleave');
+  function leaveToast(toast) {
+    var toast = _findToast(toast);
+    toast.trigger('mouseleave');
   }
 
-  function openToastr(type, message, title) {
+  function openToast(type, message, title) {
     var toast;
     if (title) {
       toast = toastr[type](message, title);
@@ -108,8 +108,8 @@ describe('toastr', function() {
     return toast;
   }
 
-  function openToastrs(noOfToastr) {
-    for (var i = 0; i < noOfToastr; i++) {
+  function openToasts(noOfToast) {
+    for (var i = 0; i < noOfToast; i++) {
       toastr.success('message', 'title');
     }
     $rootScope.$digest();
@@ -121,131 +121,131 @@ describe('toastr', function() {
   }
 
   describe('basic scenarios', function() {
-    it('should be able to open a toastr in the container', function() {
-      openToastrs(1);
-      expect($document).toHaveToastrOpen(1);
+    it('should be able to open a toast in the container', function() {
+      openToasts(1);
+      expect($document).toHaveToastOpen(1);
       timeoutFlush();
-      expect($document).toHaveToastrOpen(0);
+      expect($document).toHaveToastOpen(0);
     });
 
-    it('should be able to stack more than one toastr', function() {
-      openToastrs(5);
-      expect($document).toHaveToastrOpen(5);
+    it('should be able to stack more than one toast', function() {
+      openToasts(5);
+      expect($document).toHaveToastOpen(5);
       timeoutFlush();
-      expect($document).toHaveToastrOpen(0);
+      expect($document).toHaveToastOpen(0);
     });
 
-    it('should close a toastr upon click', function() {
-      openToastrs(1);
-      expect($document).toHaveToastrOpen(1);
-      clickToastr();
-      expect($document).toHaveToastrOpen(0);
+    it('should close a toast upon click', function() {
+      openToasts(1);
+      expect($document).toHaveToastOpen(1);
+      clickToast();
+      expect($document).toHaveToastOpen(0);
     });
 
     it('should contain a title and a message', function() {
-      openToastr('success', 'World', 'Hello');
-      expect($document).toHaveToastrWithMessage('World');
-      expect($document).toHaveToastrWithTitle('Hello');
+      openToast('success', 'World', 'Hello');
+      expect($document).toHaveToastWithMessage('World');
+      expect($document).toHaveToastWithTitle('Hello');
     });
 
     it('have an optional title', function() {
-      openToastrs(5);
-      var toast = openToastr('success', 'Hello');
+      openToasts(5);
+      var toast = openToast('success', 'Hello');
       expect(toast).not.toHaveTitle();
     });
 
-    it('has multiple types of toast', function() {
-      var toast = openToastr('success', 'foo');
+    it('has multiple types of toasts', function() {
+      var toast = openToast('success', 'foo');
       expect(toast).toHaveType('success');
       timeoutFlush();
-      toast = openToastr('error', 'foo');
+      toast = openToast('error', 'foo');
       expect(toast).toHaveType('error');
       timeoutFlush();
-      toast = openToastr('info', 'foo');
+      toast = openToast('info', 'foo');
       expect(toast).toHaveType('info');
       timeoutFlush();
-      toast = openToastr('warning', 'foo');
+      toast = openToast('warning', 'foo');
       expect(toast).toHaveType('warning');
       timeoutFlush();
     });
 
-    it('allows to manually close a toastr in code', function() {
-      var toast = openToastr('success', 'foo');
-      expect($document).toHaveToastrOpen(1);
+    it('allows to manually close a toast in code', function() {
+      var toast = openToast('success', 'foo');
+      expect($document).toHaveToastOpen(1);
       toastr.close(toast);
       $rootScope.$digest();
-      expect($document).toHaveToastrOpen(0);
+      expect($document).toHaveToastOpen(0);
       animationFlush();
-      expect($document).not.toHaveToastrContainer();
+      expect($document).not.toHaveToastContainer();
     });
 
     it('allows to close all toasts at once', function() {
-      openToastrs(10);
-      expect($document).toHaveToastrOpen(10);
+      openToasts(10);
+      expect($document).toHaveToastOpen(10);
       toastr.close();
       $rootScope.$digest();
-      expect($document).toHaveToastrOpen(0);
+      expect($document).toHaveToastOpen(0);
       animationFlush();
-      expect($document).not.toHaveToastrContainer();
+      expect($document).not.toHaveToastContainer();
     });
   });
 
   describe('container', function() {
-    it('should create a new toastr container when the first toastr is created', function() {
-      expect($document).not.toHaveToastrContainer();
-      openToastrs(1);
-      expect($document).toHaveToastrContainer();
+    it('should create a new toastr container when the first toast is created', function() {
+      expect($document).not.toHaveToastContainer();
+      openToasts(1);
+      expect($document).toHaveToastContainer();
     });
 
-    it('should delete the toastr container when the last toastr is gone', function() {
-      expect($document).not.toHaveToastrContainer();
-      openToastrs(2);
-      expect($document).toHaveToastrContainer();
-      clickToastr();
-      expect($document).toHaveToastrContainer();
-      clickToastr();
+    it('should delete the toastr container when the last toast is gone', function() {
+      expect($document).not.toHaveToastContainer();
+      openToasts(2);
+      expect($document).toHaveToastContainer();
+      clickToast();
+      expect($document).toHaveToastContainer();
+      clickToast();
       animationFlush();
-      expect($document).not.toHaveToastrContainer();
+      expect($document).not.toHaveToastContainer();
     });
 
     it('is created again if it gets deleted', function() {
-      expect($document).not.toHaveToastrContainer();
-      openToastrs(2);
-      expect($document).toHaveToastrContainer();
-      clickToastr();
-      expect($document).toHaveToastrContainer();
-      clickToastr();
+      expect($document).not.toHaveToastContainer();
+      openToasts(2);
+      expect($document).toHaveToastContainer();
+      clickToast();
+      expect($document).toHaveToastContainer();
+      clickToast();
       animationFlush();
-      expect($document).not.toHaveToastrContainer();
-      openToastrs(1);
-      expect($document).toHaveToastrContainer();
+      expect($document).not.toHaveToastContainer();
+      openToasts(1);
+      expect($document).toHaveToastContainer();
     });
   });
 
   describe('directive behavior', function() {
-    it('should not close a toastr if hovered', function() {
-      openToastrs(1);
-      hoverToastr();
+    it('should not close a toast if hovered', function() {
+      openToasts(1);
+      hoverToast();
       checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastrOpen(1);
+      expect($document).toHaveToastOpen(1);
     });
 
-    it('should close all the toastrs but the hovered one', function() {
-      openToastrs(5);
-      hoverToastr(2);
+    it('should close all the toasts but the hovered one', function() {
+      openToasts(5);
+      hoverToast(2);
       timeoutFlush(); // Closing others...
       checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastrOpen(1);
+      expect($document).toHaveToastOpen(1);
     });
 
-    it('should re-enable the timeout of a toastr if you leave it', function() {
-      openToastrs(1);
-      hoverToastr();
+    it('should re-enable the timeout of a toast if you leave it', function() {
+      openToasts(1);
+      hoverToast();
       checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastrOpen(1);
-      leaveToastr();
+      expect($document).toHaveToastOpen(1);
+      leaveToast();
       timeoutFlush();
-      expect($document).toHaveToastrOpen(0);
+      expect($document).toHaveToastOpen(0);
     })
   });
 });
