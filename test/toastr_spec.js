@@ -14,6 +14,14 @@ describe('toastr', function() {
 
   beforeEach(function() {
     this.addMatchers({
+      toHaveClass: function(cls) {
+        this.message = function() {
+          return 'Expected "' + this.actual + '"' + (this.isNot ? ' not ' : ' ') + 'to have class "' + cls + '".';
+        };
+
+        return this.actual.el.hasClass(cls);
+      },
+
       toHaveToastContainer: function() {
         var containerDomEl = this.actual.find('body > #toast-container');
         return containerDomEl.length === 1;
@@ -96,12 +104,12 @@ describe('toastr', function() {
     toast.trigger('mouseleave');
   }
 
-  function openToast(type, message, title) {
+  function openToast(type, message, title, options) {
     var toast;
     if (title) {
-      toast = toastr[type](message, title);
+      toast = toastr[type](message, title, options);
     } else {
-      toast = toastr[type](message);
+      toast = toastr[type](message, null, options);
     }
     $rootScope.$digest();
     animationFlush();
@@ -246,6 +254,24 @@ describe('toastr', function() {
       leaveToast();
       timeoutFlush();
       expect($document).toHaveToastOpen(0);
+    });
+  });
+
+  describe('options overriding', function() {
+    it('can change the type of the toast', function() {
+      var options = {
+        iconClass: 'toast-pink'
+      };
+      var toast = openToast('success', 'message', 'title', options);
+      expect(toast).toHaveClass(options.iconClass);
+    });
+
+    it('can override the toast class', function() {
+      var options = {
+        toastClass: 'my-toast'
+      };
+      var toast = openToast('error', 'message', 'title', options);
+      expect(toast).toHaveClass(options.toastClass);
     });
   });
 });

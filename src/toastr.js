@@ -1,6 +1,6 @@
 angular.module('toastr', ['ngAnimate'])
 
-  .directive('toast', ['$timeout', 'toastr', 'toastrConfig', function($timeout, toastr, toastrConfig) {
+  .directive('toast', ['$timeout', 'toastr', function($timeout, toastr) {
     return {
       replace: true,
       template: '<div class="{{toastClass}} {{toastType}}" ng-click="close()">' +
@@ -10,12 +10,12 @@ angular.module('toastr', ['ngAnimate'])
       link: function(scope, element, attrs) {
         var timeout;
 
-        scope.toastClass = toastrConfig.toastClass;
-        scope.titleClass = toastrConfig.titleClass;
-        scope.messageClass = toastrConfig.messageClass;
+        scope.toastClass = scope.options.toastClass;
+        scope.titleClass = scope.options.titleClass;
+        scope.messageClass = scope.options.messageClass;
 
         scope.init = function() {
-          timeout = createTimeout(toastrConfig.timeOut);
+          timeout = createTimeout(scope.options.timeOut);
         };
 
         element.on('mouseenter', function() {
@@ -25,16 +25,16 @@ angular.module('toastr', ['ngAnimate'])
         });
 
         scope.close = function() {
-          toastr.remove(scope.index);
+          toastr.remove(scope.toastId);
         };
 
         element.on('mouseleave', function() {
-          timeout = createTimeout(toastrConfig.extendedTimeOut);
+          timeout = createTimeout(scope.options.extendedTimeOut);
         });
 
         function createTimeout(time) {
           return $timeout(function() {
-            toastr.remove(scope.index);
+            toastr.remove(scope.toastId);
           }, time);
         }
       }
@@ -62,8 +62,6 @@ angular.module('toastr', ['ngAnimate'])
     var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
-    var options = toastrConfig;
-
     var toastr = {
       close: close,
       error: error,
@@ -78,40 +76,56 @@ angular.module('toastr', ['ngAnimate'])
     /* Public API */
     function close(toast) {
       if (toast) {
-        remove(toast.index);
+        remove(toast.toastId);
       } else {
         for (var i = 0; i < toasts.length; i++) {
-          remove(toasts[i].index);
+          remove(toasts[i].toastId);
         }
       }
     }
 
-    function error(message, title) {
-      return _notify(message, title, {
-        type: options.iconClasses.error
+    function error(message, title, optionsOverride) {
+      return _notify({
+        iconClass: _getOptions().iconClasses.error,
+        message: message,
+        optionsOverride: optionsOverride,
+        title: title
       });
     }
 
-    function info(message, title) {
-      return _notify(message, title, {
-        type: options.iconClasses.info
+    function info(message, title, optionsOverride) {
+      return _notify({
+        iconClass: _getOptions().iconClasses.info,
+        message: message,
+        optionsOverride: optionsOverride,
+        title: title
       });
     }
 
-    function success(message, title) {
-      return _notify(message, title, {
-        type: options.iconClasses.success
+    function success(message, title, optionsOverride) {
+      return _notify({
+        iconClass: _getOptions().iconClasses.success,
+        message: message,
+        optionsOverride: optionsOverride,
+        title: title
       });
     }
 
-    function warning(message, title) {
-      return _notify(message, title, {
-        type: options.iconClasses.warning
+    function warning(message, title, optionsOverride) {
+      return _notify({
+        iconClass: _getOptions().iconClasses.warning,
+        message: message,
+        optionsOverride: optionsOverride,
+        title: title
       });
     }
 
     /* Internal functions */
-    function _setContainer() {
+    function _getOptions() {
+      return angular.extend({}, toastrConfig);
+    }
+
+    function _setContainer(options) {
       if(container) { return containerDefer.promise; } // If the container is there, don't create it.
 
       container = angular.element('<div></div>');
@@ -124,34 +138,55 @@ angular.module('toastr', ['ngAnimate'])
       return containerDefer.promise;
     }
 
-    function _notify(message, title, extra) {
+    function _notify(map) {
+      var options = _getOptions();
+
       var newToast = {
-        index: index++,
+        toastId: index++,
         scope: $rootScope.$new()
       };
-
-      var angularDomEl = angular.element('<div toast></div>');
-      if (title) {
-        newToast.scope.title = title;
+      newToast.iconClass = map.iconClass;
+      if (map.optionsOverride) {
+        options = angular.extend(options, map.optionsOverride);
+        newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
       }
 
-      newToast.scope.message = message;
-      newToast.scope.toastType = extra.type;
-      newToast.scope.index = newToast.index;
+      createScope(newToast, map, options);
 
-      var toastrDomEl = $compile(angularDomEl)(newToast.scope);
-
-      newToast.el = toastrDomEl;
+      newToast.el = createToast(newToast.scope);
 
       toasts.push(newToast);
 
-      _setContainer().then(function() {
-        $animate.enter(toastrDomEl, container, null, function() {
+      _setContainer(options).then(function() {
+        $animate.enter(newToast.el, container, null, function() {
           newToast.scope.init();
         });
       });
 
       return newToast;
+
+      function createScope(toast, map, options) {
+        if (map.title) {
+          toast.scope.title = map.title;
+        }
+
+        toast.scope.message = map.message;
+        toast.scope.toastType = toast.iconClass;
+        toast.scope.toastId = toast.toastId;
+
+        toast.scope.options = {
+          extendedTimeOut: options.extendedTimeOut,
+          messageClass: options.messageClass,
+          timeOut: options.timeOut,
+          titleClass: options.titleClass,
+          toastClass: options.toastClass
+        };
+      }
+
+      function createToast(scope) {
+        var angularDomEl = angular.element('<div toast></div>');
+        return $compile(angularDomEl)(scope);
+      }
     }
 
     function remove(toastIndex) {
@@ -171,9 +206,9 @@ angular.module('toastr', ['ngAnimate'])
         });
       }
 
-      function findToast(toastIndex) {
+      function findToast(toastId) {
         for (var i = 0; i < toasts.length; i++) {
-          if (toasts[i].index === toastIndex) {
+          if (toasts[i].toastId === toastId) {
             return toasts[i];
           }
         }

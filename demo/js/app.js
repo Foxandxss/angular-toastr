@@ -11,9 +11,16 @@ angular.module('app', ['toastr'])
       toastr.error('I am another toastr'); // No title
     }, 1000);
     $timeout(function() { // Simulate delay
-      toastr.warning('Warning warning, intruder alert, intruder alert', 'Warning');
+      toastr.warning('Warning warning, intruder alert, intruder alert', null, {
+        timeOut: '10000'
+      });
     }, 2000);
     $timeout(function() { // Simulate delay
       toastr.info('We are closed today', 'Notice');
     }, 3000);
+    $timeout(function() {
+      toastr.success('Pinky pinky', 'title', {
+        iconClass: 'toast-pink'
+      });
+    }, 4000);
   });
