@@ -4,8 +4,8 @@
   "launch_in_ci" : ["PhantomJS"],
   "src_files" : [
     "test/helpers/jquery.js",
-    "demo/vendor/angular.js",
-    "demo/vendor/angular-animate.js",
+    "test/helpers/angular.js",
+    "test/helpers/angular-animate.js",
     "test/helpers/angular-mocks.js",
     "gen/toastr.js",
     "gen/toastr_spec.js"
