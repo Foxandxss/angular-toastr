@@ -180,7 +180,7 @@ describe('toastr', function() {
     it('allows to manually close a toast in code', function() {
       var toast = openToast('success', 'foo');
       expect($document).toHaveToastOpen(1);
-      toastr.close(toast);
+      toastr.clear(toast);
       $rootScope.$digest();
       expect($document).toHaveToastOpen(0);
       animationFlush();
@@ -190,7 +190,7 @@ describe('toastr', function() {
     it('allows to close all toasts at once', function() {
       openToasts(10);
       expect($document).toHaveToastOpen(10);
-      toastr.close();
+      toastr.clear();
       $rootScope.$digest();
       expect($document).toHaveToastOpen(0);
       animationFlush();

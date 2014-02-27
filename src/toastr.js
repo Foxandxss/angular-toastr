@@ -63,7 +63,7 @@ angular.module('toastr', ['ngAnimate'])
     var containerDefer = $q.defer();
 
     var toastr = {
-      close: close,
+      clear: clear,
       error: error,
       info: info,
       remove: remove,
@@ -74,7 +74,7 @@ angular.module('toastr', ['ngAnimate'])
     return toastr;
 
     /* Public API */
-    function close(toast) {
+    function clear(toast) {
       if (toast) {
         remove(toast.toastId);
       } else {
