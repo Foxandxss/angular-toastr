@@ -1,21 +1,91 @@
 <!DOCTYPE html>
 <html ng-app="app">
-    <head>
-        <meta charset=utf-8 />
-        <title></title>
-        <link rel="stylesheet" type="text/css" href="css/toastr.css" />
-        <style>
-          .toast-pink {
-            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADsSURBVEhLY2AYBfQMgf///3P8+/evAIgvA/FsIF+BavYDDWMBGroaSMMBiE8VC7AZDrIFaMFnii3AZTjUgsUUWUDA8OdAH6iQbQEhw4HyGsPEcKBXBIC4ARhex4G4BsjmweU1soIFaGg/WtoFZRIZdEvIMhxkCCjXIVsATV6gFGACs4Rsw0EGgIIH3QJYJgHSARQZDrWAB+jawzgs+Q2UO49D7jnRSRGoEFRILcdmEMWGI0cm0JJ2QpYA1RDvcmzJEWhABhD/pqrL0S0CWuABKgnRki9lLseS7g2AlqwHWQSKH4oKLrILpRGhEQCw2LiRUIa4lwAAAABJRU5ErkJggg==") !important;
-            background-color: pink;
-          }
-        </style>
-        <script type="text/javascript" src="vendor/angular.js"></script>
-        <script type="text/javascript" src="vendor/angular-animate.js"></script>
-        <script type="text/javascript" src="js/toastr.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
-    </head>
-    <body ng-controller="MainCtrl">
+<head>
+  <meta charset="utf-8" />
+  <title>angular-toastr examples</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/toastr.css" rel="stylesheet" type="text/css" />
+  <link href="css/custom.css" rel="stylesheet" type="text/css" />
+</head>
 
-    </body>
-</html>
+<body class="container" ng-controller="DemoCtrl">
+  <h1 class="text-center">angular-toastr demo</h1>
+  <div class="well row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="form-group">
+          <label for="toastTitle">Title</label>
+          <input type="text" ng-model="toast.title" class="form-control" id="toastTitle" placeholder="Toast title">
+        </div>
+        <div class="form-group">
+          <label for="toastMessage">Title</label>
+          <textarea class="form-control" ng-model="toast.message" id="toastMessage" placeholder="Toast message"></textarea>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Toast type</label>
+          <label class="radio">
+            <input type="radio" ng-model="options.type" value="success">Success
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.type" value="info">Info
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.type" value="warning">Warning
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.type" value="error">Error
+          </label>
+        </div>
+        <div class="form-group">
+          <label>Toast position</label>
+          <label class="radio">
+            <input type="radio" ng-model="options.position" value="toast-top-right">Top Right
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.position" value="toast-bottom-right">Bottom Right
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.position" value="toast-bottom-left">Bottom Left
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.position" value="toast-top-left">Top Left
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.position" value="toast-top-full-width">Top Full Width
+          </label>
+          <label class="radio">
+            <input type="radio" ng-model="options.position" value="toast-bottom-full-width">Bottom Full Width
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="toastTimeout">Timeout</label>
+          <input type="text" ng-model="options.timeout" class="form-control" id="toastTimeout">
+        </div>
+        <div class="form-group">
+          <label for="toastExtendedTimeout">Extended timeout</label>
+          <input type="text" ng-model="options.extendedTimeout" class="form-control" id="toastExtendedTimeout">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button ng-click="openToast()" class="btn btn-primary">Open Toast</button>
+        <button ng-click="openRandomToast()" class="btn btn-primary">Open Random Toast</button>
+        <button ng-click="clearToasts()" class="btn btn-danger">Clear Toasts</button>
+        <button ng-click="clearLastToast()" class="btn btn-danger">Clear Last Toast</button>
+        <button ng-click="openPinkToast()" class="btn btn-pink">Custom Pink Toast</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/angular.js"></script>
+  <script src="vendor/angular-animate.js"></script>
+  <script src="js/toastr.js"></script>
+  <script src="js/app.js"></script>
+
+</body>

@@ -1,26 +1,82 @@
 angular.module('app', ['toastr'])
 
-  .config(function(toastrConfig) {
-    toastrConfig.positionClass = 'toast-bottom-right';
-//    toastrConfig.timeOut = 500;
+  .factory('randomQuotes', function() {
+    var quotes = [
+      {
+        title: 'Come to Freenode',
+        message: 'We rock at #angularjs'
+      },
+      {
+        title: 'Looking for bootstrap?',
+        message: 'Try ui-bootstrap out!'
+      },
+      {
+        title: 'Wants a better router?',
+        message: 'We have you covered with ui-router'
+      },
+      {
+        title: null,
+        message: 'Titles are not always needed'
+      },
+      {
+        title: null,
+        message: 'Toastr rock!'
+      }
+    ];
+
+    var types = ['success', 'error', 'info', 'warning'];
+
+    return {
+      quotes: quotes,
+      types: types
+    }
   })
 
-  .controller('MainCtrl', function($scope, $timeout, toastr) {
-    toastr.success('I am fox', 'Hello');
-    $timeout(function() { // Simulate delay
-      toastr.error('I am another toastr'); // No title
-    }, 1000);
-    $timeout(function() { // Simulate delay
-      toastr.warning('Warning warning, intruder alert, intruder alert', null, {
-        timeOut: '10000'
-      });
-    }, 2000);
-    $timeout(function() { // Simulate delay
-      toastr.info('We are closed today', 'Notice');
-    }, 3000);
-    $timeout(function() {
-      toastr.success('Pinky pinky', 'title', {
+  .controller('DemoCtrl', function($scope, randomQuotes, toastr, toastrConfig) {
+    var openedToasts = [];
+
+    $scope.toast = {
+      title: '',
+      message: ''
+    };
+
+    $scope.options = {
+      position: 'toast-top-right',
+      type: 'success',
+      timeout: '5000',
+      extendedTimeout: '1000'
+    };
+
+    $scope.$watchCollection('options', function(newValue) {
+      toastrConfig.extendedTimeOut = newValue.extendedTimeout;
+      toastrConfig.positionClass = newValue.position;
+      toastrConfig.timeOut = newValue.timeout;
+    });
+
+    $scope.clearLastToast = function() {
+      var toast = openedToasts.pop();
+      toastr.close(toast);
+    };
+
+    $scope.clearToasts = function() {
+      toastr.close();
+    };
+
+    $scope.openPinkToast = function() {
+      openedToasts.push(toastr.info('I am totally custom!', 'Happy toast', {
         iconClass: 'toast-pink'
-      });
-    }, 4000);
+      }));
+    };
+
+    $scope.openRandomToast = function() {
+      var type = Math.floor(Math.random() * 4);
+      var quote = Math.floor(Math.random() * 5);
+      var toastType = randomQuotes.types[type];
+      var toastQuote = randomQuotes.quotes[quote];
+      openedToasts.push(toastr[toastType](toastQuote.message, toastQuote.title));
+    };
+
+    $scope.openToast = function() {
+      openedToasts.push(toastr[$scope.options.type]($scope.toast.message, $scope.toast.title));
+    };
   });
