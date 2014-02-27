@@ -44,6 +44,8 @@ app.controller('foo', function($scope, toastr) {
 });
 ```
 
+![Success Image](http://i.imgur.com/5LTPLFK.png)
+
 Info:
 
 ```javascript
@@ -51,6 +53,8 @@ app.controller('foo', function($scope, toastr) {
   toastr.info('We are opened today from 10 to 22', 'Information');
 });
 ```
+
+![Info Image](http://i.imgur.com/GFevMnr.png)
 
 Error:
 
@@ -60,6 +64,8 @@ app.controller('foo', function($scope, toastr) {
 });
 ```
 
+![Error Image](http://i.imgur.com/sXdKsDK.png)
+
 Warning:
 
 ```javascript
@@ -67,6 +73,8 @@ app.controller('foo', function($scope, toastr) {
   toastr.warning('Your computer is about to explode!', 'Warning');
 });
 ```
+
+![Warning Image](http://i.imgur.com/k4g8vMz.png)
 
 Apart from that you can customize your basic toasts:
 
@@ -77,6 +85,8 @@ app.controller('foo', function($scope, toastr) {
   toastr.success('I don\'t need a title to live');
 });
 ```
+
+![No Title](http://i.imgur.com/GnwWFo4.png)
 
 ### Toastr customization
 
@@ -131,6 +141,8 @@ app.controller('foo', function($scope, toastr) {
     background-color: #fa39c3;
 }
 ```
+
+![Pink image](http://i.imgur.com/jur31Zd.png)
 
 See how we passed a third parameter to the `toast`.
 
