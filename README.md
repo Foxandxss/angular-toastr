@@ -94,7 +94,6 @@ app.config(function(toastrConfig) {
   },
   messageClass: 'toast-message',
   positionClass: 'toast-top-right',
-  target: 'body',
   timeOut: 5000,
   titleClass: 'toast-title',
   toastClass: 'toast'
@@ -108,7 +107,6 @@ Those are the default values, you can pick what you need from it and override wi
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
 * **positionClass**: The position where the toasts are added.
-* **target**: The place you want to attach the container (this won't work on the current version).
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
