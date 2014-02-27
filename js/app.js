@@ -1,4 +1,4 @@
-angular.module('app', ['toastr'])
+angular.module('app', ['toastr', 'ngAnimate'])
 
   .factory('randomQuotes', function() {
     var quotes = [

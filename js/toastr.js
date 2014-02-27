@@ -1,4 +1,4 @@
-angular.module('toastr', ['ngAnimate'])
+angular.module('toastr', [])
 
   .directive('toast', ['$timeout', 'toastr', function($timeout, toastr) {
     return {
@@ -52,7 +52,6 @@ angular.module('toastr', ['ngAnimate'])
     },
     messageClass: 'toast-message',
     positionClass: 'toast-top-right',
-    target: 'body',
     timeOut: 5000,
     titleClass: 'toast-title',
     toastClass: 'toast'
@@ -131,7 +130,7 @@ angular.module('toastr', ['ngAnimate'])
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
-      var body = $document.find(options.target).eq(0);
+      var body = $document.find('body').eq(0);
       $animate.enter(container, body, null, function() {
         containerDefer.resolve();
       });
