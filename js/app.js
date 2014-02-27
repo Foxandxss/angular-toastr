@@ -55,11 +55,11 @@ angular.module('app', ['toastr'])
 
     $scope.clearLastToast = function() {
       var toast = openedToasts.pop();
-      toastr.close(toast);
+      toastr.clear(toast);
     };
 
     $scope.clearToasts = function() {
-      toastr.close();
+      toastr.clear();
     };
 
     $scope.openPinkToast = function() {
