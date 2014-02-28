@@ -94,6 +94,7 @@ You can customize the entire library like:
 
 ```javascript
 app.config(function(toastrConfig) {
+  allowHtml: true,
   containerId: 'toast-container',
   extendedTimeOut: 1000,
   iconClasses: {
@@ -112,6 +113,7 @@ app.config(function(toastrConfig) {
 
 Those are the default values, you can pick what you need from it and override with your values.
 
+* **allowHtml**: Your toast can use custom HTML here (See [Issue 3]())
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
@@ -122,6 +124,18 @@ Those are the default values, you can pick what you need from it and override wi
 * **toastClass**: Base class for toasts.
 
 You can also override options per toast, for example:
+
+Toast with custom HTML:
+
+```javascript
+app.controller('foo', function($scope, toastr) {
+  toastr.info('<input type="checkbox" checked> Success!', 'With HTML', {
+    allowHtml: true
+  });
+});
+```
+
+![Html Image](http://i.imgur.com/mvz6wcW.png)
 
 A pinky custom style (you can also create here new types with `$decorate`):
 
