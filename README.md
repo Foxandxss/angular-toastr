@@ -113,7 +113,7 @@ app.config(function(toastrConfig) {
 
 Those are the default values, you can pick what you need from it and override with your values.
 
-* **allowHtml**: Your toast can use custom HTML here (See [Issue 3]())
+* **allowHtml**: Your toast can use custom HTML here (See [Issue 3](https://github.com/Foxandxss/angular-toastr/issues/3))
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
