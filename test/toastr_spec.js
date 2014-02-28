@@ -14,6 +14,11 @@ describe('toastr', function() {
 
   beforeEach(function() {
     this.addMatchers({
+      toHaveA: function(tag) {
+        var el = this.actual.el.find(tag);
+        return el.length > 0;
+      },
+
       toHaveClass: function(cls) {
         this.message = function() {
           return 'Expected "' + this.actual + '"' + (this.isNot ? ' not ' : ' ') + 'to have class "' + cls + '".';
@@ -306,6 +311,13 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(1);
       clickToast();
       expect($document).toHaveToastOpen(0);
+    });
+
+    it('can show custom html on the toast', function() {
+      var toast = openToast('success', 'I like to have a <button>button</button>', null, {
+        allowHtml: true
+      });
+      expect(toast).toHaveA('button');
     });
   });
 });
