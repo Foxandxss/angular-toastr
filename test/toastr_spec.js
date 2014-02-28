@@ -273,5 +273,39 @@ describe('toastr', function() {
       var toast = openToast('error', 'message', 'title', options);
       expect(toast).toHaveClass(options.toastClass);
     });
+
+    it('can make a toast stick until is clicked or hovered (extended timeout)', function() {
+      var options = {
+        timeOut: 0
+      };
+      openToast('info', 'I don\'t want to go...', null, options);
+      checkForEmptyTimeoutQueue();
+      expect($document).toHaveToastOpen(1);
+      clickToast();
+      expect($document).toHaveToastOpen(0);
+
+      openToast('info', 'I don\'t want to go...', null, options);
+      checkForEmptyTimeoutQueue();
+      expect($document).toHaveToastOpen(1);
+      hoverToast();
+      leaveToast();
+      timeoutFlush();
+      expect($document).toHaveToastOpen(0);
+    });
+
+    it('can make a toast stick until is clicked', function() {
+      var options = {
+        timeOut: 0,
+        extendedTimeOut: 0
+      };
+      openToast('info', 'I don\'t want to go...', null, options);
+      checkForEmptyTimeoutQueue();
+      expect($document).toHaveToastOpen(1);
+      hoverToast();
+      leaveToast();
+      expect($document).toHaveToastOpen(1);
+      clickToast();
+      expect($document).toHaveToastOpen(0);
+    });
   });
 });

@@ -15,7 +15,9 @@ angular.module('toastr', [])
         scope.messageClass = scope.options.messageClass;
 
         scope.init = function() {
-          timeout = createTimeout(scope.options.timeOut);
+          if (scope.options.timeOut) {
+            timeout = createTimeout(scope.options.timeOut);
+          }
         };
 
         element.on('mouseenter', function() {
@@ -29,6 +31,7 @@ angular.module('toastr', [])
         };
 
         element.on('mouseleave', function() {
+          if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
           timeout = createTimeout(scope.options.extendedTimeOut);
         });
 
