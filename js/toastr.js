@@ -4,8 +4,11 @@ angular.module('toastr', [])
     return {
       replace: true,
       template: '<div class="{{toastClass}} {{toastType}}" ng-click="close()">' +
-                    '<div ng-if="title" class="{{titleClass}}">{{title}}</div>' +
-                    '<div class="{{messageClass}}">{{message}}</div>' +
+                    '<div ng-if="title" class="{{titleClass}}" ng-click="fn()">{{title}}</div>' +
+                    '<div ng-switch on="messageType">' +
+                      '<div ng-switch-when="trusted" class="{{messageClass}}" ng-bind-html="message"></div>' +
+                      '<div ng-switch-default class="{{messageClass}}">{{message}}</div>' +
+                    '</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
         var timeout;
@@ -15,7 +18,9 @@ angular.module('toastr', [])
         scope.messageClass = scope.options.messageClass;
 
         scope.init = function() {
-          timeout = createTimeout(scope.options.timeOut);
+          if (scope.options.timeOut) {
+            timeout = createTimeout(scope.options.timeOut);
+          }
         };
 
         element.on('mouseenter', function() {
@@ -29,6 +34,7 @@ angular.module('toastr', [])
         };
 
         element.on('mouseleave', function() {
+          if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
           timeout = createTimeout(scope.options.extendedTimeOut);
         });
 
@@ -42,6 +48,7 @@ angular.module('toastr', [])
   }])
 
   .constant('toastrConfig', {
+    allowHtml: false,
     containerId: 'toast-container',
     extendedTimeOut: 1000,
     iconClasses: {
@@ -57,7 +64,7 @@ angular.module('toastr', [])
     toastClass: 'toast'
   })
 
-  .factory('toastr', ['$animate', '$compile', '$document', '$rootScope', 'toastrConfig', '$q', function($animate, $compile, $document, $rootScope, toastrConfig, $q) {
+  .factory('toastr', ['$animate', '$compile', '$document', '$rootScope', '$sce', 'toastrConfig', '$q', function($animate, $compile, $document, $rootScope, $sce, toastrConfig, $q) {
     var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
@@ -169,7 +176,13 @@ angular.module('toastr', [])
           toast.scope.title = map.title;
         }
 
-        toast.scope.message = map.message;
+        if (options.allowHtml) {
+          toast.scope.messageType = 'trusted';
+          toast.scope.message = $sce.trustAsHtml(map.message);
+        } else {
+          toast.scope.message = map.message;
+        }
+
         toast.scope.toastType = toast.iconClass;
         toast.scope.toastId = toast.toastId;
 

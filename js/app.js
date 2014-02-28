@@ -4,7 +4,10 @@ angular.module('app', ['toastr', 'ngAnimate'])
     var quotes = [
       {
         title: 'Come to Freenode',
-        message: 'We rock at #angularjs'
+        message: 'We rock at <em>#angularjs</em>',
+        options: {
+          allowHtml: true
+        }
       },
       {
         title: 'Looking for bootstrap?',
@@ -21,6 +24,13 @@ angular.module('app', ['toastr', 'ngAnimate'])
       {
         title: null,
         message: 'Toastr rock!'
+      },
+      {
+        title: 'What about nice html?',
+        message: '<strong>Sure you <em>can!</em></strong>',
+        options: {
+          allowHtml: true
+        }
       }
     ];
 
@@ -44,13 +54,15 @@ angular.module('app', ['toastr', 'ngAnimate'])
       position: 'toast-top-right',
       type: 'success',
       timeout: '5000',
-      extendedTimeout: '1000'
+      extendedTimeout: '1000',
+      html: false
     };
 
     $scope.$watchCollection('options', function(newValue) {
-      toastrConfig.extendedTimeOut = newValue.extendedTimeout;
+      toastrConfig.allowHtml = newValue.html;
+      toastrConfig.extendedTimeOut = parseInt(newValue.extendedTimeout, 10);
       toastrConfig.positionClass = newValue.position;
-      toastrConfig.timeOut = newValue.timeout;
+      toastrConfig.timeOut = parseInt(newValue.timeout, 10);
     });
 
     $scope.clearLastToast = function() {
@@ -70,10 +82,10 @@ angular.module('app', ['toastr', 'ngAnimate'])
 
     $scope.openRandomToast = function() {
       var type = Math.floor(Math.random() * 4);
-      var quote = Math.floor(Math.random() * 5);
+      var quote = Math.floor(Math.random() * 6);
       var toastType = randomQuotes.types[type];
       var toastQuote = randomQuotes.quotes[quote];
-      openedToasts.push(toastr[toastType](toastQuote.message, toastQuote.title));
+      openedToasts.push(toastr[toastType](toastQuote.message, toastQuote.title, toastQuote.options));
     };
 
     $scope.openToast = function() {
