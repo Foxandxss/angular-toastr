@@ -8,10 +8,19 @@
     "./dist/angular-toastr.min.css"
   ],
   "ignore": [
-    "**/.*",
+    "config",
     "node_modules",
     "playground",
-    ".travis.yml"
+    "src",
+    "test",
+    ".travis.yml",
+    ".gitignore",
+    ".jshintrc",
+    "bower.json",
+    "CHANGELOG.md",
+    "Gruntfile.js",
+    "package.json",
+    "README.md"
   ],
   "dependencies": {
     "angular": ">= 2.0.0"
