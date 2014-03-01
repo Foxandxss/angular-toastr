@@ -1,0 +1,19 @@
+{
+  "name": "angular-toastr",
+  "version": "0.2.0",
+  "main": [
+    "./dist/angular-toastr.js",
+    "./dist/angular-toastr.min.js",
+    "./dist/angular-toastr.css",
+    "./dist/angular-toastr.min.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "playground",
+    ".travis.yml"
+  ],
+  "dependencies": {
+    "angular": ">= 2.0.0"
+  }
+}

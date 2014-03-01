@@ -10,6 +10,10 @@ module.exports = function(grunt) {
       test: {
         src: 'test/toastr_spec.js',
         dest: 'gen/toastr_spec.js'
+      },
+      prod: {
+        src: 'src/toastr.js',
+        dest: 'dist/angular-toastr.js'
       }
     },
 
@@ -28,10 +32,15 @@ module.exports = function(grunt) {
       },
       prod: {
         options: {
-          yuicompress: true
+          cleancss: true
         },
         files: {
           'dist/angular-toastr.min.css': 'src/toastr.less'
+        }
+      },
+      proddev: {
+        files: {
+          'dist/angular-toastr.css': 'src/toastr.less'
         }
       }
     },
@@ -60,6 +69,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['less:dev', 'jshint', 'copy']);
-  grunt.registerTask('prod', ['less:prod', 'uglify']);
+  grunt.registerTask('default', ['less:dev', 'jshint', 'copy:source', 'copy:test']);
+  grunt.registerTask('prod', ['less:prod', 'less:proddev', 'copy:prod', 'uglify']);
 };
