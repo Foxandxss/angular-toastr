@@ -1,6 +1,6 @@
 {
   "name": "angular-toastr",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": [
     "./dist/angular-toastr.js",
     "./dist/angular-toastr.min.js",
@@ -23,6 +23,6 @@
     "README.md"
   ],
   "dependencies": {
-    "angular": ">= 2.0.0"
+    "angular": ">= 1.2.0"
   }
 }
