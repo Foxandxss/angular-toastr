@@ -1,6 +1,6 @@
 {
   "name": "angular-toastr",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": [
     "./dist/angular-toastr.js",
     "./dist/angular-toastr.min.js",
@@ -16,13 +16,11 @@
     ".travis.yml",
     ".gitignore",
     ".jshintrc",
-    "bower.json",
     "CHANGELOG.md",
     "Gruntfile.js",
-    "package.json",
-    "README.md"
+    "package.json"
   ],
   "dependencies": {
-    "angular": ">= 1.2.0"
+    "angular": "latest"
   }
 }

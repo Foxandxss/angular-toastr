@@ -1,6 +1,6 @@
 {
   "name": "angular-toastr",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-less": "~0.9.0",
