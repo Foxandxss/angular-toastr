@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.4
+
+- Fixes #2 where a toast could remain open for all eternity.
+
 ## Version 0.2.0
 
 - You can make an sticky toast if you set the `timeOut` to 0. If you also set `extendedTimeOut` to 0 the sticky won't go away until you click on them.

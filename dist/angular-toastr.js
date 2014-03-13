@@ -204,13 +204,12 @@ angular.module('toastr', [])
     function remove(toastIndex) {
       var toast = findToast(toastIndex);
 
-      var ind = toasts.indexOf(toast);
-
       if (toast) { // Avoid clicking when fading out
+
         $animate.leave(toast.el, function() {
           toast.scope.$destroy();
-          toasts.splice(ind, 1);
           if (container && container.children().length === 0) {
+            toasts = [];
             container.remove();
             container = null;
             containerDefer = $q.defer();
