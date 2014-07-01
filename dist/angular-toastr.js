@@ -3,7 +3,8 @@ angular.module('toastr', [])
   .directive('toast', ['$timeout', 'toastr', function($timeout, toastr) {
     return {
       replace: true,
-      template: '<div class="{{toastClass}} {{toastType}}" ng-click="close()">' +
+      template: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
+                    '<button ng-if="options.closeButton" class="toast-close-button" ng-click="close()">&times;</button>' +
                     '<div ng-if="title" class="{{titleClass}}" ng-click="fn()">{{title}}</div>' +
                     '<div ng-switch on="messageType">' +
                       '<div ng-switch-when="trusted" class="{{messageClass}}" ng-bind-html="message"></div>' +
@@ -29,7 +30,13 @@ angular.module('toastr', [])
           }
         });
 
-        scope.close = function() {
+        scope.tapToast = function () {
+            if (scope.options.tapToDismiss) {
+                scope.close();
+            }
+        };
+
+        scope.close = function () {
           toastr.remove(scope.toastId);
         };
 
@@ -49,6 +56,7 @@ angular.module('toastr', [])
 
   .constant('toastrConfig', {
     allowHtml: false,
+    closeHtml: '<button>&times;</button>',
     containerId: 'toast-container',
     extendedTimeOut: 1000,
     iconClasses: {
@@ -59,6 +67,7 @@ angular.module('toastr', [])
     },
     messageClass: 'toast-message',
     positionClass: 'toast-top-right',
+    tapToDismiss: true,
     timeOut: 5000,
     titleClass: 'toast-title',
     toastClass: 'toast'
@@ -187,8 +196,10 @@ angular.module('toastr', [])
         toast.scope.toastId = toast.toastId;
 
         toast.scope.options = {
+          closeButton: options.closeButton,
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
+          tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,
           toastClass: options.toastClass

@@ -82,6 +82,10 @@ describe('toastr', function() {
     return $document.find('body > #toast-container > .toast').eq(toast || 0);
   }
 
+  function _findToastCloseButton(toast) {
+    return $document.find('body > #toast-container > .toast > .toast-close-button').eq(toast || 0);
+  }
+
   // Needed when we want to run the callback of enter or leave.
   function animationFlush() {
     timeoutFlush();
@@ -94,9 +98,15 @@ describe('toastr', function() {
   }
 
   function clickToast(noOfToast) {
-    var toast = _findToast(noOfToast);
-    toast.click();
-    $rootScope.$digest();
+      var toast = _findToast(noOfToast);
+      toast.click();
+      $rootScope.$digest();
+  }
+
+  function clickToastCloseButton(noOfToast) {
+      var toastCloseButton = _findToastCloseButton(noOfToast);
+      toastCloseButton.click();
+      $rootScope.$digest();
   }
 
   function hoverToast(noOfToast) {
@@ -121,9 +131,9 @@ describe('toastr', function() {
     return toast;
   }
 
-  function openToasts(noOfToast) {
+  function openToasts(noOfToast, optionsOverride) {
     for (var i = 0; i < noOfToast; i++) {
-      toastr.success('message', 'title');
+      toastr.success('message', 'title', optionsOverride);
     }
     $rootScope.$digest();
     animationFlush();
@@ -148,14 +158,28 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(0);
     });
 
-    it('should close a toast upon click', function() {
-      openToasts(1);
-      expect($document).toHaveToastOpen(1);
-      clickToast();
-      expect($document).toHaveToastOpen(0);
+    it('should close a toast upon click', function () {
+        openToasts(1);
+        expect($document).toHaveToastOpen(1);
+        clickToast();
+        expect($document).toHaveToastOpen(0);
     });
 
-    it('should contain a title and a message', function() {
+    it('should not close a toast with !tapToDismiss upon click', function () {
+        openToasts(1, { tapToDismiss: false });
+        expect($document).toHaveToastOpen(1);
+        clickToast();
+        expect($document).toHaveToastOpen(1);
+    });
+
+    it('should close a toast with upon close button click', function () {
+        openToasts(1, { tapToDismiss: false, closeButton: true });
+        expect($document).toHaveToastOpen(1);
+        clickToastCloseButton();
+        expect($document).toHaveToastOpen(0);
+    });
+
+    it('should contain a title and a message', function () {
       openToast('success', 'World', 'Hello');
       expect($document).toHaveToastWithMessage('World');
       expect($document).toHaveToastWithTitle('Hello');
