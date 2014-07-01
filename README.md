@@ -97,6 +97,7 @@ You can customize the entire library like:
 ```javascript
 app.config(function(toastrConfig) {
   allowHtml: true,
+  closeButton: true,
   containerId: 'toast-container',
   extendedTimeOut: 1000,
   iconClasses: {
@@ -107,6 +108,7 @@ app.config(function(toastrConfig) {
   },
   messageClass: 'toast-message',
   positionClass: 'toast-top-right',
+  tapToDismiss: true,
   timeOut: 5000,
   titleClass: 'toast-title',
   toastClass: 'toast'
@@ -116,11 +118,13 @@ app.config(function(toastrConfig) {
 Those are the default values, you can pick what you need from it and override with your values.
 
 * **allowHtml**: Your toast can use custom HTML here (See [Issue 3](https://github.com/Foxandxss/angular-toastr/issues/3))
+* **closeButton**: Whether to display an "X" close button on the toast.
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
 * **positionClass**: The position where the toasts are added.
+* **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
