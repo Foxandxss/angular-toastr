@@ -1,6 +1,8 @@
 # Angular Toastr
 **angular-toastr** is a port of [CodeSeven/toastr](https://github.com/CodeSeven/toastr)
 
+[![Code Climate](https://codeclimate.com/github/Foxandxss/angular-toastr.png)](https://codeclimate.com/github/Foxandxss/angular-toastr)
+
 The goal is to provide the same API than the original one but without jQuery and using all the angular power.
 
 ## Todo
