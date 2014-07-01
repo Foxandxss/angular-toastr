@@ -55,7 +55,10 @@ angular.module('app', ['toastr', 'ngAnimate'])
       type: 'success',
       timeout: '5000',
       extendedTimeout: '1000',
-      html: false
+      html: false,
+      closeButton: false,
+      tapToDismiss: true,
+      closeHtml: '<button>&times;</button>'
     };
 
     $scope.$watchCollection('options', function(newValue) {
@@ -63,6 +66,9 @@ angular.module('app', ['toastr', 'ngAnimate'])
       toastrConfig.extendedTimeOut = parseInt(newValue.extendedTimeout, 10);
       toastrConfig.positionClass = newValue.position;
       toastrConfig.timeOut = parseInt(newValue.timeout, 10);
+      toastrConfig.closeButton = newValue.closeButton;
+      toastrConfig.tapToDismiss = newValue.tapToDismiss;
+      toastrConfig.closeHtml = newValue.closeHtml;
     });
 
     $scope.clearLastToast = function() {
