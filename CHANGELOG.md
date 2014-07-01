@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.3.0
+
+- Now the toasts supports a close button.
+- Be able to disable to close on click.
+
 ## Version 0.2.4
 
 - Fixes #2 where a toast could remain open for all eternity.
