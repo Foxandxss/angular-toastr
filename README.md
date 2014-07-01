@@ -95,6 +95,8 @@ You can customize the entire library like:
 ```javascript
 app.config(function(toastrConfig) {
   allowHtml: true,
+  closeButton: false,
+  closeHtml: '<button>&times;</button>',
   containerId: 'toast-container',
   extendedTimeOut: 1000,
   iconClasses: {
@@ -105,6 +107,7 @@ app.config(function(toastrConfig) {
   },
   messageClass: 'toast-message',
   positionClass: 'toast-top-right',
+  tapToDismiss: true,
   timeOut: 5000,
   titleClass: 'toast-title',
   toastClass: 'toast'
@@ -114,11 +117,14 @@ app.config(function(toastrConfig) {
 Those are the default values, you can pick what you need from it and override with your values.
 
 * **allowHtml**: Your toast can use custom HTML here (See [Issue 3](https://github.com/Foxandxss/angular-toastr/issues/3))
+* **closeButton**: Whether to display an "X" close button on the toast.
+* **closeButton**: Html element to be used as a close button.
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
 * **positionClass**: The position where the toasts are added.
+* **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
@@ -136,6 +142,27 @@ app.controller('foo', function($scope, toastr) {
 ```
 
 ![Html Image](http://i.imgur.com/mvz6wcW.png)
+
+Toast with a close button:
+
+```javascript
+toastr.success('What a nice button', 'Button spree', {
+  closeButton: true
+});
+```
+
+![Html Image](http://i.imgur.com/yupvey4.png)
+
+Toast with a custom button for apple fans:
+
+```javascript
+toastr.info('What a nice apple button', 'Button spree', {
+  closeButton: true,
+  closeHtml: '<button></button>'
+});
+```
+
+![Html Image](http://i.imgur.com/TaCm9HG.png)
 
 A pinky custom style (you can also create here new types with `$decorate`):
 
@@ -162,9 +189,14 @@ See how we passed a third parameter to the `toast`.
 
 There you can override:
 
-* **iconClass**: For the type class you want to use for the toast.
-* **timeOut**: For that concrete toast timeout.
+* **closeButton**: Putting a close button on the toast.
+* **closeHtml**: If you need to override how the close button looks like.
 * **extendedTimeout**: The timeout after you hover it.
+* **iconClass**: For the type class you want to use for the toast.
+* **messageClass**: If you want to modify the message look.
+* **tapToDismiss**: If you want a concrete toast to toggle the close on click.
+* **timeOut**: For that concrete toast timeout.
+* **titleClass**: To override the title class of the toast.
 * **toastClass**: For the main toast class.
 
 

@@ -1,14 +1,14 @@
 angular.module('toastr', [])
 
-  .directive('toast', ['$timeout', 'toastr', function($timeout, toastr) {
+  .directive('toast', ['$compile', '$timeout', 'toastr', function($compile, $timeout, toastr) {
     return {
       replace: true,
-      template: '<div class="{{toastClass}} {{toastType}}" ng-click="close()">' +
-                    '<div ng-if="title" class="{{titleClass}}" ng-click="fn()">{{title}}</div>' +
-                    '<div ng-switch on="messageType">' +
-                      '<div ng-switch-when="trusted" class="{{messageClass}}" ng-bind-html="message"></div>' +
-                      '<div ng-switch-default class="{{messageClass}}">{{message}}</div>' +
-                    '</div>' +
+      template: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
+                  '<div ng-if="title" class="{{titleClass}}" ng-click="fn()">{{title}}</div>' +
+                  '<div ng-switch on="messageType">' +
+                    '<div ng-switch-when="trusted" class="{{messageClass}}" ng-bind-html="message"></div>' +
+                    '<div ng-switch-default class="{{messageClass}}">{{message}}</div>' +
+                  '</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
         var timeout;
@@ -16,6 +16,14 @@ angular.module('toastr', [])
         scope.toastClass = scope.options.toastClass;
         scope.titleClass = scope.options.titleClass;
         scope.messageClass = scope.options.messageClass;
+
+        if (scope.options.closeHtml) {
+          var button = angular.element(scope.options.closeHtml);
+          button.addClass('toast-close-button');
+          button.attr('ng-click', 'close()');
+          $compile(button)(scope);
+          element.prepend(button);
+        }
 
         scope.init = function() {
           if (scope.options.timeOut) {
@@ -29,7 +37,13 @@ angular.module('toastr', [])
           }
         });
 
-        scope.close = function() {
+        scope.tapToast = function () {
+          if (scope.options.tapToDismiss) {
+            scope.close();
+          }
+        };
+
+        scope.close = function () {
           toastr.remove(scope.toastId);
         };
 
@@ -49,6 +63,8 @@ angular.module('toastr', [])
 
   .constant('toastrConfig', {
     allowHtml: false,
+    closeButton: false,
+    closeHtml: '<button>&times;</button>',
     containerId: 'toast-container',
     extendedTimeOut: 1000,
     iconClasses: {
@@ -59,6 +75,7 @@ angular.module('toastr', [])
     },
     messageClass: 'toast-message',
     positionClass: 'toast-top-right',
+    tapToDismiss: true,
     timeOut: 5000,
     titleClass: 'toast-title',
     toastClass: 'toast'
@@ -189,10 +206,15 @@ angular.module('toastr', [])
         toast.scope.options = {
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
+          tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,
           toastClass: options.toastClass
         };
+
+        if (options.closeButton) {
+          toast.scope.options.closeHtml = options.closeHtml;
+        }
       }
 
       function createToast(scope) {

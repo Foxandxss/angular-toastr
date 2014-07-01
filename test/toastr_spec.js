@@ -19,6 +19,11 @@ describe('toastr', function() {
         return el.length > 0;
       },
 
+      toHaveButtonWith: function(buttonText) {
+        var buttonDomEl = this.actual.el.find('.toast-close-button');
+        return buttonDomEl.text() === buttonText;
+      },
+
       toHaveClass: function(cls) {
         this.message = function() {
           return 'Expected "' + this.actual + '"' + (this.isNot ? ' not ' : ' ') + 'to have class "' + cls + '".';
@@ -82,6 +87,10 @@ describe('toastr', function() {
     return $document.find('body > #toast-container > .toast').eq(toast || 0);
   }
 
+  function _findToastCloseButton(toast) {
+    return $document.find('body > #toast-container > .toast > .toast-close-button').eq(toast || 0);
+  }
+
   // Needed when we want to run the callback of enter or leave.
   function animationFlush() {
     timeoutFlush();
@@ -96,6 +105,12 @@ describe('toastr', function() {
   function clickToast(noOfToast) {
     var toast = _findToast(noOfToast);
     toast.click();
+    $rootScope.$digest();
+  }
+
+  function clickToastCloseButton(noOfToast) {
+    var toastCloseButton = _findToastCloseButton(noOfToast);
+    toastCloseButton.click();
     $rootScope.$digest();
   }
 
@@ -121,9 +136,9 @@ describe('toastr', function() {
     return toast;
   }
 
-  function openToasts(noOfToast) {
+  function openToasts(noOfToast, optionsOverride) {
     for (var i = 0; i < noOfToast; i++) {
-      toastr.success('message', 'title');
+      toastr.success('message', 'title', optionsOverride);
     }
     $rootScope.$digest();
     animationFlush();
@@ -148,14 +163,28 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(0);
     });
 
-    it('should close a toast upon click', function() {
+    it('should close a toast upon click', function () {
       openToasts(1);
       expect($document).toHaveToastOpen(1);
       clickToast();
       expect($document).toHaveToastOpen(0);
     });
 
-    it('should contain a title and a message', function() {
+    it('should not close a toast with !tapToDismiss upon click', function () {
+      openToasts(1, { tapToDismiss: false });
+      expect($document).toHaveToastOpen(1);
+      clickToast();
+      expect($document).toHaveToastOpen(1);
+    });
+
+    it('should close a toast clicking the close button', function () {
+      openToasts(1, { tapToDismiss: false, closeButton: true });
+      expect($document).toHaveToastOpen(1);
+      clickToastCloseButton();
+      expect($document).toHaveToastOpen(0);
+    });
+
+    it('should contain a title and a message', function () {
       openToast('success', 'World', 'Hello');
       expect($document).toHaveToastWithMessage('World');
       expect($document).toHaveToastWithTitle('Hello');
@@ -318,6 +347,34 @@ describe('toastr', function() {
         allowHtml: true
       });
       expect(toast).toHaveA('button');
+    });
+  });
+
+  describe('close button', function() {
+    it('should contain a close button with × if you add it', function() {
+      var toast = openToast('info', 'I have a button', null, {
+        closeButton: true
+      });
+
+      expect(toast).toHaveButtonWith('×');
+    });
+
+    it('allows custom button text on the close button', function() {
+      var toast = openToast('info', 'I have a button', null, {
+        closeButton: true,
+        closeHtml: '<button>1</button>'
+      });
+
+      expect(toast).toHaveButtonWith('1');
+    });
+
+    it('allows custom element as the close button', function() {
+      var toast = openToast('info', 'I have a button', null, {
+        closeButton: true,
+        closeHtml: '<span>1</span>'
+      });
+
+      expect(toast).toHaveButtonWith('1');
     });
   });
 });
