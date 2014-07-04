@@ -350,7 +350,7 @@ describe('toastr', function() {
     });
     
     it('can show custom html on the title toast', function() {
-      var toast = openToast('<button>button</button> Surprise', 'I want a surprise', null, {
+      var toast = openToast('success', 'I want a surprise', '<button>button</button> Surprise', {
         allowHtml: true
       });
       expect(toast).toHaveA('button');
