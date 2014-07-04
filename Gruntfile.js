@@ -4,16 +4,23 @@ module.exports = function(grunt) {
 
     copy: {
       source: {
-        src: 'src/toastr.js',
-        dest: 'gen/toastr.js'
+        expand: true,
+        cwd: 'src',
+        dest: 'gen',
+        src: '*.js'
       },
       test: {
         src: 'test/toastr_spec.js',
         dest: 'gen/toastr_spec.js'
       },
       prod: {
-        src: 'src/toastr.js',
-        dest: 'dist/angular-toastr.js'
+        files: [{
+          src: 'src/toastr.js',
+          dest: 'dist/angular-toastr.js'
+        }, {
+          src: 'src/toastr.tpl.js',
+          dest: 'dist/angular-toastr.tpl.js'
+        }]
       }
     },
 
@@ -48,7 +55,8 @@ module.exports = function(grunt) {
     uglify: {
       prod: {
         files: {
-          'dist/angular-toastr.min.js': 'src/toastr.js'
+          'dist/angular-toastr.min.js': 'src/toastr.js',
+          'dist/angular-toastr.tpl.min.js': 'src/toastr.tpl.js'
         }
       }
     },
