@@ -8,6 +8,7 @@
     "test/helpers/angular-animate.js",
     "test/helpers/angular-mocks.js",
     "gen/toastr.js",
+    "gen/toastr.tpl.js",
     "gen/toastr_spec.js"
   ]
 }
