@@ -342,12 +342,20 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(0);
     });
 
-    it('can show custom html on the toast', function() {
+    it('can show custom html on the toast message', function() {
       var toast = openToast('success', 'I like to have a <button>button</button>', null, {
         allowHtml: true
       });
       expect(toast).toHaveA('button');
     });
+    
+    it('can show custom html on the toast title', function() {
+      var toast = openToast('success', 'I want a surprise', '<button>button</button> Surprise', {
+        allowHtml: true
+      });
+      expect(toast).toHaveA('button');
+    });
+
   });
 
   describe('close button', function() {
