@@ -134,7 +134,7 @@ Those are the default values, you can pick what you need from it and override wi
 
 You can also override options per toast, for example:
 
-Toast with custom HTML:
+Toast with custom HTML (in both title and message):
 
 ```javascript
 app.controller('foo', function($scope, toastr) {
