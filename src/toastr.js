@@ -193,7 +193,7 @@ angular.module('toastr', [])
       function createScope(toast, map, options) {
         if (options.allowHtml) {
           toast.scope.titleType = 'trusted';
-          toast.scope.title = $sce.trustAsHtml(map.title)
+          toast.scope.title = $sce.trustAsHtml(map.title);
           toast.scope.messageType = 'trusted';
           toast.scope.message = $sce.trustAsHtml(map.message);
         } else {
