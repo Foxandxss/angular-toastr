@@ -348,6 +348,14 @@ describe('toastr', function() {
       });
       expect(toast).toHaveA('button');
     });
+    
+    it('can show custom html on the title toast', function() {
+      var toast = openToast('success', 'I want a surprise', '<button>button</button> Surprise', {
+        allowHtml: true
+      });
+      expect(toast).toHaveA('button');
+    });
+
   });
 
   describe('close button', function() {
