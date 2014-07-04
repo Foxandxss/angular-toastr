@@ -1,13 +1,13 @@
 angular.module('toastr', [])
-
   .directive('toast', ['$compile', '$timeout', 'toastr', function($compile, $timeout, toastr) {
     return {
       replace: true,
       template: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
-                  '<div ng-if="title" class="{{titleClass}}" ng-click="fn()">{{title}}</div>' +
-                  '<div ng-switch on="messageType">' +
-                    '<div ng-switch-when="trusted" class="{{messageClass}}" ng-bind-html="message"></div>' +
+                  '<div ng-switch on="allowHtml">' +
+                    '<div ng-switch-default ng-if="title" class="{{titleClass}}">{{title}}</div>' +
                     '<div ng-switch-default class="{{messageClass}}">{{message}}</div>' +
+                    '<div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>' +
+                    '<div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>' +
                   '</div>' +
                 '</div>',
       link: function(scope, element, attrs) {
@@ -189,14 +189,12 @@ angular.module('toastr', [])
       return newToast;
 
       function createScope(toast, map, options) {
-        if (map.title) {
-          toast.scope.title = map.title;
-        }
-
         if (options.allowHtml) {
-          toast.scope.messageType = 'trusted';
+          toast.scope.allowHtml = true;
+          toast.scope.title = $sce.trustAsHtml(map.title);
           toast.scope.message = $sce.trustAsHtml(map.message);
         } else {
+          toast.scope.title = map.title;
           toast.scope.message = map.message;
         }
 

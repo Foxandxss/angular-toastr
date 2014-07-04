@@ -29,7 +29,6 @@ angular.module('toastr', [])
           if (scope.options.timeOut) {
             timeout = createTimeout(scope.options.timeOut);
           }
-          console.log(scope.titleType);
         };
 
         element.on('mouseenter', function() {
