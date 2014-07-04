@@ -4,9 +4,9 @@ angular.module('toastr', [])
       replace: true,
       template: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
                   '<div ng-switch on="allowHtml">' +
-                    '<div ng-switch-default ng-if="title" class="{{titleClass}}" ng-click="fn()">{{title}}</div>' +
+                    '<div ng-switch-default ng-if="title" class="{{titleClass}}">{{title}}</div>' +
                     '<div ng-switch-default class="{{messageClass}}">{{message}}</div>' +
-                    '<div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title" ng-click="fn()"></div>' +
+                    '<div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>' +
                     '<div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>' +
                   '</div>' +
                 '</div>',
