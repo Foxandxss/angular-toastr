@@ -1,6 +1,7 @@
 # Angular Toastr
 
-[![Code Climate](https://codeclimate.com/github/Foxandxss/angular-toastr.png)](https://codeclimate.com/github/Foxandxss/angular-toastr)
+[![Code Climate](https://codeclimate.com/github/Foxandxss/angular-toastr.png)](https://codeclimate.com/github/Foxandxss/angular-toastr) [![Build Status](https://travis-ci.org/Foxandxss/angular-toastr.svg?branch=master)](https://travis-ci.org/Foxandxss/angular-toastr)
+
 
 **angular-toastr** is a port of [CodeSeven/toastr](https://github.com/CodeSeven/toastr)
 
