@@ -154,6 +154,7 @@ angular.module('toastr', [])
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
+      container.css({'pointer-events': 'auto'});
       var body = $document.find('body').eq(0);
       $animate.enter(container, body, null, function() {
         containerDefer.resolve();
