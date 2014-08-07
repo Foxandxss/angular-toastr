@@ -2,14 +2,7 @@ angular.module('toastr', [])
   .directive('toast', ['$compile', '$timeout', 'toastr', function($compile, $timeout, toastr) {
     return {
       replace: true,
-      template: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
-                  '<div ng-switch on="allowHtml">' +
-                    '<div ng-switch-default ng-if="title" class="{{titleClass}}">{{title}}</div>' +
-                    '<div ng-switch-default class="{{messageClass}}">{{message}}</div>' +
-                    '<div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>' +
-                    '<div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>' +
-                  '</div>' +
-                '</div>',
+      templateUrl: 'templates/toastr/toastr.html',
       link: function(scope, element, attrs) {
         var timeout;
 
@@ -154,6 +147,7 @@ angular.module('toastr', [])
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
+      container.css({'pointer-events': 'auto'});
       var body = $document.find('body').eq(0);
       $animate.enter(container, body, null, function() {
         containerDefer.resolve();
@@ -246,3 +240,19 @@ angular.module('toastr', [])
       }
     }
   }]);
+
+angular.module('toastr').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('templates/toastr/toastr.html',
+    "<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n" +
+    "  <div ng-switch on=\"allowHtml\">\n" +
+    "    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\">{{title}}</div>\n" +
+    "    <div ng-switch-default class=\"{{messageClass}}\">{{message}}</div>\n" +
+    "    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n" +
+    "    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n" +
+    "  </div>\n" +
+    "</div>"
+  );
+
+}]);

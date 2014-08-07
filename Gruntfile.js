@@ -2,6 +2,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     clean: ['dist', 'gen'],
 
+    concat: {
+      dist: {
+        src: ['src/toastr.js', 'gen/toastr.tpl.js'],
+        dest: 'dist/angular-toastr.js'
+      }
+    },
+
     copy: {
       source: {
         src: 'src/toastr.js',
@@ -10,10 +17,6 @@ module.exports = function(grunt) {
       test: {
         src: 'test/toastr_spec.js',
         dest: 'gen/toastr_spec.js'
-      },
-      prod: {
-        src: 'src/toastr.js',
-        dest: 'dist/angular-toastr.js'
       }
     },
 
@@ -45,10 +48,22 @@ module.exports = function(grunt) {
       }
     },
 
+    ngtemplates: {
+      app: {
+        options: {
+          module: 'toastr',
+          prefix: 'templates/toastr'
+        },
+        cwd: 'src',
+        src: 'toastr.html',
+        dest: 'gen/toastr.tpl.js'
+      }
+    },
+
     uglify: {
       prod: {
         files: {
-          'dist/angular-toastr.min.js': 'src/toastr.js'
+          'dist/angular-toastr.min.js': 'dist/angular-toastr.js'
         }
       }
     },
@@ -63,12 +78,14 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['less:dev', 'jshint', 'copy:source', 'copy:test']);
-  grunt.registerTask('prod', ['less:prod', 'less:proddev', 'copy:prod', 'uglify']);
+  grunt.registerTask('default', ['less:dev', 'jshint', 'copy:source', 'copy:test', 'ngtemplates']);
+  grunt.registerTask('prod', ['less:prod', 'less:proddev', 'ngtemplates', 'concat', 'uglify']);
 };
