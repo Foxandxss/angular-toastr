@@ -31,6 +31,13 @@ angular.module('app', ['toastr', 'ngAnimate'])
         options: {
           allowHtml: true
         }
+      },
+      {
+        title: 'Ionic is <em>cool</em>',
+        message: 'Best mobile framework ever',
+        options: {
+          allowHtml: true
+        }
       }
     ];
 
@@ -88,7 +95,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
 
     $scope.openRandomToast = function() {
       var type = Math.floor(Math.random() * 4);
-      var quote = Math.floor(Math.random() * 6);
+      var quote = Math.floor(Math.random() * 7);
       var toastType = randomQuotes.types[type];
       var toastQuote = randomQuotes.quotes[quote];
       openedToasts.push(toastr[toastType](toastQuote.message, toastQuote.title, toastQuote.options));
