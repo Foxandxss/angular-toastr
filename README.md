@@ -205,6 +205,20 @@ There you can override:
 * **titleClass**: To override the title class of the toast.
 * **toastClass**: For the main toast class.
 
+### Toast template
+
+You can also override the toast template. To do that, put a template on your template cache like:
+
+```javascript
+angular.module('yourApp').run(['$templateCache', function($templateCache) {
+  $templateCache.put('templates/toastr/toastr.html',
+    "<div>Your template here</div>"
+  );
+}]);
+```
+
+The important part here is to have a key named `templates/toastr/toastr.html`. The module you run it is not important, you just need to do it after you load `toastr`.
+
 
 ## Building
 

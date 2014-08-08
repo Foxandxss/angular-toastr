@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.0
+
+- You can add HTML on the toastr titles.
+- You can now override the toast's template.
+- Fix issue using toastr with ionic.
+
 ## Version 0.3.0
 
 - Now the toasts supports a close button.
