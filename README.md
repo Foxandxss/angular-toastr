@@ -2,6 +2,7 @@
 
 [![Code Climate](https://codeclimate.com/github/Foxandxss/angular-toastr.png)](https://codeclimate.com/github/Foxandxss/angular-toastr) [![Build Status](https://travis-ci.org/Foxandxss/angular-toastr.svg?branch=master)](https://travis-ci.org/Foxandxss/angular-toastr) [![devDependency Status](https://david-dm.org/Foxandxss/angular-toastr/dev-status.svg)](https://david-dm.org/Foxandxss/angular-toastr#info=devDependencies)
 
+**NOTE: There is a working version for the latest 1.3 RC on the `1.3` branch I will update the main one when 1.3 gets out.**
 
 **angular-toastr** is a port of [CodeSeven/toastr](https://github.com/CodeSeven/toastr)
 
