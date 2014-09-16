@@ -149,7 +149,7 @@ angular.module('toastr', [])
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
       var body = $document.find('body').eq(0);
-      $animate.enter(container, body, null, function() {
+      $animate.enter(container, body).then(function() {
         containerDefer.resolve();
       });
       return containerDefer.promise;
@@ -175,7 +175,7 @@ angular.module('toastr', [])
       toasts.push(newToast);
 
       _setContainer(options).then(function() {
-        $animate.enter(newToast.el, container, null, function() {
+        $animate.enter(newToast.el, container, container[0].lastChild).then(function() {
           newToast.scope.init();
         });
       });
