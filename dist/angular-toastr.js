@@ -144,7 +144,8 @@ angular.module('toastr', [])
     function _setContainer(options) {
       if(container) { return containerDefer.promise; } // If the container is there, don't create it.
 
-      container = angular.element('<div></div>');
+      // Inline <i> element used for new-Toast positioning (in _notify)
+      container = angular.element('<div><i></i></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
@@ -175,7 +176,9 @@ angular.module('toastr', [])
       toasts.push(newToast);
 
       _setContainer(options).then(function() {
-        $animate.enter(newToast.el, container, null, function() {
+        var after = toastrConfig.newestOnTop ? container.find('i') : null; // You could change the default
+
+        $animate.enter(newToast.el, container, after, function() {
           newToast.scope.init();
         });
       });
