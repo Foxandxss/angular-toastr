@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.0
+
+- Angular 1.3.x support
+
 ## Version 0.4.0
 
 - You can add HTML on the toastr titles.
