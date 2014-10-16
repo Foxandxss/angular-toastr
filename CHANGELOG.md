@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.1
+
+- newestOnTop, with that you can choose whether to add new toasts on the top or bottom. Top by default.
+
 ## Version 0.5.0
 
 - Angular 1.3.x support

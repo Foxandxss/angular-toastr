@@ -1,17 +1,18 @@
 describe('toastr', function() {
   var $animate, $document, $rootScope, $timeout;
-  var toastr;
+  var toastr, toastrConfig;
 
   beforeEach(module('ngAnimate'));
   beforeEach(module('ngAnimateMock'));
   beforeEach(module('toastr'));
 
-  beforeEach(inject(function(_$animate_, _$document_, _$rootScope_, _$timeout_, _toastr_) {
+  beforeEach(inject(function(_$animate_, _$document_, _$rootScope_, _$timeout_, _toastr_, _toastrConfig_) {
     $animate = _$animate_;
     $document = _$document_;
     $rootScope = _$rootScope_;
     $timeout = _$timeout_;
     toastr = _toastr_;
+    toastrConfig = _toastrConfig_;
   }));
 
   beforeEach(function() {
@@ -41,8 +42,6 @@ describe('toastr', function() {
 
       toHaveToastOpen: function(noOfToastr) {
         var toastDomEls = this.actual.find('body > #toast-container > .toast');
-        // console.log(this.actual.find('body').prop('innerHTML'));
-        // console.log('----');
         return toastDomEls.length === noOfToastr;
       },
 
@@ -391,6 +390,24 @@ describe('toastr', function() {
       });
 
       expect(toast).toHaveButtonWith('1');
+    });
+  });
+
+  describe('toast order', function() {
+    it('adds the newest toasts on top by default', function() {
+      var toast1 = openToast('success', 'I will be on the bottom');
+      var toast2 = openToast('info', 'I like the top part!');
+      expect($document).toHaveToastWithMessage(toast2.scope.message, 0);
+      expect($document).toHaveToastWithMessage(toast1.scope.message, 1);
+    });
+
+    it('adds the older toasts on top setting newestOnTop to false', function() {
+      toastrConfig.newestOnTop = false;
+
+      var toast1 = openToast('success', 'I will be on the top now');
+      var toast2 = openToast('info', 'I dont like the bottom part!');
+      expect($document).toHaveToastWithMessage(toast2.scope.message, 1);
+      expect($document).toHaveToastWithMessage(toast1.scope.message, 0);
     });
   });
 });
