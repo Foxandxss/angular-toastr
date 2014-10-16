@@ -2,6 +2,8 @@ describe('toastr', function() {
   var $animate, $document, $rootScope, $timeout;
   var toastr;
 
+  beforeEach(module('ngAnimate'));
+  beforeEach(module('ngAnimateMock'));
   beforeEach(module('toastr'));
 
   beforeEach(inject(function(_$animate_, _$document_, _$rootScope_, _$timeout_, _toastr_) {
@@ -39,6 +41,8 @@ describe('toastr', function() {
 
       toHaveToastOpen: function(noOfToastr) {
         var toastDomEls = this.actual.find('body > #toast-container > .toast');
+        // console.log(this.actual.find('body').prop('innerHTML'));
+        // console.log('----');
         return toastDomEls.length === noOfToastr;
       },
 
@@ -105,7 +109,9 @@ describe('toastr', function() {
   function clickToast(noOfToast) {
     var toast = _findToast(noOfToast);
     toast.click();
+
     $rootScope.$digest();
+    $animate.triggerCallbackPromise();
   }
 
   function clickToastCloseButton(noOfToast) {
@@ -131,8 +137,10 @@ describe('toastr', function() {
     } else {
       toast = toastr[type](message, null, options);
     }
+
     $rootScope.$digest();
-    animationFlush();
+    $animate.triggerCallbackPromise();
+
     return toast;
   }
 
@@ -141,7 +149,7 @@ describe('toastr', function() {
       toastr.success('message', 'title', optionsOverride);
     }
     $rootScope.$digest();
-    animationFlush();
+    $animate.triggerCallbackPromise();
   }
 
   function timeoutFlush() {
@@ -348,7 +356,7 @@ describe('toastr', function() {
       });
       expect(toast).toHaveA('button');
     });
-    
+
     it('can show custom html on the toast title', function() {
       var toast = openToast('success', 'I want a surprise', '<button>button</button> Surprise', {
         allowHtml: true
