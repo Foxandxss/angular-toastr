@@ -67,6 +67,7 @@ angular.module('toastr', [])
       warning: 'toast-warning'
     },
     messageClass: 'toast-message',
+    newestOnTop: true,
     positionClass: 'toast-top-right',
     tapToDismiss: true,
     timeOut: 5000,
@@ -149,7 +150,7 @@ angular.module('toastr', [])
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
       var body = $document.find('body').eq(0);
-      $animate.enter(container, body, null, function() {
+      $animate.enter(container, body).then(function() {
         containerDefer.resolve();
       });
       return containerDefer.promise;
@@ -175,9 +176,15 @@ angular.module('toastr', [])
       toasts.push(newToast);
 
       _setContainer(options).then(function() {
-        $animate.enter(newToast.el, container, null, function() {
-          newToast.scope.init();
-        });
+        if (options.newestOnTop) {
+          $animate.enter(newToast.el, container).then(function() {
+            newToast.scope.init();
+          });
+        } else {
+          $animate.enter(newToast.el, container, container[0].lastChild).then(function() {
+            newToast.scope.init();
+          });
+        }
       });
 
       return newToast;
@@ -220,7 +227,7 @@ angular.module('toastr', [])
 
       if (toast) { // Avoid clicking when fading out
 
-        $animate.leave(toast.el, function() {
+        $animate.leave(toast.el).then(function() {
           toast.scope.$destroy();
           if (container && container.children().length === 0) {
             toasts = [];

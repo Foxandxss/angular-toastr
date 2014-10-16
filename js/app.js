@@ -46,7 +46,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
     return {
       quotes: quotes,
       types: types
-    }
+    };
   })
 
   .controller('DemoCtrl', function($scope, randomQuotes, toastr, toastrConfig) {
@@ -65,7 +65,8 @@ angular.module('app', ['toastr', 'ngAnimate'])
       html: false,
       closeButton: false,
       tapToDismiss: true,
-      closeHtml: '<button>&times;</button>'
+      closeHtml: '<button>&times;</button>',
+      newestOnTop: true
     };
 
     $scope.$watchCollection('options', function(newValue) {
@@ -76,6 +77,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
       toastrConfig.closeButton = newValue.closeButton;
       toastrConfig.tapToDismiss = newValue.tapToDismiss;
       toastrConfig.closeHtml = newValue.closeHtml;
+      toastrConfig.newestOnTop = newValue.newestOnTop;
     });
 
     $scope.clearLastToast = function() {
