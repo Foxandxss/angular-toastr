@@ -220,7 +220,7 @@ angular.module('toastr', [])
 
       if (toast) { // Avoid clicking when fading out
 
-        $animate.leave(toast.el, function() {
+        $animate.leave(toast.el).then(function() {
           toast.scope.$destroy();
           if (container && container.children().length === 0) {
             toasts = [];
