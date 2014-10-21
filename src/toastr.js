@@ -64,7 +64,8 @@ angular.module('toastr', [])
       error: 'toast-error',
       info: 'toast-info',
       success: 'toast-success',
-      warning: 'toast-warning'
+      warning: 'toast-warning',
+      wait: 'toast-wait',
     },
     messageClass: 'toast-message',
     newestOnTop: true,
@@ -85,7 +86,8 @@ angular.module('toastr', [])
       info: info,
       remove: remove,
       success: success,
-      warning: warning
+      warning: warning,
+      wait: wait,
     };
 
     return toastr;
@@ -131,6 +133,15 @@ angular.module('toastr', [])
     function warning(message, title, optionsOverride) {
       return _notify({
         iconClass: _getOptions().iconClasses.warning,
+        message: message,
+        optionsOverride: optionsOverride,
+        title: title
+      });
+    }
+    
+    function wait(message, title, optionsOverride) {
+      return _notify({
+        iconClass: _getOptions().iconClasses.wait,
         message: message,
         optionsOverride: optionsOverride,
         title: title
