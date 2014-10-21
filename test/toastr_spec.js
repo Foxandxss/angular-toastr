@@ -216,6 +216,9 @@ describe('toastr', function() {
       toast = openToast('warning', 'foo');
       expect(toast).toHaveType('warning');
       timeoutFlush();
+      toast = openToast('wait', 'foo');
+      expect(toast).toHaveType('wait');
+      timeoutFlush();
     });
 
     it('allows to manually close a toast in code', function() {
