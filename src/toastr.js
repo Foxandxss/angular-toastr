@@ -64,7 +64,8 @@ angular.module('toastr', [])
       error: 'toast-error',
       info: 'toast-info',
       success: 'toast-success',
-      warning: 'toast-warning'
+      warning: 'toast-warning',
+      wait: 'toast-wait',
     },
     messageClass: 'toast-message',
     newestOnTop: true,
@@ -85,7 +86,8 @@ angular.module('toastr', [])
       info: info,
       remove: remove,
       success: success,
-      warning: warning
+      warning: warning,
+      wait: wait,
     };
 
     return toastr;
