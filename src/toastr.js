@@ -138,6 +138,15 @@ angular.module('toastr', [])
         title: title
       });
     }
+    
+    function wait(message, title, optionsOverride) {
+      return _notify({
+        iconClass: _getOptions().iconClasses.wait,
+        message: message,
+        optionsOverride: optionsOverride,
+        title: title
+      });
+    }
 
     /* Internal functions */
     function _getOptions() {
