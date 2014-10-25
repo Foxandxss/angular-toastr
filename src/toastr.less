@@ -11,11 +11,6 @@
   box-shadow: @boxShadow;
 }
 
-.wordWrap(@wordWrap: break-word) {
-  -ms-word-wrap: @wordWrap;
-  word-wrap: @wordWrap;
-}
-
 // Variables
 @black: #000000;
 @grey: #999999;
@@ -33,7 +28,7 @@
 }
 
 .toast-message {
-  .wordWrap();
+  word-wrap: break-word;
 
   a,
   label {
