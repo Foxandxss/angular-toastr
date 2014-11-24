@@ -1,15 +1,16 @@
 describe('toastr', function() {
-  var $animate, $document, $rootScope, $timeout;
+  var $animate, $document, $rootScope, $timeout, $interval;
   var toastr, toastrConfig;
 
   beforeEach(module('ngAnimate'));
   beforeEach(module('ngAnimateMock'));
   beforeEach(module('toastr'));
 
-  beforeEach(inject(function(_$animate_, _$document_, _$rootScope_, _$timeout_, _toastr_, _toastrConfig_) {
+  beforeEach(inject(function(_$animate_, _$document_, _$rootScope_, _$interval_, _$timeout_, _toastr_, _toastrConfig_) {
     $animate = _$animate_;
     $document = _$document_;
     $rootScope = _$rootScope_;
+    $interval = _$interval_;
     $timeout = _$timeout_;
     toastr = _toastr_;
     toastrConfig = _toastrConfig_;
@@ -96,13 +97,7 @@ describe('toastr', function() {
 
   // Needed when we want to run the callback of enter or leave.
   function animationFlush() {
-    timeoutFlush();
-  }
-
-  function checkForEmptyTimeoutQueue() {
-    expect(function() {
-      $timeout.flush();
-    }).toThrow(new Error('No deferred tasks to be flushed'));
+    $animate.triggerCallbackPromise();
   }
 
   function clickToast(noOfToast) {
@@ -138,7 +133,7 @@ describe('toastr', function() {
     }
 
     $rootScope.$digest();
-    $animate.triggerCallbackPromise();
+    animationFlush();
 
     return toast;
   }
@@ -148,25 +143,25 @@ describe('toastr', function() {
       toastr.success('message', 'title', optionsOverride);
     }
     $rootScope.$digest();
-    $animate.triggerCallbackPromise();
+    animationFlush();
   }
 
-  function timeoutFlush() {
-    $timeout.flush();
+  function intervalFlush(millis) {
+    $interval.flush(millis || 5000);
   }
 
   describe('basic scenarios', function() {
     it('should be able to open a toast in the container', function() {
       openToasts(1);
       expect($document).toHaveToastOpen(1);
-      timeoutFlush();
+      intervalFlush();
       expect($document).toHaveToastOpen(0);
     });
 
     it('should be able to stack more than one toast', function() {
       openToasts(5);
       expect($document).toHaveToastOpen(5);
-      timeoutFlush();
+      intervalFlush();
       expect($document).toHaveToastOpen(0);
     });
 
@@ -206,16 +201,16 @@ describe('toastr', function() {
     it('has multiple types of toasts', function() {
       var toast = openToast('success', 'foo');
       expect(toast).toHaveType('success');
-      timeoutFlush();
+      intervalFlush();
       toast = openToast('error', 'foo');
       expect(toast).toHaveType('error');
-      timeoutFlush();
+      intervalFlush();
       toast = openToast('info', 'foo');
       expect(toast).toHaveType('info');
-      timeoutFlush();
+      intervalFlush();
       toast = openToast('warning', 'foo');
       expect(toast).toHaveType('warning');
-      timeoutFlush();
+      intervalFlush();
     });
 
     it('allows to manually close a toast in code', function() {
@@ -253,7 +248,6 @@ describe('toastr', function() {
       clickToast();
       expect($document).toHaveToastContainer();
       clickToast();
-      animationFlush();
       expect($document).not.toHaveToastContainer();
     });
 
@@ -264,7 +258,6 @@ describe('toastr', function() {
       clickToast();
       expect($document).toHaveToastContainer();
       clickToast();
-      animationFlush();
       expect($document).not.toHaveToastContainer();
       openToasts(1);
       expect($document).toHaveToastContainer();
@@ -275,26 +268,26 @@ describe('toastr', function() {
     it('should not close a toast if hovered', function() {
       openToasts(1);
       hoverToast();
-      checkForEmptyTimeoutQueue();
+      intervalFlush();
       expect($document).toHaveToastOpen(1);
     });
 
     it('should close all the toasts but the hovered one', function() {
-      openToasts(5);
-      hoverToast(2);
-      timeoutFlush(); // Closing others...
-      checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastOpen(1);
+       openToasts(5);
+       hoverToast(2);
+       intervalFlush(); // Closing others...
+       intervalFlush();
+       expect($document).toHaveToastOpen(1);
     });
 
     it('should re-enable the timeout of a toast if you leave it', function() {
-      openToasts(1);
-      hoverToast();
-      checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastOpen(1);
-      leaveToast();
-      timeoutFlush();
-      expect($document).toHaveToastOpen(0);
+       openToasts(1);
+       hoverToast();
+       intervalFlush();
+       expect($document).toHaveToastOpen(1);
+       leaveToast();
+       intervalFlush();
+       expect($document).toHaveToastOpen(0);
     });
   });
 
@@ -316,37 +309,37 @@ describe('toastr', function() {
     });
 
     it('can make a toast stick until is clicked or hovered (extended timeout)', function() {
-      var options = {
-        timeOut: 0
-      };
-      openToast('info', 'I don\'t want to go...', null, options);
-      checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastOpen(1);
-      clickToast();
-      expect($document).toHaveToastOpen(0);
+       var options = {
+         timeOut: 0
+       };
+       openToast('info', 'I don\'t want to go...', null, options);
+       intervalFlush();
+       expect($document).toHaveToastOpen(1);
+       clickToast();
+       expect($document).toHaveToastOpen(0);
 
-      openToast('info', 'I don\'t want to go...', null, options);
-      checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastOpen(1);
-      hoverToast();
-      leaveToast();
-      timeoutFlush();
-      expect($document).toHaveToastOpen(0);
+       openToast('info', 'I don\'t want to go...', null, options);
+       intervalFlush();
+       expect($document).toHaveToastOpen(1);
+       hoverToast();
+       leaveToast();
+       intervalFlush();
+       expect($document).toHaveToastOpen(0);
     });
 
     it('can make a toast stick until is clicked', function() {
-      var options = {
-        timeOut: 0,
-        extendedTimeOut: 0
-      };
-      openToast('info', 'I don\'t want to go...', null, options);
-      checkForEmptyTimeoutQueue();
-      expect($document).toHaveToastOpen(1);
-      hoverToast();
-      leaveToast();
-      expect($document).toHaveToastOpen(1);
-      clickToast();
-      expect($document).toHaveToastOpen(0);
+       var options = {
+         timeOut: 0,
+         extendedTimeOut: 0
+       };
+       openToast('info', 'I don\'t want to go...', null, options);
+       intervalFlush();
+       expect($document).toHaveToastOpen(1);
+       hoverToast();
+       leaveToast();
+       expect($document).toHaveToastOpen(1);
+       clickToast();
+       expect($document).toHaveToastOpen(0);
     });
 
     it('can show custom html on the toast message', function() {

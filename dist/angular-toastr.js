@@ -1,5 +1,5 @@
 angular.module('toastr', [])
-  .directive('toast', ['$compile', '$timeout', 'toastr', function($compile, $timeout, toastr) {
+  .directive('toast', ['$compile', '$interval', 'toastr', function($compile, $interval, toastr) {
     return {
       replace: true,
       templateUrl: 'templates/toastr/toastr.html',
@@ -26,7 +26,7 @@ angular.module('toastr', [])
 
         element.on('mouseenter', function() {
           if (timeout) {
-            $timeout.cancel(timeout);
+            $interval.cancel(timeout);
           }
         });
 
@@ -46,9 +46,9 @@ angular.module('toastr', [])
         });
 
         function createTimeout(time) {
-          return $timeout(function() {
+          return $interval(function() {
             toastr.remove(scope.toastId);
-          }, time);
+          }, time, 1);
         }
       }
     };
