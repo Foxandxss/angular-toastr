@@ -1,6 +1,6 @@
 {
   "name": "angular-toastr",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "main": [
     "./dist/angular-toastr.js",
     "./dist/angular-toastr.css"

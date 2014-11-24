@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.5.2
+
+- Removed the support for IE 8 (in terms of CSS)
+- Changed `$timeout` to `$interval` so protractor tests won't fail.
+
 ## Version 0.5.1
 
 - newestOnTop, with that you can choose whether to add new toasts on the top or bottom. Top by default.
