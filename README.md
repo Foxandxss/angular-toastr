@@ -33,7 +33,11 @@ Then add `toastr` to your modules dependencies:
 angular.module('app', ['toastr'])
 ```
 
-`bower/npm/...` packages coming soon. (Bower will come next version, I did it wrong and it needs an update to download the changes (jeezz...)
+You can also install `angular-toastr` from bower:
+
+```
+$ bower install angular-toastr
+```
 
 ## Usage
 
