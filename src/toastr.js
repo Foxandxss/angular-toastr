@@ -102,42 +102,41 @@ angular.module('toastr', [])
     }
 
     function error(message, title, optionsOverride) {
-      return _notify({
-        iconClass: _getOptions().iconClasses.error,
-        message: message,
-        optionsOverride: optionsOverride,
-        title: title
-      });
+      var type = _getOptions().iconClasses.error;
+      return _buildNotification(type, message, title, optionsOverride);
     }
 
     function info(message, title, optionsOverride) {
-      return _notify({
-        iconClass: _getOptions().iconClasses.info,
-        message: message,
-        optionsOverride: optionsOverride,
-        title: title
-      });
+      var type = _getOptions().iconClasses.info;
+      return _buildNotification(type, message, title, optionsOverride);
     }
 
     function success(message, title, optionsOverride) {
-      return _notify({
-        iconClass: _getOptions().iconClasses.success,
-        message: message,
-        optionsOverride: optionsOverride,
-        title: title
-      });
+      var type = _getOptions().iconClasses.success;
+      return _buildNotification(type, message, title, optionsOverride);
     }
 
     function warning(message, title, optionsOverride) {
+      var type = _getOptions().iconClasses.warning;
+      return _buildNotification(type, message, title, optionsOverride);
+    }
+
+    /* Internal functions */
+    function _buildNotification(type, message, title, optionsOverride)
+    {
+      if (typeof title === 'object') {
+        optionsOverride = title;
+        title = null;
+      }
+
       return _notify({
-        iconClass: _getOptions().iconClasses.warning,
+        iconClass: type,
         message: message,
         optionsOverride: optionsOverride,
         title: title
       });
     }
 
-    /* Internal functions */
     function _getOptions() {
       return angular.extend({}, toastrConfig);
     }

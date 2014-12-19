@@ -125,12 +125,7 @@ describe('toastr', function() {
   }
 
   function openToast(type, message, title, options) {
-    var toast;
-    if (title) {
-      toast = toastr[type](message, title, options);
-    } else {
-      toast = toastr[type](message, null, options);
-    }
+    var toast = toastr[type](message, title, options);
 
     $rootScope.$digest();
     animationFlush();
@@ -312,13 +307,13 @@ describe('toastr', function() {
        var options = {
          timeOut: 0
        };
-       openToast('info', 'I don\'t want to go...', null, options);
+       openToast('info', 'I don\'t want to go...', options);
        intervalFlush();
        expect($document).toHaveToastOpen(1);
        clickToast();
        expect($document).toHaveToastOpen(0);
 
-       openToast('info', 'I don\'t want to go...', null, options);
+       openToast('info', 'I don\'t want to go...', options);
        intervalFlush();
        expect($document).toHaveToastOpen(1);
        hoverToast();
@@ -332,7 +327,7 @@ describe('toastr', function() {
          timeOut: 0,
          extendedTimeOut: 0
        };
-       openToast('info', 'I don\'t want to go...', null, options);
+       openToast('info', 'I don\'t want to go...', options);
        intervalFlush();
        expect($document).toHaveToastOpen(1);
        hoverToast();
@@ -343,7 +338,7 @@ describe('toastr', function() {
     });
 
     it('can show custom html on the toast message', function() {
-      var toast = openToast('success', 'I like to have a <button>button</button>', null, {
+      var toast = openToast('success', 'I like to have a <button>button</button>', {
         allowHtml: true
       });
       expect(toast).toHaveA('button');
@@ -360,7 +355,7 @@ describe('toastr', function() {
 
   describe('close button', function() {
     it('should contain a close button with × if you add it', function() {
-      var toast = openToast('info', 'I have a button', null, {
+      var toast = openToast('info', 'I have a button', {
         closeButton: true
       });
 
@@ -368,7 +363,7 @@ describe('toastr', function() {
     });
 
     it('allows custom button text on the close button', function() {
-      var toast = openToast('info', 'I have a button', null, {
+      var toast = openToast('info', 'I have a button', {
         closeButton: true,
         closeHtml: '<button>1</button>'
       });
@@ -377,7 +372,7 @@ describe('toastr', function() {
     });
 
     it('allows custom element as the close button', function() {
-      var toast = openToast('info', 'I have a button', null, {
+      var toast = openToast('info', 'I have a button', {
         closeButton: true,
         closeHtml: '<span>1</span>'
       });
