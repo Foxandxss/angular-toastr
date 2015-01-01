@@ -1,85 +1,14 @@
-angular.module('toastr', [])
-  .directive('toast', ['$compile', '$interval', 'toastr', function($compile, $interval, toastr) {
-    return {
-      replace: true,
-      templateUrl: 'templates/toastr/toastr.html',
-      link: function(scope, element, attrs) {
-        var timeout;
+(function() {
+  angular.module('toastr', [])
+    .factory('toastr', toastr);
 
-        scope.toastClass = scope.options.toastClass;
-        scope.titleClass = scope.options.titleClass;
-        scope.messageClass = scope.options.messageClass;
+  toastr.$inject = ['$animate', '$compile', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
 
-        if (scope.options.closeHtml) {
-          var button = angular.element(scope.options.closeHtml);
-          button.addClass('toast-close-button');
-          button.attr('ng-click', 'close()');
-          $compile(button)(scope);
-          element.prepend(button);
-        }
-
-        scope.init = function() {
-          if (scope.options.timeOut) {
-            timeout = createTimeout(scope.options.timeOut);
-          }
-        };
-
-        element.on('mouseenter', function() {
-          if (timeout) {
-            $interval.cancel(timeout);
-          }
-        });
-
-        scope.tapToast = function () {
-          if (scope.options.tapToDismiss) {
-            scope.close();
-          }
-        };
-
-        scope.close = function () {
-          toastr.remove(scope.toastId);
-        };
-
-        element.on('mouseleave', function() {
-          if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
-          timeout = createTimeout(scope.options.extendedTimeOut);
-        });
-
-        function createTimeout(time) {
-          return $interval(function() {
-            toastr.remove(scope.toastId);
-          }, time, 1);
-        }
-      }
-    };
-  }])
-
-  .constant('toastrConfig', {
-    allowHtml: false,
-    closeButton: false,
-    closeHtml: '<button>&times;</button>',
-    containerId: 'toast-container',
-    extendedTimeOut: 1000,
-    iconClasses: {
-      error: 'toast-error',
-      info: 'toast-info',
-      success: 'toast-success',
-      warning: 'toast-warning'
-    },
-    messageClass: 'toast-message',
-    newestOnTop: true,
-    positionClass: 'toast-top-right',
-    tapToDismiss: true,
-    timeOut: 5000,
-    titleClass: 'toast-title',
-    toastClass: 'toast'
-  })
-
-  .factory('toastr', ['$animate', '$compile', '$document', '$rootScope', '$sce', 'toastrConfig', '$q', function($animate, $compile, $document, $rootScope, $sce, toastrConfig, $q) {
+  function toastr($animate, $compile, $document, $rootScope, $sce, toastrConfig, $q) {
     var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
-    var toastr = {
+    var toast = {
       clear: clear,
       error: error,
       info: info,
@@ -88,7 +17,7 @@ angular.module('toastr', [])
       warning: warning
     };
 
-    return toastr;
+    return toast;
 
     /* Public API */
     function clear(toast) {
@@ -121,6 +50,35 @@ angular.module('toastr', [])
       return _buildNotification(type, message, title, optionsOverride);
     }
 
+    function remove(toastIndex) {
+      var toast = findToast(toastIndex);
+
+      if (toast) { // Avoid clicking when fading out
+
+        $animate.leave(toast.el).then(function() {
+          toast.scope.$destroy();
+          if (lastToast()) {
+            toasts = [];
+            container.remove();
+            container = null;
+            containerDefer = $q.defer();
+          }
+        });
+      }
+
+      function findToast(toastId) {
+        for (var i = 0; i < toasts.length; i++) {
+          if (toasts[i].toastId === toastId) {
+            return toasts[i];
+          }
+        }
+      }
+
+      function lastToast() {
+        return container && container.children().length === 0;
+      }
+    }
+
     /* Internal functions */
     function _buildNotification(type, message, title, optionsOverride)
     {
@@ -141,40 +99,31 @@ angular.module('toastr', [])
       return angular.extend({}, toastrConfig);
     }
 
-    function _setContainer(options) {
-      if(container) { return containerDefer.promise; } // If the container is there, don't create it.
+    function _createOrGetContainer(options) {
+      if(container) { return containerDefer.promise; }
 
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
+
       var body = $document.find('body').eq(0);
+
       $animate.enter(container, body).then(function() {
         containerDefer.resolve();
       });
+
       return containerDefer.promise;
     }
 
     function _notify(map) {
       var options = _getOptions();
 
-      var newToast = {
-        toastId: index++,
-        scope: $rootScope.$new()
-      };
-      newToast.iconClass = map.iconClass;
-      if (map.optionsOverride) {
-        options = angular.extend(options, map.optionsOverride);
-        newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
-      }
-
-      createScope(newToast, map, options);
-
-      newToast.el = createToast(newToast.scope);
+      var newToast = createToast();
 
       toasts.push(newToast);
 
-      _setContainer(options).then(function() {
+      _createOrGetContainer(options).then(function() {
         if (options.newestOnTop) {
           $animate.enter(newToast.el, container).then(function() {
             newToast.scope.init();
@@ -215,36 +164,119 @@ angular.module('toastr', [])
         }
       }
 
-      function createToast(scope) {
+      function createToast() {
+        var newToast = {
+          toastId: index++,
+          scope: $rootScope.$new()
+        };
+        newToast.iconClass = map.iconClass;
+        if (map.optionsOverride) {
+          options = angular.extend(options, map.optionsOverride);
+          newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
+        }
+
+        createScope(newToast, map, options);
+
+        newToast.el = createToastEl(newToast.scope);
+
+        return newToast;
+      }
+
+      function createToastEl(scope) {
         var angularDomEl = angular.element('<div toast></div>');
         return $compile(angularDomEl)(scope);
       }
     }
+  }
+}());
+(function() {
+  angular.module('toastr')
+    .constant('toastrConfig', {
+      allowHtml: false,
+      closeButton: false,
+      closeHtml: '<button>&times;</button>',
+      containerId: 'toast-container',
+      extendedTimeOut: 1000,
+      iconClasses: {
+        error: 'toast-error',
+        info: 'toast-info',
+        success: 'toast-success',
+        warning: 'toast-warning'
+      },
+      messageClass: 'toast-message',
+      newestOnTop: true,
+      positionClass: 'toast-top-right',
+      tapToDismiss: true,
+      timeOut: 5000,
+      titleClass: 'toast-title',
+      toastClass: 'toast'
+    });
+}());
+(function() {
+  angular.module('toastr')
+    .directive('toast', toast);
 
-    function remove(toastIndex) {
-      var toast = findToast(toastIndex);
+  toast.$inject = ['$compile', '$interval', 'toastr'];
 
-      if (toast) { // Avoid clicking when fading out
+  function toast($compile, $interval, toastr) {
+    return {
+      replace: true,
+      templateUrl: 'templates/toastr/toastr.html',
+      link: toastLinkFunction
+    };
 
-        $animate.leave(toast.el).then(function() {
-          toast.scope.$destroy();
-          if (container && container.children().length === 0) {
-            toasts = [];
-            container.remove();
-            container = null;
-            containerDefer = $q.defer();
-          }
-        });
+    function toastLinkFunction(scope, element, attrs) {
+      var timeout;
+
+      scope.toastClass = scope.options.toastClass;
+      scope.titleClass = scope.options.titleClass;
+      scope.messageClass = scope.options.messageClass;
+
+      if (wantsCloseButton()) {
+        var button = angular.element(scope.options.closeHtml);
+        button.addClass('toast-close-button');
+        button.attr('ng-click', 'close()');
+        $compile(button)(scope);
+        element.prepend(button);
       }
 
-      function findToast(toastId) {
-        for (var i = 0; i < toasts.length; i++) {
-          if (toasts[i].toastId === toastId) {
-            return toasts[i];
-          }
+      scope.init = function() {
+        if (scope.options.timeOut) {
+          timeout = createTimeout(scope.options.timeOut);
         }
+      };
+
+      element.on('mouseenter', function() {
+        if (timeout) {
+          $interval.cancel(timeout);
+        }
+      });
+
+      scope.tapToast = function () {
+        if (scope.options.tapToDismiss) {
+          scope.close();
+        }
+      };
+
+      scope.close = function () {
+        toastr.remove(scope.toastId);
+      };
+
+      element.on('mouseleave', function() {
+        if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
+        timeout = createTimeout(scope.options.extendedTimeOut);
+      });
+
+      function createTimeout(time) {
+        return $interval(function() {
+          toastr.remove(scope.toastId);
+        }, time, 1);
+      }
+
+      function wantsCloseButton() {
+        return scope.options.closeHtml;
       }
     }
-  }]);
-
+  }
+}());
 angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("templates/toastr/toastr.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  <div ng-switch on=\"allowHtml\">\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\">{{title}}</div>\n    <div ng-switch-default class=\"{{messageClass}}\">{{message}}</div>\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  </div>\n</div>");}]);

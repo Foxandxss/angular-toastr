@@ -36,13 +36,14 @@ gulp.task('lint', function() {
 });
 
 gulp.task('scripts-dev', function() {
-  return gulp.src(['src/**/*.js', 'test/**/*_spec.js'])
+  return gulp.src(['src/toastr.js', 'src/**/*.js'])
+    .pipe(concat('toastr.js'))
     .pipe(gulp.dest('gen'));
 });
 
 gulp.task('scripts-prod', function() {
-  return gulp.src(['src/**/*.js'])
-    .pipe(rename('angular-toastr.js'))
+  return gulp.src(['src/toastr.js', 'src/**/*.js'])
+    .pipe(concat('angular-toastr.js'))
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
     .pipe(rename('angular-toastr.min.js'))
@@ -50,7 +51,7 @@ gulp.task('scripts-prod', function() {
 });
 
 gulp.task('scripts-prod-tpls', ['template'], function() {
-  return gulp.src(['src/**/*.js', 'gen/toastr.tpl.js'])
+  return gulp.src(['src/toastr.js', 'src/**/*.js', 'gen/toastr.tpl.js'])
     .pipe(concat('angular-toastr.tpls.js'))
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
