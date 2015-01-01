@@ -13,7 +13,7 @@ var stylish      = require('jshint-stylish');
 gulp.task('less-dev', function() {
   return gulp.src('src/toastr.less')
     .pipe(less())
-    .pipe(gulp.dest('gen'))
+    .pipe(gulp.dest('gen'));
 });
 
 gulp.task('less-prod', function() {
@@ -23,7 +23,7 @@ gulp.task('less-prod', function() {
     .pipe(gulp.dest('dist'))
     .pipe(minifyCss())
     .pipe(rename('angular-toastr.min.css'))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('lint', function() {
@@ -44,7 +44,7 @@ gulp.task('scripts-prod', function() {
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
     .pipe(rename('angular-toastr.min.js'))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('scripts-prod-tpls', ['template'], function() {
@@ -53,7 +53,7 @@ gulp.task('scripts-prod-tpls', ['template'], function() {
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
     .pipe(rename('angular-toastr.tpls.min.js'))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('template', function() {
@@ -63,7 +63,7 @@ gulp.task('template', function() {
       root: 'templates/toastr'
     }))
     .pipe(rename('toastr.tpl.js'))
-    .pipe(gulp.dest('gen'))
+    .pipe(gulp.dest('gen'));
 });
 
 gulp.task('watch', function() {
