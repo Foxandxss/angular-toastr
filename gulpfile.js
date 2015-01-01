@@ -9,9 +9,6 @@ var minifyCss    = require('gulp-minify-css');
 
 var del          = require('del');
 var stylish      = require('jshint-stylish');
-var lessCleanCss = require('less-plugin-clean-css');
-
-var cleancss = new lessCleanCss({advanced: true});
 
 gulp.task('less-dev', function() {
   return gulp.src('src/toastr.less')
