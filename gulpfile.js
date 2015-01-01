@@ -80,3 +80,4 @@ gulp.task('clean', function(cb) {
 
 gulp.task('default', ['less-dev', 'scripts-dev', 'template', 'watch']);
 gulp.task('production', ['less-prod', 'scripts-prod', 'scripts-prod-tpls']);
+gulp.task('travis', ['less-dev', 'scripts-dev', 'template']);
