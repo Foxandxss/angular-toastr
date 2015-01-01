@@ -212,7 +212,9 @@ There you can override:
 
 ### Toast template
 
-You can also override the toast template. To do that, put a template on your template cache like:
+If you want to use the built-in template, you can use the `angular-toastr.tpls.js` file.
+
+If you decide that you don't want to use the built-in one, you can always use `angular-toastr.js` file and then providing your own template like this:
 
 ```javascript
 angular.module('yourApp').run(['$templateCache', function($templateCache) {
@@ -230,8 +232,9 @@ The important part here is to have a key named `templates/toastr/toastr.html`. T
 If you want to build from master, you need to:
 
 ```
-$ npm install -g grunt-cli
-$ grunt && grunt prod
+$ npm install -g gulp
+$ npm install
+$ gulp production
 ```
 
 Grab the compressed files under `/dist` and the dev files at `/gen`.
@@ -243,11 +246,11 @@ For contributing in this project, you need to create a pull request containing b
 To create a proper patch I suggest:
 
 ```
-$ npm install -g grunt-cli testem
-$ grunt watch
+$ npm install -g gulp testem
+$ gulp
 ```
 
-And in another terminal:
+And in another terminal / tab:
 
 ```
 $ testem -f config/testem.json
