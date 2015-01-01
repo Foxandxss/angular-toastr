@@ -9,6 +9,6 @@
     "test/helpers/angular-mocks.js",
     "gen/toastr.js",
     "gen/toastr.tpl.js",
-    "gen/toastr_spec.js"
+    "test/toastr_spec.js"
   ]
 }
