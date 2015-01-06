@@ -398,4 +398,29 @@ describe('toastr', function() {
       expect($document).toHaveToastWithMessage(toast1.scope.message, 0);
     });
   });
+
+  describe('callbacks', function() {
+    it('calls the onShown callback when showing a toast', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onShown: callback });
+      expect(callback).toHaveBeenCalled();
+    });
+
+    it('calls the onHidden callback after a toast is closed on click', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onHidden: callback });
+      expect(callback).not.toHaveBeenCalled();
+      clickToast();
+      expect(callback).toHaveBeenCalled();
+    });
+
+    it('calls the onHidden callback after a toast is closed by timeout', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onHidden: callback });
+      expect(callback).not.toHaveBeenCalled();
+      intervalFlush();
+      animationFlush();
+      expect(callback).toHaveBeenCalled();
+    });
+  });
 });

@@ -56,6 +56,9 @@
       if (toast) { // Avoid clicking when fading out
 
         $animate.leave(toast.el).then(function() {
+          if (toast.scope.options.onHidden) {
+            toast.scope.options.onHidden();
+          }
           toast.scope.$destroy();
           if (lastToast()) {
             toasts = [];
@@ -153,6 +156,8 @@
         toast.scope.options = {
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
+          onHidden: options.onHidden,
+          onShown: options.onShown,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,
@@ -205,6 +210,8 @@
       },
       messageClass: 'toast-message',
       newestOnTop: true,
+      onHidden: null,
+      onShown: null,
       positionClass: 'toast-top-right',
       tapToDismiss: true,
       timeOut: 5000,
@@ -243,6 +250,9 @@
       scope.init = function() {
         if (scope.options.timeOut) {
           timeout = createTimeout(scope.options.timeOut);
+        }
+        if (scope.options.onShown) {
+          scope.options.onShown();
         }
       };
 
