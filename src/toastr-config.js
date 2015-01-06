@@ -14,6 +14,8 @@
       },
       messageClass: 'toast-message',
       newestOnTop: true,
+      onHidden: null,
+      onShown: null,
       positionClass: 'toast-top-right',
       tapToDismiss: true,
       timeOut: 5000,

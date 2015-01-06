@@ -30,6 +30,9 @@
         if (scope.options.timeOut) {
           timeout = createTimeout(scope.options.timeOut);
         }
+        if (scope.options.onShown) {
+          scope.options.onShown();
+        }
       };
 
       element.on('mouseenter', function() {

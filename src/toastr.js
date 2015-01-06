@@ -56,6 +56,9 @@
       if (toast) { // Avoid clicking when fading out
 
         $animate.leave(toast.el).then(function() {
+          if (toast.scope.options.onHidden) {
+            toast.scope.options.onHidden();
+          }
           toast.scope.$destroy();
           if (lastToast()) {
             toasts = [];
@@ -153,6 +156,8 @@
         toast.scope.options = {
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
+          onHidden: options.onHidden,
+          onShown: options.onShown,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,

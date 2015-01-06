@@ -56,6 +56,9 @@
       if (toast) { // Avoid clicking when fading out
 
         $animate.leave(toast.el).then(function() {
+          if (toast.scope.options.onHidden) {
+            toast.scope.options.onHidden();
+          }
           toast.scope.$destroy();
           if (lastToast()) {
             toasts = [];
@@ -153,6 +156,8 @@
         toast.scope.options = {
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
+          onHidden: options.onHidden,
+          onShown: options.onShown,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,
@@ -205,6 +210,8 @@
       },
       messageClass: 'toast-message',
       newestOnTop: true,
+      onHidden: null,
+      onShown: null,
       positionClass: 'toast-top-right',
       tapToDismiss: true,
       timeOut: 5000,
@@ -244,6 +251,9 @@
         if (scope.options.timeOut) {
           timeout = createTimeout(scope.options.timeOut);
         }
+        if (scope.options.onShown) {
+          scope.options.onShown();
+        }
       };
 
       element.on('mouseenter', function() {
@@ -279,4 +289,4 @@
     }
   }
 }());
-angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("templates/toastr/toastr.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  <div ng-switch on=\"allowHtml\">\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\">{{title}}</div>\n    <div ng-switch-default class=\"{{messageClass}}\">{{message}}</div>\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  </div>\n</div>");}]);
+angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("templates/toastr/toastr.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\r\n  <div ng-switch on=\"allowHtml\">\r\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\">{{title}}</div>\r\n    <div ng-switch-default class=\"{{messageClass}}\">{{message}}</div>\r\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\r\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\r\n  </div>\r\n</div>");}]);
