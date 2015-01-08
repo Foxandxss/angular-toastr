@@ -104,7 +104,7 @@ You can customize the entire library like:
 ```javascript
 app.config(function(toastrConfig) {
   angular.extend(toastrConfig, {
-    allowHtml: true,
+    allowHtml: false,
     closeButton: false,
     closeHtml: '<button>&times;</button>',
     containerId: 'toast-container',
@@ -116,6 +116,9 @@ app.config(function(toastrConfig) {
       warning: 'toast-warning'
     },
     messageClass: 'toast-message',
+    newestOnTop: true,
+    onHidden: null,
+    onShown: null,
     positionClass: 'toast-top-right',
     tapToDismiss: true,
     timeOut: 5000,
@@ -129,11 +132,14 @@ Those are the default values, you can pick what you need from it and override wi
 
 * **allowHtml**: Your toast can use custom HTML here (See [Issue 3](https://github.com/Foxandxss/angular-toastr/issues/3))
 * **closeButton**: Whether to display an "X" close button on the toast.
-* **closeButton**: Html element to be used as a close button.
+* **closeHtml**: Html element to be used as a close button.
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
+* **newestOnTop**: Add new toasts on top of the old one. Put on false to put them on the bottom.
+* **onHidden**: A callback function called when a toast gets hidden.
+* **onShown**: A callback function called when a toast is shown.
 * **positionClass**: The position where the toasts are added.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **timeOut**: The timeout before the toasts disappear.
@@ -200,11 +206,14 @@ See how we passed a third parameter to the `toast`.
 
 There you can override:
 
+* **allowHtml**: Whether to allow HTML or not in a concrete toast.
 * **closeButton**: Putting a close button on the toast.
 * **closeHtml**: If you need to override how the close button looks like.
 * **extendedTimeout**: The timeout after you hover it.
 * **iconClass**: For the type class you want to use for the toast.
 * **messageClass**: If you want to modify the message look.
+* **onHidden**: Function to call when the toast gets hidden.
+* **onShown**: Function to call when the toast is shown.
 * **tapToDismiss**: If you want a concrete toast to toggle the close on click.
 * **timeOut**: For that concrete toast timeout.
 * **titleClass**: To override the title class of the toast.
