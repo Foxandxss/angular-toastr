@@ -1,6 +1,6 @@
 describe('toastr', function() {
   var $animate, $document, $rootScope, $timeout, $interval;
-  var toastr, toastrConfig;
+  var toastr, toastrConfig, originalConfig = {};
 
   beforeEach(module('ngAnimate'));
   beforeEach(module('ngAnimateMock'));
@@ -13,8 +13,15 @@ describe('toastr', function() {
     $interval = _$interval_;
     $timeout = _$timeout_;
     toastr = _toastr_;
+    angular.extend(originalConfig, _toastrConfig_);
     toastrConfig = _toastrConfig_;
   }));
+
+  afterEach(function() {
+    var body = $document.find('body');
+    body.find('#toast-container').remove();
+    angular.extend(toastrConfig, originalConfig);
+  });
 
   beforeEach(function() {
     this.addMatchers({
@@ -57,34 +64,65 @@ describe('toastr', function() {
       },
 
       toHaveToastWithMessage: function(message, toast) {
-        var contentToCompare, toastDomEl = this.actual.find('body > #toast-container > .toast').eq(toast || 0);
+        var found;
+        var contentToCompare, toastsDomEl = this.actual.find('body > #toast-container > .toast');
 
         this.message = function() {
-          return '"Expected "' + angular.mock.dump(toastDomEl) + '" to be open with "' + message + '".';
+          if (toast) {
+            return 'Expected the toast on position "' + toast + '" to have the message: "' + message + '".';
+          }
+          return '"Expected a toast to be open with "' + message + '".';
         };
 
-        contentToCompare = toastDomEl.find('.toast-message').eq(0).html();
+        if (toast) {
+          contentToCompare = toastsDomEl.eq(toast).find('.toast-message').eq(0).html();
 
-        return contentToCompare === message;
+          found = contentToCompare === message;
+        } else {
+          for (var i = 0, l = toastsDomEl.length; i < l; i++) {
+            contentToCompare = toastsDomEl.eq(i).find('.toast-message').eq(0).html();
+
+            found = contentToCompare === message;
+
+            if (found) {
+              break;
+            }
+          }
+        }
+
+        return found;
       },
 
       toHaveToastWithTitle: function(title, toast) {
-        var contentToCompare, toastDomEl = this.actual.find('body > #toast-container > .toast').eq(toast || 0);
+        var found;
+        var contentToCompare, toastsDomEl = this.actual.find('body > #toast-container > .toast');
 
         this.message = function() {
-          return '"Expected "' + angular.mock.dump(toastDomEl) + '" to be open with "' + title + '".';
+          if (toast) {
+            return 'Expected the toast on position "' + toast + '" to have the title: "' + title + '".';
+          }
+          return '"Expected a toast to be open with "' + title + '".';
         };
 
-        contentToCompare = toastDomEl.find('.toast-title').eq(0).html();
+        if (toast) {
+          contentToCompare = toastsDomEl.eq(toast).find('.toast-title').eq(0).html();
 
-        return contentToCompare === title;
+          found = contentToCompare === title;
+        } else {
+          for (var i = 0, l = toastsDomEl.length; i < l; i++) {
+            contentToCompare = toastsDomEl.eq(i).find('.toast-title').eq(0).html();
+
+            found = contentToCompare === title;
+
+            if (found) {
+              break;
+            }
+          }
+        }
+
+        return found;
       }
     });
-  });
-
-  afterEach(function() {
-    var body = $document.find('body');
-    body.find('#toast-container').remove();
   });
 
   function _findToast(toast) {
@@ -349,6 +387,47 @@ describe('toastr', function() {
         allowHtml: true
       });
       expect(toast).toHaveA('button');
+    });
+
+    it('can limit the maximum opened toasts', function() {
+      toastrConfig.maxOpened = 3;
+      openToast('success', 'Toast 1');
+      openToast('success', 'Toast 2');
+      openToast('success', 'Toast 3');
+      expect($document).toHaveToastOpen(3);
+      openToast('success', 'Toast 4');
+      animationFlush();
+      expect($document).toHaveToastOpen(3);
+      expect($document).not.toHaveToastWithMessage('Toast 1');
+      openToast('success', 'Toast 5');
+      animationFlush();
+      expect($document).toHaveToastOpen(3);
+      expect($document).not.toHaveToastWithMessage('Toast 2');
+    });
+
+    it('can limit the maximum opened toasts with newestOnTop false', function() {
+      toastrConfig.maxOpened = 3;
+      toastrConfig.newestOnTop = false;
+      openToast('success', 'Toast 1');
+      openToast('success', 'Toast 2');
+      openToast('success', 'Toast 3');
+      expect($document).toHaveToastOpen(3);
+      openToast('success', 'Toast 4');
+      animationFlush();
+      expect($document).toHaveToastOpen(3);
+      expect($document).not.toHaveToastWithMessage('Toast 1');
+    });
+
+    it('has not limit if maxOpened is 0', function() {
+      toastrConfig.maxOpened = 0;
+      openToast('success', 'Toast 1');
+      openToast('success', 'Toast 2');
+      openToast('success', 'Toast 3');
+      expect($document).toHaveToastOpen(3);
+      openToast('success', 'Toast 4');
+      animationFlush();
+      expect($document).toHaveToastOpen(4);
+      expect($document).toHaveToastWithMessage('Toast 1');
     });
 
   });

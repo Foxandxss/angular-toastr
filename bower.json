@@ -1,6 +1,15 @@
 {
   "name": "angular-toastr",
-  "version": "0.5.2",
+  "version": "1.0.0-beta.1",
+  "authors": [
+    "Jesus Rodriguez <Foxandxss@gmail.com>"
+  ],
+  "keywords": [
+    "angular",
+    "angularjs",
+    "toast",
+    "toastr"
+  ],
   "main": [
     "./dist/angular-toastr.js",
     "./dist/angular-toastr.css"

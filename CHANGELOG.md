@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.0-beta.1
+
+- Maximum opened toasts can be limited now.
+- Allows to attach an `onShown` and `onHidden` callback.
+- Allows toasts to override options without title [9013c4d](https://github.com/Foxandxss/angular-toastr/commit/9013c4d1c7562d2ba5047c1e969a0316eb4e6c1d)
+
 ## Version 0.5.2
 
 - Removed the support for IE 8 (in terms of CSS)

@@ -50,16 +50,20 @@
       return _buildNotification(type, message, title, optionsOverride);
     }
 
-    function remove(toastIndex) {
-      var toast = findToast(toastIndex);
+    function remove(toastId) {
+      var toast = findToast(toastId);
+      var defer = $q.defer();
 
       if (toast) { // Avoid clicking when fading out
 
         $animate.leave(toast.el).then(function() {
+          defer.resolve();
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden();
           }
           toast.scope.$destroy();
+          var index = toasts.indexOf(toast);
+          toasts.splice(index, 1);
           if (lastToast()) {
             toasts = [];
             container.remove();
@@ -67,7 +71,11 @@
             containerDefer = $q.defer();
           }
         });
+      } else {
+        defer.resolve();
       }
+
+      return defer.promise;
 
       function findToast(toastId) {
         for (var i = 0; i < toasts.length; i++) {
@@ -102,6 +110,10 @@
       return angular.extend({}, toastrConfig);
     }
 
+    function _createFakePromise(promise) {
+      return $q.when(); // resolve immediately
+    }
+
     function _createOrGetContainer(options) {
       if(container) { return containerDefer.promise; }
 
@@ -120,22 +132,32 @@
     }
 
     function _notify(map) {
+      // This promise creates a nice effect when maxOpened toasts is reached.
+      var promise;
+
       var options = _getOptions();
 
       var newToast = createToast();
 
+      if (options.maxOpened && toasts.length >= options.maxOpened) {
+        promise = remove(toasts[0].toastId);
+      } else {
+        promise = _createFakePromise(promise);
+      }
       toasts.push(newToast);
 
       _createOrGetContainer(options).then(function() {
-        if (options.newestOnTop) {
-          $animate.enter(newToast.el, container).then(function() {
-            newToast.scope.init();
-          });
-        } else {
-          $animate.enter(newToast.el, container, container[0].lastChild).then(function() {
-            newToast.scope.init();
-          });
-        }
+        promise.then(function() {
+          if (options.newestOnTop) {
+            $animate.enter(newToast.el, container).then(function() {
+              newToast.scope.init();
+            });
+          } else {
+            $animate.enter(newToast.el, container, container[0].lastChild).then(function() {
+              newToast.scope.init();
+            });
+          }
+        });
       });
 
       return newToast;
@@ -208,6 +230,7 @@
         success: 'toast-success',
         warning: 'toast-warning'
       },
+      maxOpened: 0,
       messageClass: 'toast-message',
       newestOnTop: true,
       onHidden: null,
