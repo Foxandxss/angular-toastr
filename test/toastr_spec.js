@@ -379,6 +379,20 @@ describe('toastr', function() {
 
       expect(toast).toHaveButtonWith('1');
     });
+
+    it('calls the onShown callback when showing a toast', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onShown: callback });
+      expect(callback).toHaveBeenCalled();
+    });
+
+    it('calls the onHidden callback after a toast is closed', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onHidden: callback });
+      expect(callback).not.toHaveBeenCalled();
+      clickToast();
+      expect(callback).toHaveBeenCalled();
+    });
   });
 
   describe('toast order', function() {
