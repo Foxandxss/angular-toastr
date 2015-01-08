@@ -19,6 +19,6 @@
     "package.json"
   ],
   "dependencies": {
-    "angular": "latest"
+    "angular": "1.2.28"
   }
 }
