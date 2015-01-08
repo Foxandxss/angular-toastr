@@ -90,6 +90,11 @@
           <label for="toastExtendedTimeout">Extended timeout</label>
           <input type="text" ng-model="options.extendedTimeout" class="form-control" id="toastExtendedTimeout">
         </div>
+        <div class="form-group">
+          <label for="maxNumberToasts">Maximum number of toasts</label>
+          <input type="text" ng-model="options.maxOpened" class="form-control" id="maxNumberToasts">
+          <em>0 means no limit</em>
+        </div>
       </div>
     </div>
     <div class="row">

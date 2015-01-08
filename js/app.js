@@ -66,7 +66,8 @@ angular.module('app', ['toastr', 'ngAnimate'])
       closeButton: false,
       tapToDismiss: true,
       closeHtml: '<button>&times;</button>',
-      newestOnTop: true
+      newestOnTop: true,
+      maxOpened: 0
     };
 
     $scope.$watchCollection('options', function(newValue) {
@@ -78,6 +79,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
       toastrConfig.tapToDismiss = newValue.tapToDismiss;
       toastrConfig.closeHtml = newValue.closeHtml;
       toastrConfig.newestOnTop = newValue.newestOnTop;
+      toastrConfig.maxOpened = newValue.maxOpened;
     });
 
     $scope.clearLastToast = function() {
