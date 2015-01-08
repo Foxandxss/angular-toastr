@@ -122,9 +122,9 @@
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
 
-      var body = $document.find('body').eq(0);
+      var target = document.querySelector(options.target);
 
-      $animate.enter(container, body).then(function() {
+      $animate.enter(container, target).then(function() {
         containerDefer.resolve();
       });
 
@@ -216,6 +216,7 @@
     }
   }
 }());
+
 (function() {
   angular.module('toastr')
     .constant('toastrConfig', {
@@ -239,9 +240,11 @@
       tapToDismiss: true,
       timeOut: 5000,
       titleClass: 'toast-title',
-      toastClass: 'toast'
+      toastClass: 'toast',
+      target: 'body'
     });
 }());
+
 (function() {
   angular.module('toastr')
     .directive('toast', toast);
