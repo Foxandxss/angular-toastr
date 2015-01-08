@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.1
+
+- Fix for bower version [#26](https://github.com/Foxandxss/angular-toastr/issues/26)
+
 ## Version 0.4.0
 
 - You can add HTML on the toastr titles.

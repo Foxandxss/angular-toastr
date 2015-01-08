@@ -18,7 +18,7 @@ There is an [issue](https://github.com/Foxandxss/angular-toastr/issues/1) with a
 
 ## Installation
 
-Grab the latest [release](https://github.com/Foxandxss/angular-toastr/releases) and add both the `css` and `javascript` file:
+Grab the [release 0.4.1](https://github.com/Foxandxss/angular-toastr/releases) and add both the `css` and `javascript` file:
 
 ```html
 <link rel="stylesheet" type="text/css" href="angular-toastr.css" />
@@ -33,7 +33,9 @@ Then add `toastr` to your modules dependencies:
 angular.module('app', ['toastr'])
 ```
 
-`bower/npm/...` packages coming soon. (Bower will come next version, I did it wrong and it needs an update to download the changes (jeezz...)
+```
+$ bower install angular-toastr#0.4.1
+```
 
 ## Usage
 
