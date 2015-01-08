@@ -18,7 +18,7 @@ Grab the latest [release](https://github.com/Foxandxss/angular-toastr/releases) 
 
 ```html
 <link rel="stylesheet" type="text/css" href="angular-toastr.css" />
-<script type="text/javascript" src="angular-toastr.js"></script>
+<script type="text/javascript" src="angular-toastr.tpls.js"></script>
 ```
 
 If you want animations, don't forget to add `angular-animate`.
@@ -26,7 +26,7 @@ If you want animations, don't forget to add `angular-animate`.
 Then add `toastr` to your modules dependencies:
 
 ```javascript
-angular.module('app', ['toastr'])
+angular.module('app', ['ngAnimate', 'toastr'])
 ```
 
 You can also install `angular-toastr` from bower:
