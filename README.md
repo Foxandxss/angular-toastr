@@ -8,10 +8,6 @@
 
 The goal is to provide the same API than the original one but without jQuery and using all the angular power.
 
-## Todo
-
-There is an [issue](https://github.com/Foxandxss/angular-toastr/issues/1) with a list of all the stuff I want to do next.
-
 ## Demo
 
 [Demo](http://foxandxss.github.io/angular-toastr/)
@@ -37,6 +33,12 @@ You can also install `angular-toastr` from bower:
 
 ```
 $ bower install angular-toastr
+```
+
+**NOTE**: Angular-toastr 1.0.0-beta.1 is out, check it out with:
+
+```
+$ bower install angular-toastr#1.0.0-beta.1
 ```
 
 ## Usage
