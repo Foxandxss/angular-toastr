@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.0-beta.2
+
+- Fix maxOpened. Now toasts are queued when the max is reached.
+
 ## Version 1.0.0-beta.1
 
 - Maximum opened toasts can be limited now.

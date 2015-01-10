@@ -52,30 +52,27 @@
 
     function remove(toastId) {
       var toast = findToast(toastId);
-      var defer = $q.defer();
 
       if (toast) { // Avoid clicking when fading out
 
         $animate.leave(toast.el).then(function() {
-          defer.resolve();
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden();
           }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);
           toasts.splice(index, 1);
+          var maxOpened = toastrConfig.maxOpened;
+          if (maxOpened && toasts.length >= maxOpened) {
+            toasts[maxOpened - 1].open.resolve();
+          }
           if (lastToast()) {
-            toasts = [];
             container.remove();
             container = null;
             containerDefer = $q.defer();
           }
         });
-      } else {
-        defer.resolve();
       }
-
-      return defer.promise;
 
       function findToast(toastId) {
         for (var i = 0; i < toasts.length; i++) {
@@ -86,7 +83,7 @@
       }
 
       function lastToast() {
-        return container && container.children().length === 0;
+        return !toasts.length;
       }
     }
 
@@ -110,10 +107,6 @@
       return angular.extend({}, toastrConfig);
     }
 
-    function _createFakePromise(promise) {
-      return $q.when(); // resolve immediately
-    }
-
     function _createOrGetContainer(options) {
       if(container) { return containerDefer.promise; }
 
@@ -132,22 +125,18 @@
     }
 
     function _notify(map) {
-      // This promise creates a nice effect when maxOpened toasts is reached.
-      var promise;
-
       var options = _getOptions();
 
       var newToast = createToast();
 
-      if (options.maxOpened && toasts.length >= options.maxOpened) {
-        promise = remove(toasts[0].toastId);
-      } else {
-        promise = _createFakePromise(promise);
-      }
       toasts.push(newToast);
 
-      _createOrGetContainer(options).then(function() {
-        promise.then(function() {
+      if (maxOpenedNotReached()) {
+        newToast.open.resolve();
+      }
+
+      newToast.open.promise.then(function() {
+        _createOrGetContainer(options).then(function() {
           if (options.newestOnTop) {
             $animate.enter(newToast.el, container).then(function() {
               newToast.scope.init();
@@ -194,7 +183,8 @@
       function createToast() {
         var newToast = {
           toastId: index++,
-          scope: $rootScope.$new()
+          scope: $rootScope.$new(),
+          open: $q.defer()
         };
         newToast.iconClass = map.iconClass;
         if (map.optionsOverride) {
@@ -212,6 +202,10 @@
       function createToastEl(scope) {
         var angularDomEl = angular.element('<div toast></div>');
         return $compile(angularDomEl)(scope);
+      }
+
+      function maxOpenedNotReached() {
+        return options.maxOpened && toasts.length <= options.maxOpened || !options.maxOpened;
       }
     }
   }

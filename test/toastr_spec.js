@@ -179,6 +179,12 @@ describe('toastr', function() {
     animationFlush();
   }
 
+  function removeToast(toast) {
+    toastr.clear(toast);
+    $rootScope.$digest();
+    animationFlush();
+  }
+
   function intervalFlush(millis) {
     $interval.flush(millis || 5000);
   }
@@ -391,30 +397,31 @@ describe('toastr', function() {
 
     it('can limit the maximum opened toasts', function() {
       toastrConfig.maxOpened = 3;
-      openToast('success', 'Toast 1');
-      openToast('success', 'Toast 2');
+      var toast1 = openToast('success', 'Toast 1');
+      var toast2 = openToast('success', 'Toast 2');
       openToast('success', 'Toast 3');
       expect($document).toHaveToastOpen(3);
       openToast('success', 'Toast 4');
-      animationFlush();
+      expect($document).toHaveToastOpen(3);
+      removeToast(toast1);
       expect($document).toHaveToastOpen(3);
       expect($document).not.toHaveToastWithMessage('Toast 1');
       openToast('success', 'Toast 5');
-      animationFlush();
       expect($document).toHaveToastOpen(3);
+      removeToast(toast2);
       expect($document).not.toHaveToastWithMessage('Toast 2');
     });
 
     it('can limit the maximum opened toasts with newestOnTop false', function() {
       toastrConfig.maxOpened = 3;
       toastrConfig.newestOnTop = false;
-      openToast('success', 'Toast 1');
+      var toast1 = openToast('success', 'Toast 1');
       openToast('success', 'Toast 2');
       openToast('success', 'Toast 3');
       expect($document).toHaveToastOpen(3);
       openToast('success', 'Toast 4');
-      animationFlush();
       expect($document).toHaveToastOpen(3);
+      removeToast(toast1);
       expect($document).not.toHaveToastWithMessage('Toast 1');
     });
 
