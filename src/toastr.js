@@ -53,8 +53,8 @@
     function remove(toastId) {
       var toast = findToast(toastId);
 
-      if (toast) { // Avoid clicking when fading out
-
+      if (toast && ! toast.deleting) { // Avoid clicking when fading out
+        toast.deleting = true;
         $animate.leave(toast.el).then(function() {
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden();
