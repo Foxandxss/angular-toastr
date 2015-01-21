@@ -50,14 +50,14 @@
       return _buildNotification(type, message, title, optionsOverride);
     }
 
-    function remove(toastId) {
+    function remove(toastId, wasClicked) {
       var toast = findToast(toastId);
 
       if (toast && ! toast.deleting) { // Avoid clicking when fading out
         toast.deleting = true;
         $animate.leave(toast.el).then(function() {
           if (toast.scope.options.onHidden) {
-            toast.scope.options.onHidden();
+            toast.scope.options.onHidden(wasClicked);
           }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);

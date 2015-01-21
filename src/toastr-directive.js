@@ -43,12 +43,12 @@
 
       scope.tapToast = function () {
         if (scope.options.tapToDismiss) {
-          scope.close();
+          scope.close(true);
         }
       };
 
-      scope.close = function () {
-        toastr.remove(scope.toastId);
+      scope.close = function (wasClicked) {
+        toastr.remove(scope.toastId, wasClicked);
       };
 
       element.on('mouseleave', function() {

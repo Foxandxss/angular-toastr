@@ -508,5 +508,14 @@ describe('toastr', function() {
       animationFlush();
       expect(callback).toHaveBeenCalled();
     });
+
+    it('calls the onHidden callback with "true" if was hidden by click', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onHidden: callback });
+      expect(callback).not.toHaveBeenCalled();
+      clickToast();
+      animationFlush();
+      expect(callback).toHaveBeenCalledWith(true);
+    });
   });
 });
