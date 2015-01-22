@@ -1,5 +1,5 @@
 angular.module('toastr', [])
-  .directive('toast', ['$compile', '$timeout', 'toastr', function($compile, $timeout, toastr) {
+  .directive('toast', ['$injector', '$timeout', 'toastr', function($injector, $timeout, toastr) {
     return {
       replace: true,
       templateUrl: 'templates/toastr/toastr.html',
@@ -11,7 +11,8 @@ angular.module('toastr', [])
         scope.messageClass = scope.options.messageClass;
 
         if (scope.options.closeHtml) {
-          var button = angular.element(scope.options.closeHtml);
+          var button = angular.element(scope.options.closeHtml),
+              $compile = $injector.get('$compile');
           button.addClass('toast-close-button');
           button.attr('ng-click', 'close()');
           $compile(button)(scope);
@@ -74,7 +75,7 @@ angular.module('toastr', [])
     toastClass: 'toast'
   })
 
-  .factory('toastr', ['$animate', '$compile', '$document', '$rootScope', '$sce', 'toastrConfig', '$q', function($animate, $compile, $document, $rootScope, $sce, toastrConfig, $q) {
+  .factory('toastr', ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q', function($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
     var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
@@ -210,7 +211,8 @@ angular.module('toastr', [])
       }
 
       function createToast(scope) {
-        var angularDomEl = angular.element('<div toast></div>');
+        var angularDomEl = angular.element('<div toast></div>'),
+            $compile = $injector.get('$compile');
         return $compile(angularDomEl)(scope);
       }
     }
