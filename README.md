@@ -124,6 +124,7 @@ app.config(function(toastrConfig) {
     onShown: null,
     positionClass: 'toast-top-right',
     tapToDismiss: true,
+    target: 'body',
     timeOut: 5000,
     titleClass: 'toast-title',
     toastClass: 'toast'
@@ -146,6 +147,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **onShown**: A callback function called when a toast is shown.
 * **positionClass**: The position where the toasts are added.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
+* **target**: The element to put the toastr container.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
@@ -270,6 +272,10 @@ $ testem -f config/testem.json
 ```
 
 Then you can see if you have your new tests pass.
+
+Try to avoid generating the `/dist` files on a patch because sometimes they don't want to merge nicely and it is a pain to merge by hand.
+
+----------
 
 ## Credits
 

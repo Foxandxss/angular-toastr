@@ -237,10 +237,10 @@
       onShown: null,
       positionClass: 'toast-top-right',
       tapToDismiss: true,
+      target: 'body',
       timeOut: 5000,
       titleClass: 'toast-title',
-      toastClass: 'toast',
-      target: 'body'
+      toastClass: 'toast'
     });
 }());
 
