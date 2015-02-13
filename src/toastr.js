@@ -115,9 +115,13 @@
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
 
-      var body = $document.find('body').eq(0);
+      var target = document.querySelector(options.target);
 
-      $animate.enter(container, body).then(function() {
+      if ( ! target) {
+        throw 'Target for toasts doesn\'t exist';
+      }
+
+      $animate.enter(container, target).then(function() {
         containerDefer.resolve();
       });
 

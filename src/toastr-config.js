@@ -21,6 +21,7 @@
       tapToDismiss: true,
       timeOut: 5000,
       titleClass: 'toast-title',
-      toastClass: 'toast'
+      toastClass: 'toast',
+      target: 'body'
     });
 }());

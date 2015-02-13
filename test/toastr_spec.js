@@ -18,8 +18,7 @@ describe('toastr', function() {
   }));
 
   afterEach(function() {
-    var body = $document.find('body');
-    body.find('#toast-container').remove();
+    $document.find('#toast-container').remove();
     angular.extend(toastrConfig, originalConfig);
   });
 
@@ -43,13 +42,15 @@ describe('toastr', function() {
         return this.actual.el.hasClass(cls);
       },
 
-      toHaveToastContainer: function() {
-        var containerDomEl = this.actual.find('body > #toast-container');
+      toHaveToastContainer: function(target) {
+        target = target || 'body';
+        var containerDomEl = this.actual.find(target + ' > #toast-container');
         return containerDomEl.length === 1;
       },
 
-      toHaveToastOpen: function(noOfToastr) {
-        var toastDomEls = this.actual.find('body > #toast-container > .toast');
+      toHaveToastOpen: function(noOfToastr, target) {
+        target = target || 'body';
+        var toastDomEls = this.actual.find(target + ' > #toast-container > .toast');
         return toastDomEls.length === noOfToastr;
       },
 
@@ -63,9 +64,10 @@ describe('toastr', function() {
         return this.actual.el.hasClass(typeClass);
       },
 
-      toHaveToastWithMessage: function(message, toast) {
+      toHaveToastWithMessage: function(message, toast, target) {
+        target = target || 'body';
         var found;
-        var contentToCompare, toastsDomEl = this.actual.find('body > #toast-container > .toast');
+        var contentToCompare, toastsDomEl = this.actual.find(target + ' > #toast-container > .toast');
 
         this.message = function() {
           if (toast) {
@@ -93,9 +95,10 @@ describe('toastr', function() {
         return found;
       },
 
-      toHaveToastWithTitle: function(title, toast) {
+      toHaveToastWithTitle: function(title, toast, target) {
+        target = target || 'body';
         var found;
-        var contentToCompare, toastsDomEl = this.actual.find('body > #toast-container > .toast');
+        var contentToCompare, toastsDomEl = this.actual.find(target + ' > #toast-container > .toast');
 
         this.message = function() {
           if (toast) {
@@ -125,12 +128,14 @@ describe('toastr', function() {
     });
   });
 
-  function _findToast(toast) {
-    return $document.find('body > #toast-container > .toast').eq(toast || 0);
+  function _findToast(toast, target) {
+    target = target || 'body';
+    return $document.find(target + ' > #toast-container > .toast').eq(toast || 0);
   }
 
-  function _findToastCloseButton(toast) {
-    return $document.find('body > #toast-container > .toast > .toast-close-button').eq(toast || 0);
+  function _findToastCloseButton(toast, target) {
+    target = target || 'body';
+    return $document.find(target + ' > #toast-container > .toast > .toast-close-button').eq(toast || 0);
   }
 
   // Needed when we want to run the callback of enter or leave.
@@ -143,7 +148,7 @@ describe('toastr', function() {
     toast.click();
 
     $rootScope.$digest();
-    $animate.triggerCallbackPromise();
+    animationFlush();
   }
 
   function clickToastCloseButton(noOfToast) {
@@ -301,6 +306,32 @@ describe('toastr', function() {
       openToasts(1);
       expect($document).toHaveToastContainer();
     });
+
+    it('can add the container to a custom target', function() {
+      toastrConfig.target = '#toast-target';
+      var target = angular.element('<div id="toast-target"/>');
+      $document.find('body').append(target);
+
+      var toast = openToast('success', 'toast');
+
+      expect($document).toHaveToastContainer('#toast-target');
+
+      expect($document).toHaveToastOpen(1, '#toast-target');
+
+      intervalFlush();
+
+      expect($document).toHaveToastOpen(0, '#toast-target');
+      animationFlush();
+      expect($document).not.toHaveToastContainer('#toast-target');
+    });
+
+    it('should throw an exception if the custom target doesn\'t exist', function() {
+      toastrConfig.target = '#no-exist';
+
+      expect(function() {
+        openToast('success', 'foo');
+      }).toThrow('Target for toasts doesn\'t exist');
+    })
   });
 
   describe('directive behavior', function() {

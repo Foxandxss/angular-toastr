@@ -2,9 +2,9 @@
   angular.module('toastr', [])
     .factory('toastr', toastr);
 
-  toastr.$inject = ['$animate', '$compile', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
+  toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
 
-  function toastr($animate, $compile, $document, $rootScope, $sce, toastrConfig, $q) {
+  function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
     var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
@@ -115,9 +115,13 @@
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
 
-      var body = $document.find('body').eq(0);
+      var target = document.querySelector(options.target);
 
-      $animate.enter(container, body).then(function() {
+      if ( ! target) {
+        throw 'Target for toasts doesn\'t exist';
+      }
+
+      $animate.enter(container, target).then(function() {
         containerDefer.resolve();
       });
 
@@ -200,7 +204,8 @@
       }
 
       function createToastEl(scope) {
-        var angularDomEl = angular.element('<div toast></div>');
+        var angularDomEl = angular.element('<div toast></div>'),
+          $compile = $injector.get('$compile');
         return $compile(angularDomEl)(scope);
       }
 
@@ -210,6 +215,7 @@
     }
   }
 }());
+
 (function() {
   angular.module('toastr')
     .constant('toastrConfig', {
@@ -233,16 +239,18 @@
       tapToDismiss: true,
       timeOut: 5000,
       titleClass: 'toast-title',
-      toastClass: 'toast'
+      toastClass: 'toast',
+      target: 'body'
     });
 }());
+
 (function() {
   angular.module('toastr')
     .directive('toast', toast);
 
-  toast.$inject = ['$compile', '$interval', 'toastr'];
+  toast.$inject = ['$injector', '$interval', 'toastr'];
 
-  function toast($compile, $interval, toastr) {
+  function toast($injector, $interval, toastr) {
     return {
       replace: true,
       templateUrl: 'templates/toastr/toastr.html',
@@ -257,7 +265,8 @@
       scope.messageClass = scope.options.messageClass;
 
       if (wantsCloseButton()) {
-        var button = angular.element(scope.options.closeHtml);
+        var button = angular.element(scope.options.closeHtml),
+          $compile = $injector.get('$compile');
         button.addClass('toast-close-button');
         button.attr('ng-click', 'close()');
         $compile(button)(scope);
