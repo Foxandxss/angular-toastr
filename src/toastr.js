@@ -2,9 +2,9 @@
   angular.module('toastr', [])
     .factory('toastr', toastr);
 
-  toastr.$inject = ['$animate', '$compile', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
+  toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
 
-  function toastr($animate, $compile, $document, $rootScope, $sce, toastrConfig, $q) {
+  function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
     var container, index = 0, toasts = [];
     var containerDefer = $q.defer();
 
@@ -200,7 +200,8 @@
       }
 
       function createToastEl(scope) {
-        var angularDomEl = angular.element('<div toast></div>');
+        var angularDomEl = angular.element('<div toast></div>'),
+          $compile = $injector.get('$compile');
         return $compile(angularDomEl)(scope);
       }
 

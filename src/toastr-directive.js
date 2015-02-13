@@ -2,9 +2,9 @@
   angular.module('toastr')
     .directive('toast', toast);
 
-  toast.$inject = ['$compile', '$interval', 'toastr'];
+  toast.$inject = ['$injector', '$interval', 'toastr'];
 
-  function toast($compile, $interval, toastr) {
+  function toast($injector, $interval, toastr) {
     return {
       replace: true,
       templateUrl: 'templates/toastr/toastr.html',
@@ -19,7 +19,8 @@
       scope.messageClass = scope.options.messageClass;
 
       if (wantsCloseButton()) {
-        var button = angular.element(scope.options.closeHtml);
+        var button = angular.element(scope.options.closeHtml),
+          $compile = $injector.get('$compile');
         button.addClass('toast-close-button');
         button.attr('ng-click', 'close()');
         $compile(button)(scope);
