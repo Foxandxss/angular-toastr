@@ -35,10 +35,10 @@ You can also install `angular-toastr` from bower:
 $ bower install angular-toastr
 ```
 
-**NOTE**: Angular-toastr 1.0.0-beta.1 is out, check it out with:
+**NOTE**: Angular-toastr 1.0.0-beta.3 is out, check it out with:
 
 ```
-$ bower install angular-toastr#1.0.0-beta.1
+$ bower install angular-toastr#1.0.0-beta.3
 ```
 
 ## Usage

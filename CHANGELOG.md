@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.0.0-beta.3
+
+- Be able to specify a concrete target for container.
+- Using $injector internally to avoid circular dependencies.
+- onHidden receives a parameter to see whether a toast was closed by timeout or click.
+- Fix an issue with toasts not closing up.
+
 ## Version 1.0.0-beta.2
 
 - Fix maxOpened. Now toasts are queued when the max is reached.
