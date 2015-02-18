@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.0
+
+- No changes since last beta
+
 ## Version 1.0.0-beta.3
 
 - Be able to specify a concrete target for container.
