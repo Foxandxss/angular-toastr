@@ -1,10 +1,20 @@
 {
   "name": "angular-toastr",
   "version": "1.0.0",
+  "author": "Jesus Rodriguez <Foxandxss@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/Foxandxss/angular-toastr.git"
   },
+  "main": [
+    "dist/angular-toastr.css",
+    "dist/angular-toastr.tpls.js"
+  ],
+  "keywords": [
+    "angularjs",
+    "toastr",
+    "popup"
+  ],
   "devDependencies": {
     "del": "^1.1.1",
     "gulp": "^3.8.10",
