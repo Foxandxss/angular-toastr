@@ -1,3 +1,4 @@
 gen/
 node_modules/
 playground/
+.idea/
