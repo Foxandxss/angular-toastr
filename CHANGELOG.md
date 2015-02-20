@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.1
+
+- Hotfix for npm package.
+
 ## Version 1.0.0
 
 - No changes since last beta
