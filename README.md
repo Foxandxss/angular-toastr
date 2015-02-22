@@ -105,7 +105,7 @@ app.controller('foo', function($scope, toastr) {
 });
 ```
 
-By id:
+By toastId:
 
 ```javascript
 app.controller('foo', function($scope, toastr) {
