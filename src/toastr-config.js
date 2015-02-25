@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('toastr')
     .constant('toastrConfig', {
       allowHtml: false,
