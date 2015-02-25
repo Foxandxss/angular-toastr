@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('toastr', [])
     .factory('toastr', toastr);
 
@@ -217,6 +219,8 @@
 }());
 
 (function() {
+  'use strict';
+
   angular.module('toastr')
     .constant('toastrConfig', {
       allowHtml: false,
@@ -245,6 +249,8 @@
 }());
 
 (function() {
+  'use strict';
+
   angular.module('toastr')
     .directive('toast', toast);
 
