@@ -331,7 +331,7 @@ describe('toastr', function() {
       expect(function() {
         openToast('success', 'foo');
       }).toThrow('Target for toasts doesn\'t exist');
-    })
+    });
   });
 
   describe('directive behavior', function() {
