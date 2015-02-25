@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.2
+
+- Fixed an issue where it wouldn't work anymore without `ngAnimate`.
+
 ## Version 1.0.1
 
 - Hotfix for npm package.
