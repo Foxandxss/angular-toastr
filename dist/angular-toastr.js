@@ -115,9 +115,9 @@
       container.addClass(options.positionClass);
       container.css({'pointer-events': 'auto'});
 
-      var target = document.querySelector(options.target);
+      var target = angular.element(document.querySelector(options.target));
 
-      if ( ! target) {
+      if ( ! target || ! target.length) {
         throw 'Target for toasts doesn\'t exist';
       }
 
