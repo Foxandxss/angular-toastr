@@ -97,7 +97,7 @@
     /* Internal functions */
     function _buildNotification(type, message, title, optionsOverride)
     {
-      if (typeof title === 'object') {
+      if (angular.isObject(title)) {
         optionsOverride = title;
         title = null;
       }

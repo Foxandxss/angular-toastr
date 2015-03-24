@@ -557,5 +557,11 @@ describe('toastr', function() {
       animationFlush();
       expect(callback).toHaveBeenCalledWith(true);
     });
+
+    it('can call the callbacks even if the title is set to null', function() {
+      var callback = jasmine.createSpy();
+      openToast('success', 'some message', null, {onShown: callback});
+      expect(callback).toHaveBeenCalled();
+    });
   });
 });
