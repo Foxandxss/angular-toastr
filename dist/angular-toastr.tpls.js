@@ -7,7 +7,12 @@
   toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
 
   function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
-    var container, index = 0, toasts = [];
+    var container;
+    var index = 0;
+    var toasts = [];
+
+    var previousToastMessage = '';
+
     var containerDefer = $q.defer();
 
     var toast = {
@@ -133,6 +138,8 @@
     function _notify(map) {
       var options = _getOptions();
 
+      if (shouldExit()) { return; }
+
       var newToast = createToast();
 
       toasts.push(newToast);
@@ -214,6 +221,17 @@
       function maxOpenedNotReached() {
         return options.maxOpened && toasts.length <= options.maxOpened || !options.maxOpened;
       }
+
+      function shouldExit() {
+        if (options.preventDuplicates) {
+          if (map.message === previousToastMessage) {
+            return true;
+          } else {
+            previousToastMessage = map.message;
+          }
+          return false;
+        }
+      }
     }
   }
 }());
@@ -240,6 +258,7 @@
       onHidden: null,
       onShown: null,
       positionClass: 'toast-top-right',
+      preventDuplicates: false,
       tapToDismiss: true,
       target: 'body',
       timeOut: 5000,

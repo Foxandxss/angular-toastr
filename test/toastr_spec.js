@@ -468,6 +468,15 @@ describe('toastr', function() {
       expect($document).toHaveToastWithMessage('Toast 1');
     });
 
+    it('can prevent duplicate toasts', function() {
+      toastrConfig.preventDuplicates = true;
+      openToast('success', 'Toast 1');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush();
+      openToast('success', 'Toast 1');
+      expect($document).toHaveToastOpen(0);
+    });
+
   });
 
   describe('close button', function() {

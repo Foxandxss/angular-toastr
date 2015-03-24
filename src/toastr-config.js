@@ -20,6 +20,7 @@
       onHidden: null,
       onShown: null,
       positionClass: 'toast-top-right',
+      preventDuplicates: false,
       tapToDismiss: true,
       target: 'body',
       timeOut: 5000,

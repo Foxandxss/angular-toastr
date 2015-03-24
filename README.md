@@ -127,6 +127,7 @@ app.config(function(toastrConfig) {
     onHidden: null,
     onShown: null,
     positionClass: 'toast-top-right',
+    preventDuplicates: false,
     tapToDismiss: true,
     target: 'body',
     timeOut: 5000,
@@ -150,6 +151,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **onHidden**: A callback function called when a toast gets hidden.
 * **onShown**: A callback function called when a toast is shown.
 * **positionClass**: The position where the toasts are added.
+* **preventDuplicates**: Prevent duplicates of the last toast.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **target**: The element to put the toastr container.
 * **timeOut**: The timeout before the toasts disappear.
