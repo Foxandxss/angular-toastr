@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.1.0
+
+- Now you can prevent the last toast from being duplicated setting `preventDuplicates` to true.
+- Fix toasts options not working if the title parameter is set to null.
+- Prevent toasts to override global options.
+
 ## Version 1.0.2
 
 - Fixed an issue where it wouldn't work anymore without `ngAnimate`.
