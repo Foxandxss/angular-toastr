@@ -477,6 +477,18 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(0);
     });
 
+    it('does not merge options not meant for concrete toasts', function() {
+      openToasts(2, {
+        maxOpened: 2 // this is not meant for the toasts and gives weird side effects
+      });
+      expect($document).toHaveToastOpen(2);
+      intervalFlush();
+      openToasts(2, {
+        maxOpened: 2
+      });
+      expect($document).toHaveToastOpen(2);
+    });
+
   });
 
   describe('close button', function() {
