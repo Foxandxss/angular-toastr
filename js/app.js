@@ -65,6 +65,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
       html: false,
       closeButton: false,
       tapToDismiss: true,
+      progressBar: false,
       closeHtml: '<button>&times;</button>',
       newestOnTop: true,
       maxOpened: 0
@@ -77,6 +78,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
       toastrConfig.timeOut = parseInt(newValue.timeout, 10);
       toastrConfig.closeButton = newValue.closeButton;
       toastrConfig.tapToDismiss = newValue.tapToDismiss;
+      toastrConfig.progressBar = newValue.progressBar;
       toastrConfig.closeHtml = newValue.closeHtml;
       toastrConfig.newestOnTop = newValue.newestOnTop;
       toastrConfig.maxOpened = newValue.maxOpened;
