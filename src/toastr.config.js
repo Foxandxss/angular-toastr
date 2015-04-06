@@ -24,6 +24,10 @@
       progressBar: false,
       tapToDismiss: true,
       target: 'body',
+      templates: {
+        toast: 'directives/toast/toast.html',
+        progressbar: 'directives/progressbar/progressbar.html'
+      },
       timeOut: 5000,
       titleClass: 'toast-title',
       toastClass: 'toast'

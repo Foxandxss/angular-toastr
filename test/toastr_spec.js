@@ -13,13 +13,13 @@ describe('toastr', function() {
     $interval = _$interval_;
     $timeout = _$timeout_;
     toastr = _toastr_;
-    angular.extend(originalConfig, _toastrConfig_);
+    angular.copy(_toastrConfig_, originalConfig);
     toastrConfig = _toastrConfig_;
   }));
 
   afterEach(function() {
     $document.find('#toast-container').remove();
-    angular.extend(toastrConfig, originalConfig);
+    angular.copy(originalConfig, toastrConfig);
   });
 
   beforeEach(function() {
@@ -495,6 +495,15 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(2);
     });
 
+    it('allows to change the templates of the directives', inject(function($templateCache) {
+      $templateCache.put('foo/bar/template.html', '<div>This is my Template</div>');
+      toastrConfig.timeOut = 200000;
+      toastrConfig.templates.toast = 'foo/bar/template.html';
+      var toast = openToast('success', 'foo');
+
+      var div = toast.el.find('div');
+      expect(toast.el.text()).toBe('This is my Template');
+    }));
   });
 
   describe('close button', function() {

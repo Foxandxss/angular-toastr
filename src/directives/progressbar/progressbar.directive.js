@@ -4,11 +4,15 @@
   angular.module('toastr')
     .directive('progressBar', progressBar);
 
-  function progressBar() {
+  progressBar.$inject = ['toastrConfig'];
+
+  function progressBar(toastrConfig) {
     return {
       replace: true,
       require: '^toast',
-      templateUrl: 'directives/progressbar/progressbar.html',
+      templateUrl: function() {
+        return toastrConfig.templates.progressbar;
+      },
       link: linkFunction
     };
 

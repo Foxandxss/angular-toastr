@@ -131,6 +131,10 @@ app.config(function(toastrConfig) {
     progressBar: false,
     tapToDismiss: true,
     target: 'body',
+    templates: {
+	  toast: 'directives/toast/toast.html',
+	  progressbar: 'directives/progressbar/progressbar.html'
+	},
     timeOut: 5000,
     titleClass: 'toast-title',
     toastClass: 'toast'
@@ -156,6 +160,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **progressBar**: A progress bar to see the timeout in real time.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **target**: The element to put the toastr container.
+* **templates**: To override the default path of the templates.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.

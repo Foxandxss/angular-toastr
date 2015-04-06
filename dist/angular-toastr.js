@@ -214,7 +214,7 @@
 
         function cleanOptionsOverride(options) {
           var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'positionClass', 'preventDuplicates'];
+                            'positionClass', 'preventDuplicates', 'templates'];
           for (var i = 0, l = badOptions.length; i < l; i++) {
             delete options[badOptions[i]];
           }
@@ -273,6 +273,10 @@
       progressBar: false,
       tapToDismiss: true,
       target: 'body',
+      templates: {
+        toast: 'directives/toast/toast.html',
+        progressbar: 'directives/progressbar/progressbar.html'
+      },
       timeOut: 5000,
       titleClass: 'toast-title',
       toastClass: 'toast'
@@ -285,11 +289,15 @@
   angular.module('toastr')
     .directive('progressBar', progressBar);
 
-  function progressBar() {
+  progressBar.$inject = ['toastrConfig'];
+
+  function progressBar(toastrConfig) {
     return {
       replace: true,
       require: '^toast',
-      templateUrl: 'directives/progressbar/progressbar.html',
+      templateUrl: function() {
+        return toastrConfig.templates.progressbar;
+      },
       link: linkFunction
     };
 
@@ -357,12 +365,14 @@
   angular.module('toastr')
     .directive('toast', toast);
 
-  toast.$inject = ['$injector', '$interval', 'toastr'];
+  toast.$inject = ['$injector', '$interval', 'toastrConfig', 'toastr'];
 
-  function toast($injector, $interval, toastr) {
+  function toast($injector, $interval, toastrConfig, toastr) {
     return {
       replace: true,
-      templateUrl: 'directives/toast/toast.html',
+      templateUrl: function() {
+        return toastrConfig.templates.toast;
+      },
       controller: 'ToastController',
       link: toastLinkFunction
     };
