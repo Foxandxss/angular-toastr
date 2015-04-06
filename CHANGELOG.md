@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 1.2.0
+
+- Support for a progress bar
+- A config option to change the path of the templates.
+ 
+**BREAKING CHANGE:**
+
+If you were using a custom template using the default path, it changed from:
+
+`templates/toastr/toastr.html`
+
+to
+
+`directives/toast/toast.html`
+
 ## Version 1.1.0
 
 - Now you can prevent the last toast from being duplicated setting `preventDuplicates` to true.
