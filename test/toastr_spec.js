@@ -42,6 +42,12 @@ describe('toastr', function() {
         return this.actual.el.hasClass(cls);
       },
 
+      toHaveProgressBar: function() {
+        var progressBarEl = this.actual.el.find('.toast-progress');
+
+        return progressBarEl.length === 1;
+      },
+
       toHaveToastContainer: function(target) {
         target = target || 'body';
         var containerDomEl = this.actual.find(target + ' > #toast-container');
@@ -574,6 +580,62 @@ describe('toastr', function() {
       var callback = jasmine.createSpy();
       openToast('success', 'some message', null, {onShown: callback});
       expect(callback).toHaveBeenCalled();
+    });
+  });
+
+  describe('toast controller', function() {
+    var ctrl;
+
+    beforeEach(inject(function($controller) {
+      ctrl = $controller('ToastController');
+    }));
+
+    it('does not register a progressbar by default', function() {
+      expect(ctrl.progressBar).toBeNull();
+    });
+
+    it('can start the progressbar', function() {
+      var scope = {
+        start: jasmine.createSpy()
+      };
+      ctrl.progressBar = scope;
+      ctrl.startProgressBar(5000);
+
+      expect(scope.start).toHaveBeenCalledWith(5000);
+    });
+
+    it('can stop the progressbar', function() {
+      var scope = {
+        stop: jasmine.createSpy()
+      };
+      ctrl.progressBar = scope;
+      ctrl.stopProgressBar();
+
+      expect(scope.stop).toHaveBeenCalled();
+    });
+  });
+
+  describe('progressbar', function() {
+    beforeEach(function() {
+      toastrConfig.progressBar = true;
+    });
+
+    it('contains a progressBar if the option is set to true', function() {
+      var toast = openToast('success', 'foo');
+      expect(toast).toHaveProgressBar();
+      intervalFlush();
+    });
+
+    it('removes the progressBar if the toast is hovered', function() {
+      var toast = openToast('success', 'foo');
+      expect(toast).toHaveProgressBar();
+      hoverToast();
+      intervalFlush();
+      $rootScope.$digest();
+      expect(toast).not.toHaveProgressBar();
+      leaveToast();
+      expect(toast).toHaveProgressBar();
+      intervalFlush();
     });
   });
 });

@@ -182,6 +182,7 @@
           messageClass: options.messageClass,
           onHidden: options.onHidden,
           onShown: options.onShown,
+          progressBar: options.progressBar,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,
@@ -269,12 +270,85 @@
       onShown: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
+      progressBar: false,
       tapToDismiss: true,
       target: 'body',
       timeOut: 5000,
       titleClass: 'toast-title',
       toastClass: 'toast'
     });
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('toastr')
+    .directive('progressBar', progressBar);
+
+  function progressBar() {
+    return {
+      replace: true,
+      require: '^toast',
+      templateUrl: 'directives/progressbar/progressbar.html',
+      link: linkFunction
+    };
+
+    function linkFunction(scope, element, attrs, toastCtrl) {
+      var intervalId, currentTimeOut, hideTime;
+
+      toastCtrl.progressBar = scope;
+
+      scope.start = function(duration) {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+
+        currentTimeOut = parseFloat(duration);
+        hideTime = new Date().getTime() + currentTimeOut;
+        intervalId = setInterval(updateProgress, 10);
+      };
+
+      scope.stop = function() {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
+
+      function updateProgress() {
+        console.log('update');
+        var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
+        element.css('width', percentage + '%');
+      }
+
+      scope.$on('$destroy', function() {
+        // Failsafe stop
+        clearInterval(intervalId);
+      });
+    }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('toastr')
+    .controller('ToastController', ToastController);
+
+  function ToastController() {
+    this.progressBar = null;
+
+    this.startProgressBar = function(duration) {
+      if (this.progressBar) {
+        this.progressBar.start(duration);
+      }
+    };
+
+    this.stopProgressBar = function() {
+      if (this.progressBar) {
+        this.progressBar.stop();
+      }
+    };
+  }
 }());
 
 (function() {
@@ -288,16 +362,18 @@
   function toast($injector, $interval, toastr) {
     return {
       replace: true,
-      templateUrl: 'templates/toastr/toastr.html',
+      templateUrl: 'directives/toast/toast.html',
+      controller: 'ToastController',
       link: toastLinkFunction
     };
 
-    function toastLinkFunction(scope, element, attrs) {
+    function toastLinkFunction(scope, element, attrs, toastCtrl) {
       var timeout;
 
       scope.toastClass = scope.options.toastClass;
       scope.titleClass = scope.options.titleClass;
       scope.messageClass = scope.options.messageClass;
+      scope.progressBar = scope.options.progressBar;
 
       if (wantsCloseButton()) {
         var button = angular.element(scope.options.closeHtml),
@@ -318,6 +394,7 @@
       };
 
       element.on('mouseenter', function() {
+        hideAndStopProgressBar();
         if (timeout) {
           $interval.cancel(timeout);
         }
@@ -335,13 +412,23 @@
 
       element.on('mouseleave', function() {
         if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
+        scope.$apply(function() {
+          scope.progressBar = scope.options.progressBar;
+        });
         timeout = createTimeout(scope.options.extendedTimeOut);
       });
 
       function createTimeout(time) {
+        toastCtrl.startProgressBar(time);
         return $interval(function() {
+          toastCtrl.stopProgressBar();
           toastr.remove(scope.toastId);
         }, time, 1);
+      }
+
+      function hideAndStopProgressBar() {
+        scope.progressBar = false;
+        toastCtrl.stopProgressBar();
       }
 
       function wantsCloseButton() {

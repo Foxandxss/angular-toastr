@@ -9,16 +9,18 @@
   function toast($injector, $interval, toastr) {
     return {
       replace: true,
-      templateUrl: 'templates/toastr/toastr.html',
+      templateUrl: 'directives/toast/toast.html',
+      controller: 'ToastController',
       link: toastLinkFunction
     };
 
-    function toastLinkFunction(scope, element, attrs) {
+    function toastLinkFunction(scope, element, attrs, toastCtrl) {
       var timeout;
 
       scope.toastClass = scope.options.toastClass;
       scope.titleClass = scope.options.titleClass;
       scope.messageClass = scope.options.messageClass;
+      scope.progressBar = scope.options.progressBar;
 
       if (wantsCloseButton()) {
         var button = angular.element(scope.options.closeHtml),
@@ -39,6 +41,7 @@
       };
 
       element.on('mouseenter', function() {
+        hideAndStopProgressBar();
         if (timeout) {
           $interval.cancel(timeout);
         }
@@ -56,13 +59,23 @@
 
       element.on('mouseleave', function() {
         if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
+        scope.$apply(function() {
+          scope.progressBar = scope.options.progressBar;
+        });
         timeout = createTimeout(scope.options.extendedTimeOut);
       });
 
       function createTimeout(time) {
+        toastCtrl.startProgressBar(time);
         return $interval(function() {
+          toastCtrl.stopProgressBar();
           toastr.remove(scope.toastId);
         }, time, 1);
+      }
+
+      function hideAndStopProgressBar() {
+        scope.progressBar = false;
+        toastCtrl.stopProgressBar();
       }
 
       function wantsCloseButton() {

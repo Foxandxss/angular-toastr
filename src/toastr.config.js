@@ -21,6 +21,7 @@
       onShown: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
+      progressBar: false,
       tapToDismiss: true,
       target: 'body',
       timeOut: 5000,

@@ -128,6 +128,7 @@ app.config(function(toastrConfig) {
     onShown: null,
     positionClass: 'toast-top-right',
     preventDuplicates: false,
+    progressBar: false,
     tapToDismiss: true,
     target: 'body',
     timeOut: 5000,
@@ -152,6 +153,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **onShown**: A callback function called when a toast is shown.
 * **positionClass**: The position where the toasts are added.
 * **preventDuplicates**: Prevent duplicates of the last toast.
+* **progressBar**: A progress bar to see the timeout in real time.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **target**: The element to put the toastr container.
 * **timeOut**: The timeout before the toasts disappear.
@@ -226,6 +228,7 @@ There you can override:
 * **messageClass**: If you want to modify the message look.
 * **onHidden**: Function to call when the toast gets hidden.
 * **onShown**: Function to call when the toast is shown.
+* **progressBar** Show a progress bar for the toast.
 * **tapToDismiss**: If you want a concrete toast to toggle the close on click.
 * **timeOut**: For that concrete toast timeout.
 * **titleClass**: To override the title class of the toast.
