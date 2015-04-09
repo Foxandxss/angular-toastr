@@ -323,7 +323,6 @@
       };
 
       function updateProgress() {
-        console.log('update');
         var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
         element.css('width', percentage + '%');
       }

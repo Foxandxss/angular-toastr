@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 1.2.1
+
+- Remove a nasty console.log from the progress bar (yikes!).
+
 ## Version 1.2.0
 
-- Support for a progress bar
+- Support for a progress bar.
 - A config option to change the path of the templates.
  
 **BREAKING CHANGE:**
