@@ -144,6 +144,13 @@
 
       toasts.push(newToast);
 
+      if (options.autoDismiss && options.maxOpened > 0) {
+        var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
+        for (var i = 0, len = oldToasts.length; i < len; i++) {
+          remove(oldToasts[i].toastId);
+        }
+      }
+
       if (maxOpenedNotReached()) {
         newToast.open.resolve();
       }
@@ -264,6 +271,7 @@
         warning: 'toast-warning'
       },
       maxOpened: 0,
+      autoDismiss: false,
       messageClass: 'toast-message',
       newestOnTop: true,
       onHidden: null,
