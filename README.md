@@ -122,6 +122,7 @@ app.config(function(toastrConfig) {
       warning: 'toast-warning'
     },
     maxOpened: 0,
+    autoDismiss: false,
     messageClass: 'toast-message',
     newestOnTop: true,
     onHidden: null,
@@ -151,6 +152,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
 * **maxOpened**: Maximum number of toasts displayed at once.
+* **autoDismiss** If set, show only the most recent `maxOpened` toast(s)
 * **messageClass**: The class for the toast's message.
 * **newestOnTop**: Add new toasts on top of the old one. Put on false to put them on the bottom.
 * **onHidden**: A callback function called when a toast gets hidden.
