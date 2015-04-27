@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.3.0
+
+- An `autoDismiss` option to be used with `maxOpened` to dismiss the oldest toast.
+- Every toast has now an `isOpened` property to see whether they are opened or not.
+
 ## Version 1.2.1
 
 - Remove a nasty console.log from the progress bar (yikes!).
