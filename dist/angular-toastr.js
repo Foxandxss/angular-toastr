@@ -263,6 +263,7 @@
   angular.module('toastr')
     .constant('toastrConfig', {
       allowHtml: false,
+      autoDismiss: false,
       closeButton: false,
       closeHtml: '<button>&times;</button>',
       containerId: 'toast-container',
@@ -274,7 +275,6 @@
         warning: 'toast-warning'
       },
       maxOpened: 0,
-      autoDismiss: false,
       messageClass: 'toast-message',
       newestOnTop: true,
       onHidden: null,
