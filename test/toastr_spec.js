@@ -462,6 +462,16 @@ describe('toastr', function() {
       expect($document).not.toHaveToastWithMessage('Toast 1');
     });
 
+    it('can auto dismiss old toasts', function() {
+      toastrConfig.maxOpened = 1;
+      toastrConfig.autoDismiss = true;
+      var toast1 = openToast('success', 'Toast 1');
+      openToast('success', 'Toast 2');
+      openToast('success', 'Toast 3');
+      expect($document).toHaveToastOpen(1);
+      expect($document).toHaveToastWithMessage('Toast 3');
+    });
+
     it('has not limit if maxOpened is 0', function() {
       toastrConfig.maxOpened = 0;
       openToast('success', 'Toast 1');

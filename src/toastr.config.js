@@ -15,6 +15,7 @@
         warning: 'toast-warning'
       },
       maxOpened: 0,
+      autoDismiss: false,
       messageClass: 'toast-message',
       newestOnTop: true,
       onHidden: null,
