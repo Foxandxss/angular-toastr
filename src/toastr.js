@@ -62,6 +62,7 @@
 
       if (toast && ! toast.deleting) { // Avoid clicking when fading out
         toast.deleting = true;
+        toast.isOpened = false;
         $animate.leave(toast.el).then(function() {
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden(wasClicked);
@@ -157,6 +158,7 @@
 
       newToast.open.promise.then(function() {
         _createOrGetContainer(options).then(function() {
+          newToast.isOpened = true;
           if (options.newestOnTop) {
             $animate.enter(newToast.el, container).then(function() {
               newToast.scope.init();
@@ -204,6 +206,7 @@
       function createToast() {
         var newToast = {
           toastId: index++,
+          isOpened: false,
           scope: $rootScope.$new(),
           open: $q.defer()
         };

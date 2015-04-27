@@ -103,6 +103,10 @@ app.controller('foo', function($scope, toastr) {
 
 If no toast is passed in, all toasts will be closed.
 
+#### Other options
+
+A toast has a `isOpened` flag to see whether it is opened or not.
+
 ### Toastr customization
 
 You can customize the entire library like:
@@ -111,6 +115,7 @@ You can customize the entire library like:
 app.config(function(toastrConfig) {
   angular.extend(toastrConfig, {
     allowHtml: false,
+    autoDismiss: false,
     closeButton: false,
     closeHtml: '<button>&times;</button>',
     containerId: 'toast-container',
@@ -121,8 +126,7 @@ app.config(function(toastrConfig) {
       success: 'toast-success',
       warning: 'toast-warning'
     },
-    maxOpened: 0,
-    autoDismiss: false,
+    maxOpened: 0,    
     messageClass: 'toast-message',
     newestOnTop: true,
     onHidden: null,
@@ -146,13 +150,13 @@ app.config(function(toastrConfig) {
 Those are the default values, you can pick what you need from it and override with your values.
 
 * **allowHtml**: Your toast can use custom HTML here (See [Issue 3](https://github.com/Foxandxss/angular-toastr/issues/3))
+* **autoDismiss** If set, show only the most recent `maxOpened` toast(s)
 * **closeButton**: Whether to display an "X" close button on the toast.
 * **closeHtml**: Html element to be used as a close button.
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
 * **iconClasses**: The default type classes for the different toasts.
 * **maxOpened**: Maximum number of toasts displayed at once.
-* **autoDismiss** If set, show only the most recent `maxOpened` toast(s)
 * **messageClass**: The class for the toast's message.
 * **newestOnTop**: Add new toasts on top of the old one. Put on false to put them on the bottom.
 * **onHidden**: A callback function called when a toast gets hidden.

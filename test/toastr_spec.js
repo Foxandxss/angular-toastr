@@ -248,6 +248,21 @@ describe('toastr', function() {
       expect(toast).not.toHaveTitle();
     });
 
+    it('has a flag indicating whether it is opened or not', function() {
+      var toast = toastr.success('foo');
+
+      expect(toast.isOpened).toBe(false);
+
+      $rootScope.$digest();
+      animationFlush();
+
+      expect(toast.isOpened).toBe(true);
+
+      intervalFlush();
+
+      expect(toast.isOpened).toBe(false);
+    });
+
     it('has multiple types of toasts', function() {
       var toast = openToast('success', 'foo');
       expect(toast).toHaveType('success');
