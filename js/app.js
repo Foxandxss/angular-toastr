@@ -18,6 +18,10 @@ angular.module('app', ['toastr', 'ngAnimate'])
         message: 'We have you covered with ui-router'
       },
       {
+        title: 'Angular 2',
+        message: 'Is gonna rock the world'
+      },
+      {
         title: null,
         message: 'Titles are not always needed'
       },
@@ -58,6 +62,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
     };
 
     $scope.options = {
+      autoDismiss: false,
       position: 'toast-top-right',
       type: 'success',
       timeout: '5000',
@@ -72,6 +77,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
     };
 
     $scope.$watchCollection('options', function(newValue) {
+      toastrConfig.autoDismiss = newValue.autoDismiss;
       toastrConfig.allowHtml = newValue.html;
       toastrConfig.extendedTimeOut = parseInt(newValue.extendedTimeout, 10);
       toastrConfig.positionClass = newValue.position;

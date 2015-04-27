@@ -62,6 +62,7 @@
 
       if (toast && ! toast.deleting) { // Avoid clicking when fading out
         toast.deleting = true;
+        toast.isOpened = false;
         $animate.leave(toast.el).then(function() {
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden(wasClicked);
@@ -144,12 +145,20 @@
 
       toasts.push(newToast);
 
+      if (options.autoDismiss && options.maxOpened > 0) {
+        var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
+        for (var i = 0, len = oldToasts.length; i < len; i++) {
+          remove(oldToasts[i].toastId);
+        }
+      }
+
       if (maxOpenedNotReached()) {
         newToast.open.resolve();
       }
 
       newToast.open.promise.then(function() {
         _createOrGetContainer(options).then(function() {
+          newToast.isOpened = true;
           if (options.newestOnTop) {
             $animate.enter(newToast.el, container).then(function() {
               newToast.scope.init();
@@ -197,6 +206,7 @@
       function createToast() {
         var newToast = {
           toastId: index++,
+          isOpened: false,
           scope: $rootScope.$new(),
           open: $q.defer()
         };
@@ -245,42 +255,6 @@
       }
     }
   }
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .constant('toastrConfig', {
-      allowHtml: false,
-      closeButton: false,
-      closeHtml: '<button>&times;</button>',
-      containerId: 'toast-container',
-      extendedTimeOut: 1000,
-      iconClasses: {
-        error: 'toast-error',
-        info: 'toast-info',
-        success: 'toast-success',
-        warning: 'toast-warning'
-      },
-      maxOpened: 0,
-      messageClass: 'toast-message',
-      newestOnTop: true,
-      onHidden: null,
-      onShown: null,
-      positionClass: 'toast-top-right',
-      preventDuplicates: false,
-      progressBar: false,
-      tapToDismiss: true,
-      target: 'body',
-      templates: {
-        toast: 'directives/toast/toast.html',
-        progressbar: 'directives/progressbar/progressbar.html'
-      },
-      timeOut: 5000,
-      titleClass: 'toast-title',
-      toastClass: 'toast'
-    });
 }());
 
 (function() {
@@ -445,4 +419,41 @@
       }
     }
   }
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('toastr')
+    .constant('toastrConfig', {
+      allowHtml: false,
+      closeButton: false,
+      closeHtml: '<button>&times;</button>',
+      containerId: 'toast-container',
+      extendedTimeOut: 1000,
+      iconClasses: {
+        error: 'toast-error',
+        info: 'toast-info',
+        success: 'toast-success',
+        warning: 'toast-warning'
+      },
+      maxOpened: 0,
+      autoDismiss: false,
+      messageClass: 'toast-message',
+      newestOnTop: true,
+      onHidden: null,
+      onShown: null,
+      positionClass: 'toast-top-right',
+      preventDuplicates: false,
+      progressBar: false,
+      tapToDismiss: true,
+      target: 'body',
+      templates: {
+        toast: 'directives/toast/toast.html',
+        progressbar: 'directives/progressbar/progressbar.html'
+      },
+      timeOut: 5000,
+      titleClass: 'toast-title',
+      toastClass: 'toast'
+    });
 }());
