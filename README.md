@@ -251,17 +251,13 @@ To use Font Awesome icons instead of the built-in icons, you can do the followin
 
 **Reset background-image**
 
-	#toast-container > .toast-success,
-	#toast-container > .toast-info,
-	#toast-container > .toast-error,
-	#toast-container > .toast-warning {
+	#toast-container > [class*="toast-"] {
 		background-image: none !important;
 	}
 
-**Create the following CSS rule *(example for success)*:**
+**Create a global FontAwesome rule for toast-***
 
-	.toast.toast-success:before {
-		content: '\f00c';
+	.toast[class*="toast-"]:before {
 		font-family: FontAwesome;
 		font-size: 2em;
 		position: absolute;
@@ -269,7 +265,23 @@ To use Font Awesome icons instead of the built-in icons, you can do the followin
 		left: 15px;
 	}
 
-Then repeat for `toast-info`, `toast-error` and `toast-warning`.
+**Create rule for each toast-type:**
+
+	.toast.toast-success:before {
+		content: '\f058';
+	}
+	
+	.toast.toast-info:before {
+		content: '\f05a';
+	}
+	
+	.toast.toast-error:before {
+		content: '\f057';
+	}
+	
+	.toast.toast-warning:before {
+		content: '\f071';
+	}
 
 ### Toast template
 
