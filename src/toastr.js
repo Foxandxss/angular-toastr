@@ -164,7 +164,8 @@
               newToast.scope.init();
             });
           } else {
-            $animate.enter(newToast.el, container, container[0].lastChild).then(function() {
+            var sibling = container[0].lastChild ? angular.element(container[0].lastChild) : null;
+            $animate.enter(newToast.el, container, sibling).then(function() {
               newToast.scope.init();
             });
           }
