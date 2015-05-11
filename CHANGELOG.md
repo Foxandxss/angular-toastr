@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.3.1
+
+- Add compatibility with `Angular 1.4.x`
+
 ## Version 1.3.0
 
 - An `autoDismiss` option to be used with `maxOpened` to dismiss the oldest toast.
