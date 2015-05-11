@@ -164,7 +164,8 @@
               newToast.scope.init();
             });
           } else {
-            $animate.enter(newToast.el, container, container[0].lastChild).then(function() {
+            var sibling = container[0].lastChild ? angular.element(container[0].lastChild) : null;
+            $animate.enter(newToast.el, container, sibling).then(function() {
               newToast.scope.init();
             });
           }
@@ -427,6 +428,7 @@
   angular.module('toastr')
     .constant('toastrConfig', {
       allowHtml: false,
+      autoDismiss: false,
       closeButton: false,
       closeHtml: '<button>&times;</button>',
       containerId: 'toast-container',
@@ -438,7 +440,6 @@
         warning: 'toast-warning'
       },
       maxOpened: 0,
-      autoDismiss: false,
       messageClass: 'toast-message',
       newestOnTop: true,
       onHidden: null,
