@@ -517,6 +517,23 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(0);
     });
 
+    it('can prevent duplicate of open toasts', function() {
+      toastrConfig.preventDuplicates = false;
+      toastrConfig.preventOpenDuplicates = true;
+      var toast1 = openToast('success', 'Toast 1');
+      var toast2 = openToast('success', 'Toast 2');
+      openToast('success', 'Toast 1');
+      openToast('success', 'Toast 2');
+      var toast3 = openToast('success', 'Toast 3');
+      openToast('success', 'Toast 1');
+      expect($document).toHaveToastOpen(3);
+      removeToast(toast1);
+      removeToast(toast2);
+      removeToast(toast3);
+      openToast('success', 'Toast 1');
+      expect($document).toHaveToastOpen(1);
+    });
+
     it('does not merge options not meant for concrete toasts', function() {
       openToasts(2, {
         maxOpened: 2 // this is not meant for the toasts and gives weird side effects
