@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/Foxandxss/angular-toastr.git"
   },
-  "main": "dist/angular-toastr.tpls.js",
+  "main": "index.js",
   "keywords": [
     "angularjs",
     "toastr",
