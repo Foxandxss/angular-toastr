@@ -250,11 +250,7 @@
         var isDuplicateOfLast = options.preventDuplicates && map.message === previousToastMessage;
         var isDuplicateOpen = options.preventOpenDuplicates && openToasts[map.message];
 
-        if (isDuplicateOfLast) {
-          return true;
-        }
-
-        if (isDuplicateOpen) {
+        if (isDuplicateOfLast || isDuplicateOpen) {
           return true;
         }
 
