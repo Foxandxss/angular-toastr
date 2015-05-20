@@ -22,6 +22,7 @@
       onShown: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
+      preventOpenDuplicates: false,
       progressBar: false,
       tapToDismiss: true,
       target: 'body',
