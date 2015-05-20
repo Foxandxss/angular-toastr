@@ -28,8 +28,8 @@
 .toast-close-button:focus {
   color: #000000;
   text-decoration: none;
-  cursor: pointer
-    opacity: 0.4;
+  cursor: pointer;
+  opacity: 0.4;
 }
 /*Additional properties for button version
  iOS requires the button element instead of an anchor tag.
