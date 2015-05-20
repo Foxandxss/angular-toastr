@@ -73,7 +73,9 @@ angular.module('app', ['toastr', 'ngAnimate'])
       progressBar: false,
       closeHtml: '<button>&times;</button>',
       newestOnTop: true,
-      maxOpened: 0
+      maxOpened: 0,
+      preventDuplicates: false,
+      preventOpenDuplicates: false
     };
 
     $scope.$watchCollection('options', function(newValue) {
@@ -88,6 +90,8 @@ angular.module('app', ['toastr', 'ngAnimate'])
       toastrConfig.closeHtml = newValue.closeHtml;
       toastrConfig.newestOnTop = newValue.newestOnTop;
       toastrConfig.maxOpened = newValue.maxOpened;
+      toastrConfig.preventDuplicates = newValue.preventDuplicates;
+      toastrConfig.preventOpenDuplicates = newValue.preventOpenDuplicates;
     });
 
     $scope.clearLastToast = function() {

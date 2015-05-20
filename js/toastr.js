@@ -12,6 +12,7 @@
     var toasts = [];
 
     var previousToastMessage = '';
+    var openToasts = {};
 
     var containerDefer = $q.defer();
 
@@ -69,6 +70,7 @@
           }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);
+          delete openToasts[toast.scope.message];
           toasts.splice(index, 1);
           var maxOpened = toastrConfig.maxOpened;
           if (maxOpened && toasts.length >= maxOpened) {
@@ -225,7 +227,7 @@
 
         function cleanOptionsOverride(options) {
           var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'positionClass', 'preventDuplicates', 'templates'];
+                            'positionClass', 'preventDuplicates', 'preventOpenDuplicates', 'templates'];
           for (var i = 0, l = badOptions.length; i < l; i++) {
             delete options[badOptions[i]];
           }
@@ -245,17 +247,59 @@
       }
 
       function shouldExit() {
-        if (options.preventDuplicates) {
-          if (map.message === previousToastMessage) {
-            return true;
-          } else {
-            previousToastMessage = map.message;
-          }
-          return false;
+
+        var isDuplicateOfLast = options.preventDuplicates && map.message === previousToastMessage;
+        var isDuplicateOpen = options.preventOpenDuplicates && openToasts[map.message];
+
+        if (isDuplicateOfLast || isDuplicateOpen) {
+          console.log(isDuplicateOfLast);
+          return true;
         }
+
+        previousToastMessage = map.message;
+        openToasts[map.message] = true;
+
+        return false;
       }
     }
   }
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('toastr')
+    .constant('toastrConfig', {
+      allowHtml: false,
+      autoDismiss: false,
+      closeButton: false,
+      closeHtml: '<button>&times;</button>',
+      containerId: 'toast-container',
+      extendedTimeOut: 1000,
+      iconClasses: {
+        error: 'toast-error',
+        info: 'toast-info',
+        success: 'toast-success',
+        warning: 'toast-warning'
+      },
+      maxOpened: 0,
+      messageClass: 'toast-message',
+      newestOnTop: true,
+      onHidden: null,
+      onShown: null,
+      positionClass: 'toast-top-right',
+      preventDuplicates: false,
+      progressBar: false,
+      tapToDismiss: true,
+      target: 'body',
+      templates: {
+        toast: 'directives/toast/toast.html',
+        progressbar: 'directives/progressbar/progressbar.html'
+      },
+      timeOut: 5000,
+      titleClass: 'toast-title',
+      toastClass: 'toast'
+    });
 }());
 
 (function() {
@@ -420,41 +464,4 @@
       }
     }
   }
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .constant('toastrConfig', {
-      allowHtml: false,
-      autoDismiss: false,
-      closeButton: false,
-      closeHtml: '<button>&times;</button>',
-      containerId: 'toast-container',
-      extendedTimeOut: 1000,
-      iconClasses: {
-        error: 'toast-error',
-        info: 'toast-info',
-        success: 'toast-success',
-        warning: 'toast-warning'
-      },
-      maxOpened: 0,
-      messageClass: 'toast-message',
-      newestOnTop: true,
-      onHidden: null,
-      onShown: null,
-      positionClass: 'toast-top-right',
-      preventDuplicates: false,
-      progressBar: false,
-      tapToDismiss: true,
-      target: 'body',
-      templates: {
-        toast: 'directives/toast/toast.html',
-        progressbar: 'directives/progressbar/progressbar.html'
-      },
-      timeOut: 5000,
-      titleClass: 'toast-title',
-      toastClass: 'toast'
-    });
 }());
