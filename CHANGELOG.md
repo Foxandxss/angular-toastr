@@ -1,8 +1,14 @@
 # Changelog
 
+## Version 1.4.0
+
+- With `preventOpenDuplicates` you can prevent duplicates of opened toasts.
+- Webpack / Browserify support.
+- Now the bower package won't try to fetch the latest angular version
+
 ## Version 1.3.1
 
-- Add compatibility with `Angular 1.4.x`
+- Add compatibility with `Angular 1.4.x`.
 
 ## Version 1.3.0
 
