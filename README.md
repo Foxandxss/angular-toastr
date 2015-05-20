@@ -299,7 +299,7 @@ Try to avoid generating the `/dist` files on a patch because sometimes they don'
 
 ----------
 
-## Libraries using `angular-toastr``
+## Libraries using `angular-toastr`
 
 * [CodeScaleInc/angular-toastr-flash](https://github.com/CodeScaleInc/angular-toastr-flash) - A library to show flash messages using toasts.
 
