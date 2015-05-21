@@ -1,10 +1,15 @@
 # Changelog
 
+## Version 1.4.1
+
+- Fix a typo on the toastr.less file that prevented some automated tools to work.
+- Add the license to bower.json.
+
 ## Version 1.4.0
 
 - With `preventOpenDuplicates` you can prevent duplicates of opened toasts.
 - Webpack / Browserify support.
-- Now the bower package won't try to fetch the latest angular version
+- Now the bower package won't try to fetch the latest angular version.
 
 ## Version 1.3.1
 
