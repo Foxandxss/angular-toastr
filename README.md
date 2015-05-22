@@ -255,13 +255,13 @@ If you decide that you don't want to use the built-in one, you can always use `a
 
 ```javascript
 angular.module('yourApp').run(['$templateCache', function($templateCache) {
-  $templateCache.put('templates/toastr/toastr.html',
+  $templateCache.put('directives/toast/toast.html',
     "<div>Your template here</div>"
   );
 }]);
 ```
 
-The important part here is to have a key named `templates/toastr/toastr.html`. The module you run it is not important, you just need to do it after you load `toastr`.
+The important part here is to have a key named `directives/toast/toast.html`. The module you run it is not important, you just need to do it after you load `toastr`.
 
 
 ## Building
