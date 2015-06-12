@@ -160,7 +160,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **maxOpened**: Maximum number of toasts displayed at once.
 * **messageClass**: The class for the toast's message.
 * **newestOnTop**: Add new toasts on top of the old one. Put on false to put them on the bottom.
-* **onHidden**: A callback function called when a toast gets hidden.
+* **onHidden**: A callback function called when a toast gets hidden. It receives a boolean parameter to see whether it was closed via click or not.
 * **onShown**: A callback function called when a toast is shown.
 * **positionClass**: The position where the toasts are added.
 * **preventDuplicates**: Prevent duplicates of the last toast.
@@ -239,7 +239,7 @@ There you can override:
 * **extendedTimeOut**: The timeout after you hover it.
 * **iconClass**: For the type class you want to use for the toast.
 * **messageClass**: If you want to modify the message look.
-* **onHidden**: Function to call when the toast gets hidden.
+* **onHidden**: Function to call when the toast gets hidden. It receives a boolean parameter to see whether it was closed via click or not.
 * **onShown**: Function to call when the toast is shown.
 * **progressBar** Show a progress bar for the toast.
 * **tapToDismiss**: If you want a concrete toast to toggle the close on click.
@@ -255,8 +255,11 @@ If you decide that you don't want to use the built-in one, you can always use `a
 
 ```javascript
 angular.module('yourApp').run(['$templateCache', function($templateCache) {
-  $templateCache.put('templates/toastr/toastr.html',
+  $templateCache.put('directives/toast/toast.html',
     "<div>Your template here</div>"
+  );
+  $templateCache.put('directives/progressbar/progressbar.html',
+    "<div>Your progressbar here</div>"
   );
 }]);
 ```
