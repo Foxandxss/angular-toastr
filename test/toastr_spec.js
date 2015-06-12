@@ -496,6 +496,15 @@ describe('toastr', function() {
       expect($document).toHaveToastWithMessage('Toast 3');
     });
 
+    it('maxOpened and autoDimiss works together #95', function() {
+      toastrConfig.maxOpened = 3;
+      toastrConfig.autoDismiss = true;
+      var toast1 = openToast('success', 'Toast 1');
+      openToast('success', 'Toast 2');
+      openToast('success', 'Toast 3');
+      expect($document).toHaveToastOpen(3);
+    });
+
     it('has not limit if maxOpened is 0', function() {
       toastrConfig.maxOpened = 0;
       openToast('success', 'Toast 1');

@@ -147,7 +147,7 @@
 
       toasts.push(newToast);
 
-      if (options.autoDismiss && options.maxOpened > 0) {
+      if (ifMaxOpenedAndAutoDismiss()) {
         var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
         for (var i = 0, len = oldToasts.length; i < len; i++) {
           remove(oldToasts[i].toastId);
@@ -175,6 +175,10 @@
       });
 
       return newToast;
+
+      function ifMaxOpenedAndAutoDismiss() {
+        return options.autoDismiss && options.maxOpened && toasts.length > options.maxOpened;
+      }
 
       function createScope(toast, map, options) {
         if (options.allowHtml) {
