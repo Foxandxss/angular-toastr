@@ -64,6 +64,16 @@ describe('toastr', function() {
         return title.length === 1;
       },
 
+      toHaveAriaLabelOnTitle: function() {
+        var title = this.actual.el.find('.toast-title');
+        return title.is("[aria-label]");
+      },
+
+      toHaveAriaLabelOnMessage: function() {
+        var message = this.actual.el.find('.toast-message');
+        return message.is("[aria-label]");
+      },
+
       toHaveType: function(type) {
         var typeClass = 'toast-' + type;
         return this.actual.el.hasClass(typeClass);
@@ -405,6 +415,12 @@ describe('toastr', function() {
       };
       var toast = openToast('error', 'message', 'title', options);
       expect(toast).toHaveClass(options.toastClass);
+    });
+
+    it('title and message should contain aria-label', function() {
+      var toast = openToast('error', 'message', 'title');
+      expect(toast).toHaveAriaLabelOnMessage();
+      expect(toast).toHaveAriaLabelOnTitle();
     });
 
     it('can make a toast stick until is clicked or hovered (extended timeout)', function() {
