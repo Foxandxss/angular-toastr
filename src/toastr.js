@@ -29,6 +29,9 @@
 
     /* Public API */
     function clear(toast) {
+      // Bit of a hack, I will remove this soon with a BC
+      if (arguments.length === 1 && !toast) { return; }
+
       if (toast) {
         remove(toast.toastId);
       } else {
