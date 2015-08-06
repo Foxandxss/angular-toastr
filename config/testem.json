@@ -1,5 +1,5 @@
 {
-  "framework" : "jasmine",
+  "framework" : "jasmine2",
   "launch_in_dev" : ["Chrome"],
   "launch_in_ci" : ["PhantomJS"],
   "src_files" : [

@@ -22,123 +22,178 @@ describe('toastr', function() {
   });
 
   beforeEach(function() {
-    this.addMatchers({
-      toHaveA: function(tag) {
-        var el = this.actual.el.find(tag);
-        return el.length > 0;
-      },
-
-      toHaveButtonWith: function(buttonText) {
-        var buttonDomEl = this.actual.el.find('.toast-close-button');
-        return buttonDomEl.text() === buttonText;
-      },
-
-      toHaveClass: function(cls) {
-        this.message = function() {
-          return 'Expected "' + this.actual + '"' + (this.isNot ? ' not ' : ' ') + 'to have class "' + cls + '".';
+    jasmine.addMatchers({
+      toHaveA: function() {
+        return {
+          compare: function(toast, tag) {
+            var el = toast.el.find(tag);
+            return {
+              pass: el.length > 0
+            };
+          }
         };
-
-        return this.actual.el.hasClass(cls);
       },
 
-      toHaveProgressBar: function() {
-        var progressBarEl = this.actual.el.find('.toast-progress');
-
-        return progressBarEl.length === 1;
+      toHaveButtonWith: function(util, customEqualityTesters) {
+        return {
+          compare: function(toast, text) {
+            var buttomDomEl = toast.el.find('.toast-close-button');
+            return {
+              pass: util.equals(buttomDomEl.text(), text, customEqualityTesters)
+            };
+          }
+        };
       },
 
-      toHaveToastContainer: function(target) {
-        target = target || 'body';
-        var containerDomEl = this.actual.find(target + ' > #toast-container');
-        return containerDomEl.length === 1;
+      toHaveClass: function() {
+        return {
+          compare: function(toast, klass) {
+            return {
+              pass: toast.el.hasClass(klass)
+            };
+          }
+        };
       },
 
-      toHaveToastOpen: function(noOfToastr, target) {
-        target = target || 'body';
-        var toastDomEls = this.actual.find(target + ' > #toast-container > .toast');
-        return toastDomEls.length === noOfToastr;
+      toHaveProgressBar: function(util, customEqualityTesters) {
+        return {
+          compare: function(toast) {
+            var progressBarEl = toast.el.find('.toast-progress');
+            return {
+              pass: util.equals(progressBarEl.length, 1, customEqualityTesters)
+            };
+          }
+        };
       },
 
-      toHaveTitle: function() {
-        var title = this.actual.el.find('.toast-title');
-        return title.length === 1;
+      toHaveToastContainer: function(util, customEqualityTesters) {
+        return {
+          compare: function(document, target) {
+            target = target || 'body';
+            var containerDomEl = document.find(target + ' > #toast-container');
+            return {
+              pass: util.equals(containerDomEl.length, 1, customEqualityTesters)
+            };
+          }
+        };
+      },
+
+      toHaveToastOpen: function(util, customEqualityTesters) {
+        return {
+          compare: function(document, noOfToasts, target) {
+            target = target || 'body';
+            var toastDomEls = document.find(target + ' > #toast-container > .toast');
+            return {
+              pass: util.equals(toastDomEls.length, noOfToasts, customEqualityTesters)
+            };
+          }
+        };
+      },
+
+      toHaveTitle: function(util, customEQualityTesters) {
+        return {
+          compare: function(toast) {
+            var title = toast.el.find('.toast-title');
+            return {
+              pass: util.equals(title.length, 1, customEQualityTesters)
+            };
+          }
+        };
       },
 
       toHaveAriaLabelOnTitle: function() {
-        var title = this.actual.el.find('.toast-title');
-        return title.is("[aria-label]");
+        return {
+          compare: function(toast) {
+            var title = toast.el.find('.toast-title');
+            return {
+              pass: title.is('[aria-label]')
+            };
+          }
+        };
       },
 
       toHaveAriaLabelOnMessage: function() {
-        var message = this.actual.el.find('.toast-message');
-        return message.is("[aria-label]");
-      },
-
-      toHaveType: function(type) {
-        var typeClass = 'toast-' + type;
-        return this.actual.el.hasClass(typeClass);
-      },
-
-      toHaveToastWithMessage: function(message, toast, target) {
-        target = target || 'body';
-        var found;
-        var contentToCompare, toastsDomEl = this.actual.find(target + ' > #toast-container > .toast');
-
-        this.message = function() {
-          if (toast) {
-            return 'Expected the toast on position "' + toast + '" to have the message: "' + message + '".';
+        return {
+          compare: function(toast) {
+            var message = toast.el.find('.toast-message');
+            return {
+              pass: message.is('[aria-label]')
+            };
           }
-          return '"Expected a toast to be open with "' + message + '".';
         };
-
-        if (toast) {
-          contentToCompare = toastsDomEl.eq(toast).find('.toast-message').eq(0).html();
-
-          found = contentToCompare === message;
-        } else {
-          for (var i = 0, l = toastsDomEl.length; i < l; i++) {
-            contentToCompare = toastsDomEl.eq(i).find('.toast-message').eq(0).html();
-
-            found = contentToCompare === message;
-
-            if (found) {
-              break;
-            }
-          }
-        }
-
-        return found;
       },
 
-      toHaveToastWithTitle: function(title, toast, target) {
-        target = target || 'body';
-        var found;
-        var contentToCompare, toastsDomEl = this.actual.find(target + ' > #toast-container > .toast');
-
-        this.message = function() {
-          if (toast) {
-            return 'Expected the toast on position "' + toast + '" to have the title: "' + title + '".';
+      toHaveType: function() {
+        return {
+          compare: function(toast, type) {
+            var typeClass = 'toast-' + type;
+            return {
+              pass: toast.el.hasClass(typeClass)
+            };
           }
-          return '"Expected a toast to be open with "' + title + '".';
         };
+      },
 
-        if (toast) {
-          contentToCompare = toastsDomEl.eq(toast).find('.toast-title').eq(0).html();
+      toHaveToastWithMessage: function(util, customEqualityTesters) {
+        return {
+          compare: function(document, message, toast, target) {
+            target = target || 'body';
+            var found,
+              contentToCompare,
+              toastsDomEl = document.find(target + ' > #toast-container > .toast');
 
-          found = contentToCompare === title;
-        } else {
-          for (var i = 0, l = toastsDomEl.length; i < l; i++) {
-            contentToCompare = toastsDomEl.eq(i).find('.toast-title').eq(0).html();
+            if (toast) {
+              contentToCompare = toastsDomEl.eq(toast).find('.toast-message').eq(0).html();
 
-            found = contentToCompare === title;
+              found = util.equals(contentToCompare, message, customEqualityTesters);
+            } else {
+              for (var i = 0, l = toastsDomEl.length; i < l; i++) {
+                contentToCompare = toastsDomEl.eq(i).find('.toast-message').eq(0).html();
 
-            if (found) {
-              break;
+                found = util.equals(contentToCompare, message, customEqualityTesters);
+
+                if (found) {
+                  break;
+                }
+              }
             }
-          }
-        }
 
-        return found;
+            return {
+              pass: found
+            };
+          }
+        };
+      },
+
+      toHaveToastWithTitle: function(util, customEqualityTesters) {
+        return {
+          compare: function(document, title, toast, target) {
+            target = target || 'body';
+            var found,
+              contentToCompare,
+              toastsDomEl = document.find(target + ' > #toast-container > .toast');
+
+            if (toast) {
+              contentToCompare = toastsDomEl.eq(toast).find('.toast-title').eq(0).html();
+
+              found = util.equals(contentToCompare, title, customEqualityTesters);
+            } else {
+              for (var i = 0, l = toastsDomEl.length; i < l; i++) {
+                contentToCompare = toastsDomEl.eq(i).find('.toast-title').eq(0).html();
+
+                found = util.equals(contentToCompare, title, customEqualityTesters);
+
+                if (found) {
+                  break;
+                }
+              }
+            }
+
+            return {
+              pass: found
+            };
+          }
+        };
       }
     });
   });
