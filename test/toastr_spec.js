@@ -1,8 +1,7 @@
 describe('toastr', function() {
   var $animate, $document, $rootScope, $timeout, $interval;
   var toastr, toastrConfig, originalConfig = {};
-
-  beforeEach(module('ngAnimate'));
+  
   beforeEach(module('ngAnimateMock'));
   beforeEach(module('toastr'));
 
