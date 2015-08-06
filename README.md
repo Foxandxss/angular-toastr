@@ -266,6 +266,8 @@ angular.module('yourApp').run(['$templateCache', function($templateCache) {
 
 The important part here is to have a key named `templates/toastr/toastr.html`. The module you run it is not important, you just need to do it after you load `toastr`.
 
+**NOTE**: Due some limitations in Angular, you need to have your custom template cached before trying to use it.
+
 
 ## Building
 
