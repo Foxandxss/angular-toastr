@@ -247,6 +247,44 @@ There you can override:
 * **titleClass**: To override the title class of the toast.
 * **toastClass**: For the main toast class.
 
+#### Font Awesome
+
+To use Font Awesome icons instead of the built-in icons, you can do the following in your custom CSS:
+
+**Reset background-image**
+
+	#toast-container > [class*="toast-"] {
+		background-image: none !important;
+	}
+
+**Create a global FontAwesome rule for toast-***
+
+	.toast[class*="toast-"]:before {
+		font-family: FontAwesome;
+		font-size: 2em;
+		position: absolute;
+		top: 15px;
+		left: 15px;
+	}
+
+**Create rule for each toast-type:**
+
+	.toast.toast-success:before {
+		content: '\f058';
+	}
+	
+	.toast.toast-info:before {
+		content: '\f05a';
+	}
+	
+	.toast.toast-error:before {
+		content: '\f057';
+	}
+	
+	.toast.toast-warning:before {
+		content: '\f071';
+	}
+
 ### Toast template
 
 If you want to use the built-in template, you can use the `angular-toastr.tpls.js` file.
