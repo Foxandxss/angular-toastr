@@ -629,9 +629,8 @@ describe('toastr', function() {
       $templateCache.put('foo/bar/template.html', '<div>This is my Template</div>');
       toastrConfig.timeOut = 200000;
       toastrConfig.templates.toast = 'foo/bar/template.html';
-      var toast = openToast('success', 'foo');
 
-      var div = toast.el.find('div');
+      var toast = openToast('success', 'foo');
       expect(toast.el.text()).toBe('This is my Template');
     }));
 
