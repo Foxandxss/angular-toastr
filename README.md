@@ -156,6 +156,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **closeHtml**: Html element to be used as a close button.
 * **containerId**: The name of the container where you want to append your toasts (the container will be created for you).
 * **extendedTimeOut**: The timeout after you hover a toast.
+* **extraData**: If you override the template, you can pass global extra data to your toasts.
 * **iconClasses**: The default type classes for the different toasts.
 * **maxOpened**: Maximum number of toasts displayed at once.
 * **messageClass**: The class for the toast's message.
@@ -237,6 +238,7 @@ There you can override:
 * **closeButton**: Putting a close button on the toast.
 * **closeHtml**: If you need to override how the close button looks like.
 * **extendedTimeOut**: The timeout after you hover it.
+* **extraData**: If you override the template, you can pass concrete extra data per toast.
 * **iconClass**: For the type class you want to use for the toast.
 * **messageClass**: If you want to modify the message look.
 * **onHidden**: Function to call when the toast gets hidden. It receives a boolean parameter to see whether it was closed via click or not.

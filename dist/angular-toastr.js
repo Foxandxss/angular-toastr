@@ -195,6 +195,7 @@
 
         toast.scope.toastType = toast.iconClass;
         toast.scope.toastId = toast.toastId;
+        toast.scope.extraData = options.extraData;
 
         toast.scope.options = {
           extendedTimeOut: options.extendedTimeOut,

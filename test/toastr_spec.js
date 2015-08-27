@@ -634,6 +634,44 @@ describe('toastr', function() {
       var div = toast.el.find('div');
       expect(toast.el.text()).toBe('This is my Template');
     }));
+
+    it('allows to pass global extra data to the toastr directive', inject(function($templateCache) {
+      $templateCache.put('foo/bar/template.html', '<div>{{extraData.foo}}</div>');
+      toastrConfig.extraData = {foo: 'Hello!'};
+      toastrConfig.templates.toast = 'foo/bar/template.html';
+
+      var toast = openToast('success', 'foo');
+      expect(toast.el.text()).toBe('Hello!');
+    }));
+
+    it('allows to pass extra data per toast to the toastr directive', inject(function($templateCache) {
+      $templateCache.put('foo/bar/template.html', '<div>{{extraData.msg}}</div>');
+      toastrConfig.templates.toast = 'foo/bar/template.html';
+      var toast = openToast('success', 'foo', {
+        extraData: {msg: 'First toast'}
+      });
+
+      var toast2 = openToast('info', 'bar', {
+        extraData: {msg: 'Second toast'}
+      });
+
+      expect(toast.el.text()).toBe('First toast');
+      expect(toast2.el.text()).toBe('Second toast');
+    }));
+
+    it('allows to override the global extra data per toast', inject(function($templateCache) {
+      $templateCache.put('foo/bar/template.html', '<div>{{extraData.msg}}</div>');
+      toastrConfig.extraData = {msg: 'Hello!'};
+      toastrConfig.templates.toast = 'foo/bar/template.html';
+      var toast = openToast('success', 'foo');
+
+      var toast2 = openToast('info', 'bar', {
+        extraData: {msg: 'Second toast'}
+      });
+
+      expect(toast.el.text()).toBe('Hello!');
+      expect(toast2.el.text()).toBe('Second toast');
+    }));
   });
 
   describe('close button', function() {
