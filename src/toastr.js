@@ -223,7 +223,7 @@
         };
         newToast.iconClass = map.iconClass;
         if (map.optionsOverride) {
-          options = angular.extend(options, cleanOptionsOverride(map.optionsOverride));
+          angular.extend(options, cleanOptionsOverride(map.optionsOverride));
           newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
         }
 
