@@ -55,11 +55,11 @@ Info:
 
 ```javascript
 app.controller('foo', function($scope, toastr) {
-  toastr.info('We are opened today from 10 to 22', 'Information');
+  toastr.info('We are open today from 10 to 22', 'Information');
 });
 ```
 
-![Info Image](http://i.imgur.com/GFevMnr.png)
+![Info Image](http://i.imgur.com/7coIu7q.png)
 
 Error:
 
