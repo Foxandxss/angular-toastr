@@ -202,7 +202,6 @@
           messageClass: options.messageClass,
           onHidden: options.onHidden,
           onShown: options.onShown,
-          onTap: options.onTap,
           progressBar: options.progressBar,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
@@ -224,7 +223,7 @@
         };
         newToast.iconClass = map.iconClass;
         if (map.optionsOverride) {
-          angular.extend(options, cleanOptionsOverride(map.optionsOverride));
+          options = angular.extend(options, cleanOptionsOverride(map.optionsOverride));
           newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
         }
 
@@ -294,7 +293,6 @@
       newestOnTop: true,
       onHidden: null,
       onShown: null,
-      onTap: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
       preventOpenDuplicates: false,
@@ -309,6 +307,58 @@
       titleClass: 'toast-title',
       toastClass: 'toast'
     });
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('toastr')
+    .directive('progressBar', progressBar);
+
+  progressBar.$inject = ['toastrConfig'];
+
+  function progressBar(toastrConfig) {
+    return {
+      replace: true,
+      require: '^toast',
+      templateUrl: function() {
+        return toastrConfig.templates.progressbar;
+      },
+      link: linkFunction
+    };
+
+    function linkFunction(scope, element, attrs, toastCtrl) {
+      var intervalId, currentTimeOut, hideTime;
+
+      toastCtrl.progressBar = scope;
+
+      scope.start = function(duration) {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+
+        currentTimeOut = parseFloat(duration);
+        hideTime = new Date().getTime() + currentTimeOut;
+        intervalId = setInterval(updateProgress, 10);
+      };
+
+      scope.stop = function() {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
+
+      function updateProgress() {
+        var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
+        element.css('width', percentage + '%');
+      }
+
+      scope.$on('$destroy', function() {
+        // Failsafe stop
+        clearInterval(intervalId);
+      });
+    }
+  }
 }());
 
 (function() {
@@ -386,9 +436,6 @@
       });
 
       scope.tapToast = function () {
-        if (scope.options.onTap) {
-          scope.options.onTap();
-        }
         if (scope.options.tapToDismiss) {
           scope.close(true);
         }
@@ -422,58 +469,6 @@
       function wantsCloseButton() {
         return scope.options.closeHtml;
       }
-    }
-  }
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('toastr')
-    .directive('progressBar', progressBar);
-
-  progressBar.$inject = ['toastrConfig'];
-
-  function progressBar(toastrConfig) {
-    return {
-      replace: true,
-      require: '^toast',
-      templateUrl: function() {
-        return toastrConfig.templates.progressbar;
-      },
-      link: linkFunction
-    };
-
-    function linkFunction(scope, element, attrs, toastCtrl) {
-      var intervalId, currentTimeOut, hideTime;
-
-      toastCtrl.progressBar = scope;
-
-      scope.start = function(duration) {
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-
-        currentTimeOut = parseFloat(duration);
-        hideTime = new Date().getTime() + currentTimeOut;
-        intervalId = setInterval(updateProgress, 10);
-      };
-
-      scope.stop = function() {
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      };
-
-      function updateProgress() {
-        var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
-        element.css('width', percentage + '%');
-      }
-
-      scope.$on('$destroy', function() {
-        // Failsafe stop
-        clearInterval(intervalId);
-      });
     }
   }
 }());
