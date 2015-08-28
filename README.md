@@ -283,27 +283,6 @@ $ gulp production
 
 Grab the compressed files under `/dist` and the dev files at `/gen`.
 
-## Contributing
-
-For contributing in this project, you need to create a pull request containing both your code and tests.
-
-To create a proper patch I suggest:
-
-```
-$ npm install -g gulp testem
-$ gulp
-```
-
-And in another terminal / tab:
-
-```
-$ testem -f config/testem.json
-```
-
-Then you can see if you have your new tests pass.
-
-Try to avoid generating the `/dist` files on a patch because sometimes they don't want to merge nicely and it is a pain to merge by hand.
-
 ----------
 
 ## Libraries using `angular-toastr`
