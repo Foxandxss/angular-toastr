@@ -20,6 +20,7 @@
       newestOnTop: true,
       onHidden: null,
       onShown: null,
+      onTap: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
       preventOpenDuplicates: false,

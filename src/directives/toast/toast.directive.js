@@ -50,6 +50,9 @@
       });
 
       scope.tapToast = function () {
+        if (scope.options.onTap) {
+          scope.options.onTap();
+        }
         if (scope.options.tapToDismiss) {
           scope.close(true);
         }
