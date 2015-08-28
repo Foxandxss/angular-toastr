@@ -28,7 +28,7 @@
         var button = angular.element(scope.options.closeHtml),
           $compile = $injector.get('$compile');
         button.addClass('toast-close-button');
-        button.attr('ng-click', 'close(true)');
+        button.attr('ng-click', 'close(true, $event)');
         $compile(button)(scope);
         element.prepend(button);
       }
@@ -50,12 +50,18 @@
       });
 
       scope.tapToast = function () {
+        if (angular.isFunction(scope.options.onTap)) {
+          scope.options.onTap();
+        }
         if (scope.options.tapToDismiss) {
           scope.close(true);
         }
       };
 
-      scope.close = function (wasClicked) {
+      scope.close = function (wasClicked, $event) {
+        if ($event && angular.isFunction($event.stopPropagation)) {
+          $event.stopPropagation();
+        }
         toastr.remove(scope.toastId, wasClicked);
       };
 

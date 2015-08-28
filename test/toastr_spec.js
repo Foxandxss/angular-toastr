@@ -769,6 +769,14 @@ describe('toastr', function() {
       openToast('success', 'some message', null, {onShown: callback});
       expect(callback).toHaveBeenCalled();
     });
+
+    it('calls the onTap callback when toast is clicked', function() {
+      var callback = jasmine.createSpy();
+      openToasts(1, { onTap: callback });
+      expect(callback).not.toHaveBeenCalled();
+      clickToast();
+      expect(callback).toHaveBeenCalled();
+    });
   });
 
   describe('toast controller', function() {

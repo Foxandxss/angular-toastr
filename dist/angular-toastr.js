@@ -202,6 +202,7 @@
           messageClass: options.messageClass,
           onHidden: options.onHidden,
           onShown: options.onShown,
+          onTap: options.onTap,
           progressBar: options.progressBar,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
@@ -223,7 +224,7 @@
         };
         newToast.iconClass = map.iconClass;
         if (map.optionsOverride) {
-          options = angular.extend(options, cleanOptionsOverride(map.optionsOverride));
+          angular.extend(options, cleanOptionsOverride(map.optionsOverride));
           newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
         }
 
@@ -293,6 +294,7 @@
       newestOnTop: true,
       onHidden: null,
       onShown: null,
+      onTap: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
       preventOpenDuplicates: false,
@@ -414,7 +416,7 @@
         var button = angular.element(scope.options.closeHtml),
           $compile = $injector.get('$compile');
         button.addClass('toast-close-button');
-        button.attr('ng-click', 'close()');
+        button.attr('ng-click', 'close(true, $event)');
         $compile(button)(scope);
         element.prepend(button);
       }
@@ -436,12 +438,18 @@
       });
 
       scope.tapToast = function () {
+        if (angular.isFunction(scope.options.onTap)) {
+          scope.options.onTap();
+        }
         if (scope.options.tapToDismiss) {
           scope.close(true);
         }
       };
 
-      scope.close = function (wasClicked) {
+      scope.close = function (wasClicked, $event) {
+        if ($event && angular.isFunction($event.stopPropagation)) {
+          $event.stopPropagation();
+        }
         toastr.remove(scope.toastId, wasClicked);
       };
 
