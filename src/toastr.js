@@ -202,6 +202,7 @@
           messageClass: options.messageClass,
           onHidden: options.onHidden,
           onShown: options.onShown,
+          onTap: options.onTap,
           progressBar: options.progressBar,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,

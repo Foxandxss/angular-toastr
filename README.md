@@ -131,6 +131,7 @@ app.config(function(toastrConfig) {
     newestOnTop: true,
     onHidden: null,
     onShown: null,
+    onTap: null,
     positionClass: 'toast-top-right',
     preventDuplicates: false,
     preventOpenDuplicates: false,
@@ -163,6 +164,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **newestOnTop**: Add new toasts on top of the old one. Put on false to put them on the bottom.
 * **onHidden**: A callback function called when a toast gets hidden. It receives a boolean parameter to see whether it was closed via click or not.
 * **onShown**: A callback function called when a toast is shown.
+* **onTap**: A callback function called when it is clicked.
 * **positionClass**: The position where the toasts are added.
 * **preventDuplicates**: Prevent duplicates of the last toast.
 * **preventOpenDuplicates**: Prevent duplicates of open toasts.
@@ -243,6 +245,7 @@ There you can override:
 * **messageClass**: If you want to modify the message look.
 * **onHidden**: Function to call when the toast gets hidden. It receives a boolean parameter to see whether it was closed via click or not.
 * **onShown**: Function to call when the toast is shown.
+* **onTap**: A callback function called when it is clicked.
 * **progressBar** Show a progress bar for the toast.
 * **tapToDismiss**: If you want a concrete toast to toggle the close on click.
 * **timeOut**: For that concrete toast timeout.
