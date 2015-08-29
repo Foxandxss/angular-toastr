@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 1.5.0
+
+- Fix an issue where `maxOpened` with 2 or more was conflicting with `autoDismiss`.
+- Fix that when you try to close an undefined toast it won't close them all.
+- Toasts should be now more accessible.
+- You can now pass custom data to templates, useful for custom templates
+- New callback, `onTap` which is called when you click a toast (doesn't have to be closed for it to work).
+- Fix `onHidden` to have the `wasClicked` parameter to true when using a toast close button.
+
 ## Version 1.4.1
 
 - Fix a typo on the toastr.less file that prevented some automated tools to work.
