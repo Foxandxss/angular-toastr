@@ -28,7 +28,7 @@
         var button = angular.element(scope.options.closeHtml),
           $compile = $injector.get('$compile');
         button.addClass('toast-close-button');
-        button.attr('ng-click', 'close()');
+        button.attr('ng-click', 'close(true)');
         $compile(button)(scope);
         element.prepend(button);
       }

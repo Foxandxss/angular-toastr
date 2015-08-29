@@ -232,6 +232,7 @@ describe('toastr', function() {
     var toastCloseButton = _findToastCloseButton(noOfToast);
     toastCloseButton.click();
     $rootScope.$digest();
+    animationFlush();
   }
 
   function hoverToast(noOfToast) {
@@ -750,6 +751,16 @@ describe('toastr', function() {
       expect(callback).not.toHaveBeenCalled();
       clickToast();
       animationFlush();
+      expect(callback).toHaveBeenCalledWith(true);
+    });
+
+    it('calls the onHidden callback with "true" if the button was clicked', function() {
+      var callback = jasmine.createSpy();
+      openToast('info', 'I have a button', {
+        onHidden: callback,
+        closeButton: true
+      });
+      clickToastCloseButton();
       expect(callback).toHaveBeenCalledWith(true);
     });
 
