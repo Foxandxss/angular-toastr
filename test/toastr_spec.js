@@ -213,7 +213,8 @@ describe('toastr', function() {
     // This is not compatible with all the tests
     // But it is easier to swallow the errors, tests still run and pass.
     try {
-      $animate.triggerCallbacks();
+      $animate.flush();
+      $rootScope.$digest();
     } catch (e) {
 
     }
