@@ -29,6 +29,9 @@
 
     /* Public API */
     function clear(toast) {
+      // Bit of a hack, I will remove this soon with a BC
+      if (arguments.length === 1 && !toast) { return; }
+
       if (toast) {
         remove(toast.toastId);
       } else {
@@ -147,7 +150,7 @@
 
       toasts.push(newToast);
 
-      if (options.autoDismiss && options.maxOpened > 0) {
+      if (ifMaxOpenedAndAutoDismiss()) {
         var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
         for (var i = 0, len = oldToasts.length; i < len; i++) {
           remove(oldToasts[i].toastId);
@@ -176,6 +179,10 @@
 
       return newToast;
 
+      function ifMaxOpenedAndAutoDismiss() {
+        return options.autoDismiss && options.maxOpened && toasts.length > options.maxOpened;
+      }
+
       function createScope(toast, map, options) {
         if (options.allowHtml) {
           toast.scope.allowHtml = true;
@@ -188,12 +195,14 @@
 
         toast.scope.toastType = toast.iconClass;
         toast.scope.toastId = toast.toastId;
+        toast.scope.extraData = options.extraData;
 
         toast.scope.options = {
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
           onHidden: options.onHidden,
           onShown: options.onShown,
+          onTap: options.onTap,
           progressBar: options.progressBar,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
@@ -215,7 +224,7 @@
         };
         newToast.iconClass = map.iconClass;
         if (map.optionsOverride) {
-          options = angular.extend(options, cleanOptionsOverride(map.optionsOverride));
+          angular.extend(options, cleanOptionsOverride(map.optionsOverride));
           newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
         }
 
@@ -247,12 +256,10 @@
       }
 
       function shouldExit() {
-
         var isDuplicateOfLast = options.preventDuplicates && map.message === previousToastMessage;
         var isDuplicateOpen = options.preventOpenDuplicates && openToasts[map.message];
 
         if (isDuplicateOfLast || isDuplicateOpen) {
-          console.log(isDuplicateOfLast);
           return true;
         }
 
@@ -287,8 +294,10 @@
       newestOnTop: true,
       onHidden: null,
       onShown: null,
+      onTap: null,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
+      preventOpenDuplicates: false,
       progressBar: false,
       tapToDismiss: true,
       target: 'body',
@@ -407,7 +416,7 @@
         var button = angular.element(scope.options.closeHtml),
           $compile = $injector.get('$compile');
         button.addClass('toast-close-button');
-        button.attr('ng-click', 'close()');
+        button.attr('ng-click', 'close(true, $event)');
         $compile(button)(scope);
         element.prepend(button);
       }
@@ -429,12 +438,18 @@
       });
 
       scope.tapToast = function () {
+        if (angular.isFunction(scope.options.onTap)) {
+          scope.options.onTap();
+        }
         if (scope.options.tapToDismiss) {
           scope.close(true);
         }
       };
 
-      scope.close = function (wasClicked) {
+      scope.close = function (wasClicked, $event) {
+        if ($event && angular.isFunction($event.stopPropagation)) {
+          $event.stopPropagation();
+        }
         toastr.remove(scope.toastId, wasClicked);
       };
 

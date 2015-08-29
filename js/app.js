@@ -53,7 +53,7 @@ angular.module('app', ['toastr', 'ngAnimate'])
     };
   })
 
-  .controller('DemoCtrl', function($scope, randomQuotes, toastr, toastrConfig) {
+  .controller('DemoCtrl', function($scope, $templateCache, $templateRequest, randomQuotes, toastr, toastrConfig) {
     var openedToasts = [];
 
     $scope.toast = {
@@ -92,6 +92,18 @@ angular.module('app', ['toastr', 'ngAnimate'])
       toastrConfig.maxOpened = newValue.maxOpened;
       toastrConfig.preventDuplicates = newValue.preventDuplicates;
       toastrConfig.preventOpenDuplicates = newValue.preventOpenDuplicates;
+      if (newValue.customTemplate) {
+        toastrConfig.templates.toast = 'custom';
+      } else {
+        toastrConfig.templates.toast = 'directives/toast/toast.html';
+      }
+    });
+
+    $scope.$watch('toast.customTemplate', function(newVal) {
+      if ($templateCache.get('custom')) {
+        $templateCache.remove('custom');
+      }
+      $templateCache.put('custom', newVal);
     });
 
     $scope.clearLastToast = function() {
@@ -120,4 +132,8 @@ angular.module('app', ['toastr', 'ngAnimate'])
     $scope.openToast = function() {
       openedToasts.push(toastr[$scope.options.type]($scope.toast.message, $scope.toast.title));
     };
+
+    $templateRequest('default.html').then(function(tpl) {
+      $scope.toast.customTemplate = tpl;
+    });
   });

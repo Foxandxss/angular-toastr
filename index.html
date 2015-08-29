@@ -10,6 +10,18 @@
 </head>
 
 <body class="container" ng-controller="DemoCtrl">
+
+<script type="text/ng-template" id="default.html"><div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">
+  <div ng-switch on="allowHtml">
+    <div ng-switch-default ng-if="title" class="{{titleClass}}" aria-label="{{title}}">{{title}}</div>
+    <div ng-switch-default class="{{messageClass}}" aria-label="{{message}}">{{message}}</div>
+    <div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>
+    <div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>
+  </div>
+  <progress-bar ng-if="progressBar"></progress-bar>
+</div>
+</script>
+
 <a href="https://github.com/Foxandxss/angular-toastr"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
   <h1 class="text-center">angular-toastr demo</h1>
   <div class="well row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -48,6 +60,9 @@
           </label>
           <label class="checkbox">
             <input type="checkbox" ng-model="options.preventOpenDuplicates"> Prevent open duplicates
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" ng-model="options.customTemplate"> Custom template
           </label>
         </div>
       </div>
@@ -114,6 +129,14 @@
           <label class="checkbox">
             <input type="checkbox" ng-model="options.autoDismiss"> Auto dismiss?
           </label>
+        </div>
+      </div>
+    </div>
+    <div ng-if="options.customTemplate" class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="toastMessage">Custom template</label>
+          <textarea class="form-control" ng-model="toast.customTemplate" id="custom-template" placeholder="Custom template"></textarea>
         </div>
       </div>
     </div>
