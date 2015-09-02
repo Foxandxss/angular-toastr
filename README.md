@@ -274,6 +274,11 @@ Grab the compressed files under `/dist` and the dev files at `/gen`.
 
 ----------
 
+## FAQ
+
+**Q:** Why can't I override the `positionClass` in a toast? It gets ignored.
+**A:** The toasts don't have a position, they are attached to a container and is that container who has the position set on the page. This will be changed in a future version.
+
 ## Libraries using `angular-toastr`
 
 * [CodeScaleInc/angular-toastr-flash](https://github.com/CodeScaleInc/angular-toastr-flash) - A library to show flash messages using toasts.
