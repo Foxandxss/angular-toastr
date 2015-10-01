@@ -12,6 +12,7 @@
     "toastr",
     "popup"
   ],
+  "license": "MIT",
   "devDependencies": {
     "angular": "^1.4.3",
     "angular-mocks": "^1.4.3",
