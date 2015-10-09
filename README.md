@@ -4,7 +4,7 @@
 
 **NOTE:** For angular 1.2.x support check `angular-1.2` branch or download the `0.4.x` release of `angular-toastr`.
 
-**angular-toastr** is a port of [CodeSeven/toastr](https://github.com/CodeSeven/toastr)
+**angular-toastr** was originally a port of [CodeSeven/toastr](https://github.com/CodeSeven/toastr). It could now show some differences with it.
 
 The goal is to provide the same API than the original one but without jQuery and using all the angular power.
 
