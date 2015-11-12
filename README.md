@@ -183,7 +183,7 @@ app.config(function(toastrConfig) {
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
 
-Toasts have 3 different events:
+Toasts have 3 different callbacks:
 
 * **onHidden**: A callback function called when a toast gets hidden. 
 	* First parameter: A boolean to see whether or not the toast was closed via click.
