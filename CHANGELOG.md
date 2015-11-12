@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.6.0
+
+- onTap callback receives the whole toast as the first parameter.
+- onShown callback receives the whole toast as the first parameter.
+- onHidden callback receives the whole toast as the second parameter.
+
 ## Version 1.5.0
 
 - Fix an issue where `maxOpened` with 2 or more was conflicting with `autoDismiss`.
