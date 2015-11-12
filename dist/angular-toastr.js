@@ -69,7 +69,7 @@
         toast.isOpened = false;
         $animate.leave(toast.el).then(function() {
           if (toast.scope.options.onHidden) {
-            toast.scope.options.onHidden(wasClicked);
+            toast.scope.options.onHidden(!!wasClicked, toast);
           }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);
@@ -101,8 +101,7 @@
     }
 
     /* Internal functions */
-    function _buildNotification(type, message, title, optionsOverride)
-    {
+    function _buildNotification(type, message, title, optionsOverride) {
       if (angular.isObject(title)) {
         optionsOverride = title;
         title = null;
@@ -201,8 +200,8 @@
           extendedTimeOut: options.extendedTimeOut,
           messageClass: options.messageClass,
           onHidden: options.onHidden,
-          onShown: options.onShown,
-          onTap: options.onTap,
+          onShown: generateEvent('onShown'),
+          onTap: generateEvent('onTap'),
           progressBar: options.progressBar,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
@@ -212,6 +211,14 @@
 
         if (options.closeButton) {
           toast.scope.options.closeHtml = options.closeHtml;
+        }
+
+        function generateEvent(event) {
+          if (options[event]) {
+            return function() {
+              options[event](toast);
+            };
+          }
         }
       }
 
