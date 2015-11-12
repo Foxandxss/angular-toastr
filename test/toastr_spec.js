@@ -724,58 +724,49 @@ describe('toastr', function() {
   describe('callbacks', function() {
     it('calls the onShown callback when showing a toast', function() {
       var callback = jasmine.createSpy();
-      openToasts(1, { onShown: callback });
-      expect(callback).toHaveBeenCalled();
+      var toast = openToast('success', 'A toast', { onShown: callback });
+      expect(callback).toHaveBeenCalledWith(toast);
     });
 
     it('calls the onHidden callback after a toast is closed on click', function() {
       var callback = jasmine.createSpy();
-      openToasts(1, { onHidden: callback });
+      var toast = openToast('success', 'A toast', { onHidden: callback });
       expect(callback).not.toHaveBeenCalled();
       clickToast();
-      expect(callback).toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith(true, toast);
     });
 
     it('calls the onHidden callback after a toast is closed by timeout', function() {
       var callback = jasmine.createSpy();
-      openToasts(1, { onHidden: callback });
+      var toast = openToast('success', 'A toast', { onHidden: callback });
       expect(callback).not.toHaveBeenCalled();
       intervalFlush();
       animationFlush();
-      expect(callback).toHaveBeenCalled();
-    });
-
-    it('calls the onHidden callback with "true" if was hidden by click', function() {
-      var callback = jasmine.createSpy();
-      openToasts(1, { onHidden: callback });
-      expect(callback).not.toHaveBeenCalled();
-      clickToast();
-      animationFlush();
-      expect(callback).toHaveBeenCalledWith(true);
+      expect(callback).toHaveBeenCalledWith(false, toast);
     });
 
     it('calls the onHidden callback with "true" if the button was clicked', function() {
       var callback = jasmine.createSpy();
-      openToast('info', 'I have a button', {
+      var toast = openToast('info', 'I have a button', {
         onHidden: callback,
         closeButton: true
       });
       clickToastCloseButton();
-      expect(callback).toHaveBeenCalledWith(true);
+      expect(callback).toHaveBeenCalledWith(true, toast);
     });
 
     it('can call the callbacks even if the title is set to null', function() {
       var callback = jasmine.createSpy();
-      openToast('success', 'some message', null, {onShown: callback});
-      expect(callback).toHaveBeenCalled();
+      var toast = openToast('success', 'some message', null, {onShown: callback});
+      expect(callback).toHaveBeenCalledWith(toast);
     });
 
     it('calls the onTap callback when toast is clicked', function() {
       var callback = jasmine.createSpy();
-      openToasts(1, { onTap: callback });
+      var toast = openToast('success', 'A toast', { onTap: callback });
       expect(callback).not.toHaveBeenCalled();
       clickToast();
-      expect(callback).toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith(toast);
     });
   });
 

@@ -176,15 +176,22 @@ app.config(function(toastrConfig) {
 * **extraData**: If you override the template, you can pass global extra data to your toasts.
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
-* **onHidden**: A callback function called when a toast gets hidden. It receives a boolean parameter to see whether it was closed via click or not.
-* **onShown**: A callback function called when a toast is shown.
-* **onTap**: A callback function called when it is clicked.
 * **progressBar**: A progress bar to see the timeout in real time.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **templates**: To override the default path of the templates.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
+
+Toasts have 3 different events:
+
+* **onHidden**: A callback function called when a toast gets hidden. 
+	* First parameter: A boolean to see whether or not the toast was closed via click.
+	* Second parameter: The whole toast that got hidden.
+* **onShown**: A callback function called when a toast is shown.
+	* First parameter: The whole toast that got shown.
+* **onTap**: A callback function called when it is clicked.
+	* First parameter: The whole toast that got clicked.
 
 The second option is to pass a third parameter (or second if you don't need a **title**). Let see some examples:
 
