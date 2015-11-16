@@ -230,6 +230,11 @@ describe('toastr', function() {
       animationFlush();
       expect($document).not.toHaveToastContainer();
     });
+
+    it('should only show one toast with preventOpenDuplicates', function () {
+      openToasts(2, { preventOpenDuplicates: true });
+      expect($document).toHaveToastOpen(1);
+    });
   });
 
   describe('container', function() {

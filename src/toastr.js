@@ -158,13 +158,23 @@ angular.module('toastr', [])
     function _notify(map) {
       var options = _getOptions();
 
+      if (map.optionsOverride) {
+        options = angular.extend(options, map.optionsOverride);
+      }
+      if (options.preventOpenDuplicates) {
+        for (var i = toasts.length - 1; i >= 0; i--) {
+          if (toasts[i].scope.message === map.message) {
+            return;
+          }
+        }
+      }
+
       var newToast = {
         toastId: index++,
         scope: $rootScope.$new()
       };
       newToast.iconClass = map.iconClass;
       if (map.optionsOverride) {
-        options = angular.extend(options, map.optionsOverride);
         newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
       }
 
