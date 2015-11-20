@@ -372,6 +372,17 @@ describe('toastr', function() {
       animationFlush();
       expect($document).not.toHaveToastContainer();
     });
+
+    it('has a list of active toasts', function() {
+      openToasts(5);
+      expect(toastr.active()).toBe(5);
+      clickToast();
+      clickToast();
+      expect(toastr.active()).toBe(3);
+      intervalFlush();
+      animationFlush();
+      expect(toastr.active()).toBe(0);
+    });
   });
 
   describe('container', function() {
