@@ -99,10 +99,10 @@
       function lastToast() {
         return !toasts.length;
       }
-      
-      function count() {
-        return toasts.length;  
-      }
+    }
+    
+    function count() {
+      return toasts.length;  
     }
 
     /* Internal functions */
