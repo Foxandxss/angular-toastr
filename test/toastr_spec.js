@@ -194,6 +194,16 @@ describe('toastr', function() {
             };
           }
         };
+      },
+      
+      toHaveCount: function() {
+        return {
+          compare: function(document, count) {
+            return {
+              pass: toastr.count() === count
+            };
+          }
+        };
       }
     });
   });
@@ -824,5 +834,19 @@ describe('toastr', function() {
       expect(toast).toHaveProgressBar();
       intervalFlush();
     });
+  });
+  
+  describe('toast count', function() {
+    it('toast count consistent', function() {
+      expect($document).toHaveCount(0);
+      openToasts(5);
+      expect($document).toHaveCount(5);      
+	    clickToast();
+	    clickToast();
+      expect($document).toHaveCount(3);
+	    intervalFlush();
+	    animationFlush();
+      expect($document).toHaveCount(0);	  
+    });	
   });
 });
