@@ -20,7 +20,7 @@
     "gulp": "^3.8.10",
     "gulp-angular-templatecache": "^1.5.0",
     "gulp-concat": "^2.4.3",
-    "gulp-jshint": "^1.9.0",
+    "gulp-jshint": "^2.0.0",
     "gulp-less": "^3.0.2",
     "gulp-minify-css": "^1.0.0",
     "gulp-rename": "^1.2.0",
