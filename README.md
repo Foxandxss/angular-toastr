@@ -101,6 +101,16 @@ app.controller('foo', function($scope, toastr) {
 
 If no toast is passed in, all toasts will be closed.
 
+#### Getting active (open) toasts:
+
+```javascript
+app.controller('foo', function($scope, toastr) {
+  toastr.active();
+});
+```
+
+It return the number of active toasts in screen.
+
 #### Other options
 
 A toast has a `isOpened` flag to see whether it is opened or not.
