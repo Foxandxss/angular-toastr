@@ -14,7 +14,19 @@ The goal is to provide the same API than the original one but without jQuery and
 
 ## Installation
 
-Grab the latest [release](https://github.com/Foxandxss/angular-toastr/releases) and add both the `css` and `javascript` file:
+Use npm:
+
+```
+$ npm install angular-toastr
+```
+
+If you are not using npm (you should), you can use bower:
+
+```
+$ bower install angular-toastr
+```
+
+Or you can grab the latest [release](https://github.com/Foxandxss/angular-toastr/releases) and add both the `css` and `javascript` file:
 
 ```html
 <link rel="stylesheet" type="text/css" href="angular-toastr.css" />
@@ -27,12 +39,6 @@ Then add `toastr` to your modules dependencies:
 
 ```javascript
 angular.module('app', ['ngAnimate', 'toastr'])
-```
-
-You can also install `angular-toastr` from bower:
-
-```
-$ bower install angular-toastr
 ```
 
 ## Usage
