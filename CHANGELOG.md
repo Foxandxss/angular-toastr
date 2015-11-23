@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.3
+
+- Add preventOpenDuplicates option
+
 ## Version 0.4.2
 
 - Fix for bower version [#26](https://github.com/Foxandxss/angular-toastr/issues/26)
