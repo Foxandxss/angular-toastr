@@ -23,7 +23,8 @@
       info: info,
       remove: remove,
       success: success,
-      warning: warning
+      warning: warning,
+      count: count
     };
 
     return toast;
@@ -103,6 +104,10 @@
       function lastToast() {
         return !toasts.length;
       }
+    }
+    
+    function count() {
+      return toasts.length;  
     }
 
     /* Internal functions */
