@@ -115,6 +115,7 @@ app.config(function(toastrConfig) {
     },
     messageClass: 'toast-message',
     positionClass: 'toast-top-right',
+    preventOpenDuplicates: false,
     tapToDismiss: true,
     timeOut: 5000,
     titleClass: 'toast-title',
@@ -133,6 +134,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
 * **positionClass**: The position where the toasts are added.
+* **preventOpenDuplicates**: Prevent duplicates of open toasts.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
