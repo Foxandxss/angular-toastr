@@ -40,6 +40,8 @@ Or you can grab the latest [release](https://github.com/Foxandxss/angular-toastr
 <script type="text/javascript" src="angular-toastr.tpls.js"></script>
 ```
 
+**Note:** If you add a script tag for angular-toastr, keep in mind that you need the `tpls` version **or** the other depending if you want the default template or not (see below).
+
 If you want animations, don't forget to add `angular-animate`.
 
 Then add `toastr` to your modules dependencies:
