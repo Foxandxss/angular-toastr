@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.7.0
+
+- `toastr` service has an `active()` method to get all the opened toasts.
+
 ## Version 1.6.0
 
 - onTap callback receives the whole toast as the first parameter.
@@ -43,7 +47,7 @@
 
 - Support for a progress bar.
 - A config option to change the path of the templates.
- 
+
 **BREAKING CHANGE:**
 
 If you were using a custom template using the default path, it changed from:

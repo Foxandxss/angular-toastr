@@ -17,6 +17,7 @@
     var containerDefer = $q.defer();
 
     var toast = {
+      active: active,
       clear: clear,
       error: error,
       info: info,
@@ -28,6 +29,10 @@
     return toast;
 
     /* Public API */
+    function active() {
+      return toasts.length;
+    }
+
     function clear(toast) {
       // Bit of a hack, I will remove this soon with a BC
       if (arguments.length === 1 && !toast) { return; }
