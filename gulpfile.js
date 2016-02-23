@@ -5,7 +5,7 @@ var ngTemplates  = require('gulp-angular-templatecache');
 var rename       = require('gulp-rename');
 var uglify       = require('gulp-uglify');
 var concat       = require('gulp-concat');
-var minifyCss    = require('gulp-minify-css');
+var cssnano      = require('gulp-cssnano');
 
 var del          = require('del');
 var stylish      = require('jshint-stylish');
