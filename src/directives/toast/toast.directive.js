@@ -65,13 +65,15 @@
         toastr.remove(scope.toastId, wasClicked);
       };
 
-      element.on('mouseleave', function() {
-        if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
-        scope.$apply(function() {
-          scope.progressBar = scope.options.progressBar;
+      if (toastrConfig.hoverToClose) {
+        element.on('mouseleave', function() {
+          if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
+          scope.$apply(function() {
+            scope.progressBar = scope.options.progressBar;
+          });
+          timeout = createTimeout(scope.options.extendedTimeOut);
         });
-        timeout = createTimeout(scope.options.extendedTimeOut);
-      });
+      }
 
       function createTimeout(time) {
         toastCtrl.startProgressBar(time);
