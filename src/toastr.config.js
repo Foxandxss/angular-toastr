@@ -9,6 +9,7 @@
       closeHtml: '<button>&times;</button>',
       containerId: 'toast-container',
       extendedTimeOut: 1000,
+      hoverToClose: true,
       iconClasses: {
         error: 'toast-error',
         info: 'toast-info',
