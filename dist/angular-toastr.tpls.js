@@ -408,7 +408,6 @@
 
   function toast($injector, $interval, toastrConfig, toastr) {
     return {
-      replace: true,
       templateUrl: function() {
         return toastrConfig.templates.toast;
       },
@@ -430,7 +429,7 @@
         button.addClass('toast-close-button');
         button.attr('ng-click', 'close(true, $event)');
         $compile(button)(scope);
-        element.prepend(button);
+        element.children().prepend(button);
       }
 
       scope.init = function() {

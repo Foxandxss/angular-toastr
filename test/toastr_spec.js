@@ -49,7 +49,7 @@ describe('toastr', function() {
         return {
           compare: function(toast, klass) {
             return {
-              pass: toast.el.hasClass(klass)
+              pass: toast.el.find('div:first').hasClass(klass)
             };
           }
         };
@@ -82,7 +82,7 @@ describe('toastr', function() {
         return {
           compare: function(document, noOfToasts, target) {
             target = target || 'body';
-            var toastDomEls = document.find(target + ' > #toast-container > .toast');
+            var toastDomEls = document.find(target + ' .toast');
             return {
               pass: util.equals(toastDomEls.length, noOfToasts, customEqualityTesters)
             };
@@ -128,7 +128,7 @@ describe('toastr', function() {
           compare: function(toast, type) {
             var typeClass = 'toast-' + type;
             return {
-              pass: toast.el.hasClass(typeClass)
+              pass: toast.el.find('.toast').hasClass(typeClass)
             };
           }
         };
@@ -140,7 +140,7 @@ describe('toastr', function() {
             target = target || 'body';
             var found,
               contentToCompare,
-              toastsDomEl = document.find(target + ' > #toast-container > .toast');
+              toastsDomEl = document.find(target + ' .toast');
 
             if (toast) {
               contentToCompare = toastsDomEl.eq(toast).find('.toast-message').eq(0).html();
@@ -171,7 +171,7 @@ describe('toastr', function() {
             target = target || 'body';
             var found,
               contentToCompare,
-              toastsDomEl = document.find(target + ' > #toast-container > .toast');
+              toastsDomEl = document.find(target + ' .toast');
 
             if (toast) {
               contentToCompare = toastsDomEl.eq(toast).find('.toast-title').eq(0).html();
@@ -200,12 +200,12 @@ describe('toastr', function() {
 
   function _findToast(toast, target) {
     target = target || 'body';
-    return $document.find(target + ' > #toast-container > .toast').eq(toast || 0);
+    return $document.find(target + ' > #toast-container .toast').eq(toast || 0);
   }
 
   function _findToastCloseButton(toast, target) {
     target = target || 'body';
-    return $document.find(target + ' > #toast-container > .toast > .toast-close-button').eq(toast || 0);
+    return $document.find(target + ' > #toast-container .toast .toast-close-button').eq(toast || 0);
   }
 
   // Needed when we want to run the callback of enter or leave.
