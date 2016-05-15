@@ -4,9 +4,9 @@
   angular.module('toastr', [])
     .factory('toastr', toastr);
 
-  toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
+  toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q', '$timeout'];
 
-  function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
+  function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q, $timeout) {
     var container;
     var index = 0;
     var toasts = [];
@@ -170,12 +170,16 @@
           newToast.isOpened = true;
           if (options.newestOnTop) {
             $animate.enter(newToast.el, container).then(function() {
-              newToast.scope.init();
+              $timeout(funtion(){
+                newToast.scope.init();
+              });
             });
           } else {
             var sibling = container[0].lastChild ? angular.element(container[0].lastChild) : null;
             $animate.enter(newToast.el, container, sibling).then(function() {
-              newToast.scope.init();
+               $timeout(funtion(){
+                  newToast.scope.init();
+                });
             });
           }
         });
