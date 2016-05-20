@@ -383,6 +383,64 @@ describe('toastr', function() {
       animationFlush();
       expect(toastr.active()).toBe(0);
     });
+
+    it('allows to restart the timer, keeping the toast visible longer', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(2000);
+      toastr.refreshTimer(toast);
+      intervalFlush(3000);
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(2000);
+      expect($document).toHaveToastOpen(0);
+    });
+
+    it('allows to restart the timer with a new duration', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(2000);
+      toastr.refreshTimer(toast, 10000);
+      intervalFlush(5000);
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(5000);
+      expect($document).toHaveToastOpen(0);
+    });
+
+    it('ignores requests to restart the timer for manually-closed toasts', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      spyOn(toast.scope, 'refreshTimer');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(1000);
+      toastr.clear(toast);
+      intervalFlush(1000);
+      toastr.refreshTimer(toast);
+      expect(toast.scope.refreshTimer).not.toHaveBeenCalled();
+    });
+
+    it('ignores requests to restart the timer for recently-expired toasts', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      spyOn(toast.scope, 'refreshTimer');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(5000);
+      toastr.refreshTimer(toast);
+      expect(toast.scope.refreshTimer).not.toHaveBeenCalled();
+    });
+
+    it('ignores requests to restart the timer for old toasts', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      spyOn(toast.scope, 'refreshTimer');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(60000);
+      expect($document).toHaveToastOpen(0);
+      toastr.refreshTimer(toast);
+      expect(toast.scope.refreshTimer).not.toHaveBeenCalled();
+    });
+
   });
 
   describe('container', function() {

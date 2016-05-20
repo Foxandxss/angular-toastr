@@ -63,6 +63,13 @@
         }
         toastr.remove(scope.toastId, wasClicked);
       };
+      
+      scope.refreshTimer = function(newTime) {
+        if (timeout) {
+          $interval.cancel(timeout);
+          timeout = createTimeout(newTime || scope.options.timeOut);
+        }
+      };
 
       element.on('mouseleave', function() {
         if (scope.options.timeOut === 0 && scope.options.extendedTimeOut === 0) { return; }
