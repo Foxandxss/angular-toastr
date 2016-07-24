@@ -126,12 +126,14 @@ button.toast-close-button {
 #toast-container.toast-top-center .toast,
 #toast-container.toast-bottom-center .toast {
   width: 300px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 #toast-container.toast-top-full-width .toast,
 #toast-container.toast-bottom-full-width .toast {
   width: 96%;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 .toast {
   background-color: #030303;
@@ -148,7 +150,7 @@ button.toast-close-button {
 .toast-warning {
   background-color: #F89406;
 }
-.toast-progress {
+progress-bar {
   position: absolute;
   left: 0;
   bottom: 0;

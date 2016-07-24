@@ -333,7 +333,6 @@
 
   function progressBar(toastrConfig) {
     return {
-      replace: true,
       require: '^toast',
       templateUrl: function() {
         return toastrConfig.templates.progressbar;
