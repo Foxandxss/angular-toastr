@@ -68,7 +68,7 @@
     }
 
     function refreshTimer(toast, newTime) {
-      if (toast && toasts.indexOf(toast) >= 0) {
+      if (toast && toast.isOpened && toasts.indexOf(toast) >= 0) {
           toast.scope.refreshTimer(newTime);
       }
     }
