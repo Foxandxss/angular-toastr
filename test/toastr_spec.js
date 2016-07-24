@@ -383,6 +383,31 @@ describe('toastr', function() {
       animationFlush();
       expect(toastr.active()).toBe(0);
     });
+
+    it('allows to restart the timer, keeping the toast visible longer', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(2000);
+      toastr.refreshTimer(toast);
+      intervalFlush(3000);
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(2000);
+      expect($document).toHaveToastOpen(0);
+    });
+
+    it('allows to restart the timer with a new duration', function() {
+      toastrConfig.timeOut = 5000;
+      var toast = openToast('success', 'foo');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(2000);
+      toastr.refreshTimer(toast, 10000);
+      intervalFlush(5000);
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(5000);
+      expect($document).toHaveToastOpen(0);
+    });
+
   });
 
   describe('container', function() {

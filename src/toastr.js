@@ -23,7 +23,8 @@
       info: info,
       remove: remove,
       success: success,
-      warning: warning
+      warning: warning,
+      refreshTimer: refreshTimer
     };
 
     return toast;
@@ -64,6 +65,12 @@
     function warning(message, title, optionsOverride) {
       var type = _getOptions().iconClasses.warning;
       return _buildNotification(type, message, title, optionsOverride);
+    }
+
+    function refreshTimer(toast, newTime) {
+      if (toast && toasts.indexOf(toast) >= 0) {
+          toast.scope.refreshTimer(newTime);
+      }
     }
 
     function remove(toastId, wasClicked) {
