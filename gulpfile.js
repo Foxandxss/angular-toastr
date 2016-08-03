@@ -21,7 +21,9 @@ gulp.task('less-prod', function() {
     .pipe(less())
     .pipe(rename('angular-toastr.css'))
     .pipe(gulp.dest('dist'))
-    .pipe(cssnano())
+    .pipe(cssnano({
+      zindex: false
+    }))
     .pipe(rename('angular-toastr.min.css'))
     .pipe(gulp.dest('dist'));
 });
