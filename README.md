@@ -124,6 +124,18 @@ app.controller('foo', function($scope, toastr) {
 });
 ```
 
+#### Refreshing an opened toast:
+
+```javascript
+app.controller('foo', function($scope, toastr) {
+  var toast = toastr.error('You are not allowed to do this!');
+  // after doing something...
+  toastr.refreshTimer(toast, 5000);
+});
+```
+
+The second parameter is optional and will fallback to the configured timeOut.
+
 It return the number of active toasts in screen.
 
 #### Other options
