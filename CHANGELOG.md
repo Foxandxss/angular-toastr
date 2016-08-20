@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.1.0
+
+- Fix wrong z-index in production build
+- Add refreshTimer method to refresh the timeout of shown toasts.
+
 ## Version 2.0.0
 Not the promised version, but should help with some unwanted bugs.
 
