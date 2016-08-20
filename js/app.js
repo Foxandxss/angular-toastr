@@ -78,6 +78,10 @@ angular.module('app', ['toastr', 'ngAnimate'])
       preventOpenDuplicates: false
     };
 
+    $scope.refreshToast = function() {
+      toastr.refreshTimer(openedToasts[openedToasts.length - 1]);
+    }
+
     $scope.$watchCollection('options', function(newValue) {
       toastrConfig.autoDismiss = newValue.autoDismiss;
       toastrConfig.allowHtml = newValue.html;
