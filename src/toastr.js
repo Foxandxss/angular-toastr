@@ -215,6 +215,7 @@
           onShown: generateEvent('onShown'),
           onTap: generateEvent('onTap'),
           progressBar: options.progressBar,
+          progressBarInverse: options.progressBarInverse,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,

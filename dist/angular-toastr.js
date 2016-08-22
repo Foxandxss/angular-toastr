@@ -215,6 +215,7 @@
           onShown: generateEvent('onShown'),
           onTap: generateEvent('onTap'),
           progressBar: options.progressBar,
+          progressBarInverse: options.progressBarInverse,
           tapToDismiss: options.tapToDismiss,
           timeOut: options.timeOut,
           titleClass: options.titleClass,
@@ -318,6 +319,7 @@
       preventDuplicates: false,
       preventOpenDuplicates: false,
       progressBar: false,
+      progressBarInverse: false,
       tapToDismiss: true,
       target: 'body',
       templates: {
@@ -351,6 +353,7 @@
       var intervalId, currentTimeOut, hideTime;
 
       toastCtrl.progressBar = scope;
+      toastCtrl.progressBarInverse = "true" === attrs.progressBarInverse;
 
       scope.start = function(duration) {
         if (intervalId) {
@@ -370,6 +373,7 @@
 
       function updateProgress() {
         var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
+        if(toastCtrl.progressBarInverse) percentage = 100 - percentage;
         element.css('width', percentage + '%');
       }
 
@@ -428,6 +432,7 @@
       scope.titleClass = scope.options.titleClass;
       scope.messageClass = scope.options.messageClass;
       scope.progressBar = scope.options.progressBar;
+      scope.progressBarInverse = scope.options.progressBarInverse;
 
       if (wantsCloseButton()) {
         var button = angular.element(scope.options.closeHtml),
