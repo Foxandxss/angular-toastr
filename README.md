@@ -29,8 +29,8 @@ $ bower install angular-toastr
 To use a CDN, you can include the next two lines:
 
 ```html
-<script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
-<link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
+<script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
 ```
 
 Or you can grab the latest [release](https://github.com/Foxandxss/angular-toastr/releases) and add both the `css` and `javascript` file:
