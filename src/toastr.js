@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('toastr', [])
-    .factory('toastr', toastr);
+      .factory('toastr', toastr);
 
   toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
 
@@ -69,7 +69,7 @@
 
     function refreshTimer(toast, newTime) {
       if (toast && toast.isOpened && toasts.indexOf(toast) >= 0) {
-          toast.scope.refreshTimer(newTime);
+        toast.scope.refreshTimer(newTime);
       }
     }
 
@@ -161,12 +161,12 @@
 
       toasts.push(newToast);
 
-      if (ifMaxOpenedAndAutoDismiss()) {
-        var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
-        for (var i = 0, len = oldToasts.length; i < len; i++) {
-          remove(oldToasts[i].toastId);
-        }
-      }
+      // if (ifMaxOpenedAndAutoDismiss()) {
+      //   var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
+      //   for (var i = 0, len = oldToasts.length; i < len; i++) {
+      //     remove(oldToasts[i].toastId);
+      //   }
+      // }
 
       if (maxOpenedNotReached()) {
         newToast.open.resolve();
@@ -178,17 +178,28 @@
           if (options.newestOnTop) {
             $animate.enter(newToast.el, container).then(function() {
               newToast.scope.init();
+              maybeRemoveOldToasts();
             });
           } else {
             var sibling = container[0].lastChild ? angular.element(container[0].lastChild) : null;
             $animate.enter(newToast.el, container, sibling).then(function() {
               newToast.scope.init();
+              maybeRemoveOldToasts();
             });
           }
         });
       });
 
       return newToast;
+
+      function maybeRemoveOldToasts() {
+        if (ifMaxOpenedAndAutoDismiss()) {
+          var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
+          for (var i = 0, len = oldToasts.length; i < len; i++) {
+            remove(oldToasts[i].toastId);
+          }
+        }
+      }
 
       function ifMaxOpenedAndAutoDismiss() {
         return options.autoDismiss && options.maxOpened && toasts.length > options.maxOpened;
@@ -255,7 +266,7 @@
 
         function cleanOptionsOverride(options) {
           var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'positionClass', 'preventDuplicates', 'preventOpenDuplicates', 'templates'];
+            'positionClass', 'preventDuplicates', 'preventOpenDuplicates', 'templates'];
           for (var i = 0, l = badOptions.length; i < l; i++) {
             delete options[badOptions[i]];
           }
@@ -266,7 +277,7 @@
 
       function createToastEl(scope) {
         var angularDomEl = angular.element('<div toast></div>'),
-          $compile = $injector.get('$compile');
+            $compile = $injector.get('$compile');
         return $compile(angularDomEl)(scope);
       }
 
