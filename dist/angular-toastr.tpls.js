@@ -4,9 +4,9 @@
   angular.module('toastr', [])
     .factory('toastr', toastr);
 
-  toastr.$inject = ['$animate', '$injector', '$document', '$rootScope', '$sce', 'toastrConfig', '$q'];
+  toastr.$inject = ['$animate', '$injector', '$rootScope', '$sce', 'toastrConfig', '$q'];
 
-  function toastr($animate, $injector, $document, $rootScope, $sce, toastrConfig, $q) {
+  function toastr($animate, $injector, $rootScope, $sce, toastrConfig, $q) {
     var container;
     var index = 0;
     var toasts = [];
