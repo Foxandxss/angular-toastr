@@ -155,7 +155,15 @@
     function _notify(map) {
       var options = _getOptions();
 
-      if (shouldExit()) { return; }
+      if (shouldExit()) {
+        if (options.updateTimerOnDuplicates) {
+          var toast = findToastByMap(map);
+          if (toast) {
+            toast.scope.refreshTimer(options.timeOut);
+          }
+        }
+        return;
+      }
 
       var newToast = createToast();
 
@@ -189,6 +197,22 @@
       });
 
       return newToast;
+
+      function findToastByMap(map) {
+        console.log(map);
+        for (var i = 0; i < toasts.length; i++) {
+          if (isMatchingToast(toasts[i])) {
+            return toasts[i];
+          }
+        }
+
+        function isMatchingToast(toast) {
+          console.log('toast', toast);
+          return map.message === toast.scope.message &&
+                 map.title === toast.scope.title &&
+                 map.iconClass === toast.scope.toastType;
+        }
+      }
 
       function ifMaxOpenedAndAutoDismiss() {
         return options.autoDismiss && options.maxOpened && toasts.length > options.maxOpened;
@@ -255,7 +279,8 @@
 
         function cleanOptionsOverride(options) {
           var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'positionClass', 'preventDuplicates', 'preventOpenDuplicates', 'templates'];
+                            'positionClass',
+                            'preventDuplicates', 'preventOpenDuplicates', 'updateTimerOnDuplicates', 'templates'];
           for (var i = 0, l = badOptions.length; i < l; i++) {
             delete options[badOptions[i]];
           }
