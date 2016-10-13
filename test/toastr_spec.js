@@ -667,6 +667,16 @@ describe('toastr', function() {
       expect($document).toHaveToastOpen(0);
     });
 
+    it('can take into account the title and message when determining if a toast is the same', function() {
+      toastrConfig.timeOut = 15000;
+      toastrConfig.preventDuplicates = true;
+      openToast('success', 'Toast 1', 'title 1');
+      expect($document).toHaveToastOpen(1);
+      intervalFlush(1000);
+      openToast('success', 'Toast 1', 'title 2');
+      expect($document).toHaveToastOpen(2);
+    });
+
     it('can refresh timer on duplicate toasts when preventDuplicates is enabled', function() {
       toastrConfig.timeOut = 5000;
       toastrConfig.updateTimerOnDuplicates = true;
@@ -676,6 +686,32 @@ describe('toastr', function() {
       intervalFlush(2000);
       openToast('success', 'foo');
       intervalFlush(4000);
+      expect($document).toHaveToastOpen(1);
+    });
+
+    it('can take into account the title when determining if duplicate', function() {
+      toastrConfig.preventDuplicates = false;
+      toastrConfig.preventOpenDuplicates = true;
+      var toast1 = openToast('success', 'Toast 1');
+      openToast('success', 'Toast 1');
+      expect($document).toHaveToastOpen(1);
+      openToast('success', 'Toast 1', 'title');
+      expect($document).toHaveToastOpen(2);
+    });
+
+    it('can take treat null and undefined titles as the same when determining if duplicate', function() {
+      toastrConfig.preventDuplicates = false;
+      toastrConfig.preventOpenDuplicates = true;
+      var toast1 = openToast('success', 'Toast 1', null);
+      openToast('success', 'Toast 1', undefined);
+      expect($document).toHaveToastOpen(1);
+    });
+
+    it('can take treat null and undefined text as the same when determining if duplicate', function() {
+      toastrConfig.preventDuplicates = false;
+      toastrConfig.preventOpenDuplicates = true;
+      var toast1 = openToast('success', null, 'Toast 1');
+      openToast('success', undefined, 'Toast 1');
       expect($document).toHaveToastOpen(1);
     });
 

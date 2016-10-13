@@ -11,7 +11,7 @@
     var index = 0;
     var toasts = [];
 
-    var previousToastMessage = '';
+    var previousToastKey = '';
     var openToasts = {};
 
     var containerDefer = $q.defer();
@@ -85,7 +85,7 @@
           }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);
-          delete openToasts[toast.scope.message];
+          delete openToasts[generateKey(toast.scope)];
           toasts.splice(index, 1);
           var maxOpened = toastrConfig.maxOpened;
           if (maxOpened && toasts.length >= maxOpened) {
@@ -199,7 +199,6 @@
       return newToast;
 
       function findToastByMap(map) {
-        console.log(map);
         for (var i = 0; i < toasts.length; i++) {
           if (isMatchingToast(toasts[i])) {
             return toasts[i];
@@ -207,10 +206,7 @@
         }
 
         function isMatchingToast(toast) {
-          console.log('toast', toast);
-          return map.message === toast.scope.message &&
-                 map.title === toast.scope.title &&
-                 map.iconClass === toast.scope.toastType;
+          return map.message === toast.scope.message && map.title === toast.scope.title;
         }
       }
 
@@ -300,18 +296,30 @@
       }
 
       function shouldExit() {
-        var isDuplicateOfLast = options.preventDuplicates && map.message === previousToastMessage;
-        var isDuplicateOpen = options.preventOpenDuplicates && openToasts[map.message];
+        var key = generateKey(map);
+        if (options.preventOpenDuplicates) {
+            console.log(key);
+            console.log(openToasts);
+        }
+        var isDuplicateOfLast = options.preventDuplicates && key === previousToastKey;
+        var isDuplicateOpen = options.preventOpenDuplicates && openToasts[key];
 
         if (isDuplicateOfLast || isDuplicateOpen) {
           return true;
         }
 
-        previousToastMessage = map.message;
-        openToasts[map.message] = true;
+        previousToastKey = key;
+        openToasts[key] = true;
 
         return false;
       }
+    }
+    function generateKey(toastOption) {
+       return normaliseUndefinedAndNullString(toastOption.message) + '#' + normaliseUndefinedAndNullString(toastOption.title);
+    }
+    
+    function normaliseUndefinedAndNullString(stringValue) {
+        return !stringValue ? '' : stringValue;  
     }
   }
 }());
