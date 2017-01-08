@@ -12,6 +12,7 @@
     "toastr"
   ],
   "main": [
+    "./dist/angular-toastr.js",
     "./dist/angular-toastr.tpls.js",
     "./dist/angular-toastr.css"
   ],
