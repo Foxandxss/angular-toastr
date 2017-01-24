@@ -86,6 +86,9 @@
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden(!!wasClicked, toast);
           }
+          if (toast.el) {
+            toast.el.html("");
+          }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);
           delete openToasts[toast.scope.message];
