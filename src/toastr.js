@@ -39,11 +39,14 @@
       if (arguments.length === 1 && !toast) { return; }
 
       if (toast) {
-        remove(toast.toastId);
-      } else {
-        for (var i = 0; i < toasts.length; i++) {
-          remove(toasts[i].toastId);
+        if (!Array.isArray(toast)) {
+          toast = [ toast ];
         }
+      } else {
+        toast = toasts;
+      }
+      for (var i = 0; i < toast.length; i++) {
+        remove(toast[i].toastId);
       }
     }
 
