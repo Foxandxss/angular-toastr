@@ -261,7 +261,7 @@
 
         function cleanOptionsOverride(options) {
           var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'preventDuplicates', 'preventOpenDuplicates', 'templates'];
+              'preventDuplicates', 'preventOpenDuplicates', 'templates'];
           for (var i = 0, l = badOptions.length; i < l; i++) {
             delete options[badOptions[i]];
           }
