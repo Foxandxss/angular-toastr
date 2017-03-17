@@ -39,11 +39,14 @@
       if (arguments.length === 1 && !toast) { return; }
 
       if (toast) {
-        remove(toast.toastId);
+      if (!Array.isArray(toast)) {
+      toast = [ toast ];
+      }
       } else {
-        for (var i = 0; i < toasts.length; i++) {
-          remove(toasts[i].toastId);
-        }
+      toast = toasts;
+      }
+      for (var i = 0; i < toast.length; i++) {
+      remove(toast[i].toastId);
       }
     }
 
@@ -82,6 +85,9 @@
         $animate.leave(toast.el).then(function() {
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden(!!wasClicked, toast);
+          }
+          if (toast.el) {
+            toast.el.html("");
           }
           toast.scope.$destroy();
           var index = toasts.indexOf(toast);
@@ -255,7 +261,7 @@
 
         function cleanOptionsOverride(options) {
           var badOptions = ['containerId', 'iconClasses', 'maxOpened', 'newestOnTop',
-                            'positionClass', 'preventDuplicates', 'preventOpenDuplicates', 'templates'];
+              'preventDuplicates', 'preventOpenDuplicates', 'templates'];
           for (var i = 0, l = badOptions.length; i < l; i++) {
             delete options[badOptions[i]];
           }
