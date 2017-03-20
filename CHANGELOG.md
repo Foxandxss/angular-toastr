@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.1.2
+
+- Fix when you add positionClass, toast placed in `top-right`.
+
 ## Version 2.1.1
 
 - Add /dist again for bower.
