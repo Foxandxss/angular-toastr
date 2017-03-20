@@ -242,10 +242,8 @@
           open: $q.defer()
         };
         newToast.iconClass = map.iconClass;
-        if (map.optionsOverride.positionClass) {
-            options.positionClass = map.optionsOverride.positionClass;
-        }
         if (map.optionsOverride) {
+          options.positionClass = map.optionsOverride.positionClass || options.positionClass;
           angular.extend(options, cleanOptionsOverride(map.optionsOverride));
           newToast.iconClass = map.optionsOverride.iconClass || newToast.iconClass;
         }
