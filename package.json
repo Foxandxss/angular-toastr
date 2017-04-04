@@ -1,5 +1,6 @@
 {
   "name": "angular-toastr",
+  "description": "Angular port of CodeSeven/toastr.",
   "version": "2.1.1",
   "author": "Jesus Rodriguez <Foxandxss@gmail.com>",
   "repository": {
