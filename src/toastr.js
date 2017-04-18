@@ -35,9 +35,6 @@
     }
 
     function clear(toast) {
-      // Bit of a hack, I will remove this soon with a BC
-      if (arguments.length === 1 && !toast) { return; }
-
       if (toast) {
         remove(toast.toastId);
       } else {
@@ -88,7 +85,7 @@
           delete openToasts[toast.scope.message];
           toasts.splice(index, 1);
           var maxOpened = toastrConfig.maxOpened;
-          if (maxOpened && toasts.length >= maxOpened) {
+          if (maxOpened && toasts.length > 1 && toasts.length >= maxOpened) {
             toasts[maxOpened - 1].open.resolve();
           }
           if (lastToast()) {
@@ -161,7 +158,7 @@
 
       toasts.push(newToast);
 
-      if (ifMaxOpenedAndAutoDismiss()) {
+      if (toasts.length > 1 && ifMaxOpenedAndAutoDismiss()) {
         var oldToasts = toasts.slice(0, (toasts.length - options.maxOpened));
         for (var i = 0, len = oldToasts.length; i < len; i++) {
           remove(oldToasts[i].toastId);
