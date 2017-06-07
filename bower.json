@@ -1,8 +1,9 @@
 {
-  "name": "angular-toastr",
-  "version": "2.1.1",
+  "name": "angular-antoine-toastr",
+  "version": "0.0.1",
   "authors": [
-    "Jesus Rodriguez <Foxandxss@gmail.com>"
+    "Antonio Alvarez Torres <antonioalvareztorres.trabajo@gmail.com> (https://github.com/Atap23)",
+    "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)"
   ],
   "license": "MIT",
   "keywords": [
