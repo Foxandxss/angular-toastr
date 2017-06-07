@@ -1,7 +1,10 @@
 {
-  "name": "angular-toastr",
-  "version": "2.1.1",
-  "author": "Jesus Rodriguez <Foxandxss@gmail.com>",
+  "name": "angular-antoine-toastr",
+  "version": "0.0.1",
+  "author": "Antonio Alvarez Torres <antonioalvareztorres.trabajo@gmail.com> (https://github.com/Atap23)",
+  "contributors": [
+    "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Foxandxss/angular-toastr.git"
