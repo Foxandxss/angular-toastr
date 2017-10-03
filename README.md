@@ -26,11 +26,14 @@ If you are not using npm (you should), you can use bower:
 $ bower install angular-toastr
 ```
 
-To use a CDN, you can include the next two lines:
+To use a CDN, you can include one of these options:
 
 ```html
 <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
+<!-- or -->
+<script src="https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.tpls.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.css">
 ```
 
 Or you can grab the latest [release](https://github.com/Foxandxss/angular-toastr/releases) and add both the `css` and `javascript` file:
