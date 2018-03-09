@@ -1,5 +1,7 @@
 # Angular Toastr
 
+**This project needs new maintainers. I cannot maintain it anymore, I don't do more AngularJS and I don't have the time for it anymore, please send an email or open an issue if you wish to maintain it**
+
 [![Code Climate](https://codeclimate.com/github/Foxandxss/angular-toastr.png)](https://codeclimate.com/github/Foxandxss/angular-toastr) [![Build Status](https://travis-ci.org/Foxandxss/angular-toastr.svg?branch=master)](https://travis-ci.org/Foxandxss/angular-toastr) [![devDependency Status](https://david-dm.org/Foxandxss/angular-toastr/dev-status.svg)](https://david-dm.org/Foxandxss/angular-toastr#info=devDependencies)
 
 **NOTE:** For angular 1.2.x support check `angular-1.2` branch or download the `0.4.x` release of `angular-toastr`.
