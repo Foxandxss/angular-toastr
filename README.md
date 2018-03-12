@@ -158,11 +158,12 @@ app.config(function(toastrConfig) {
   angular.extend(toastrConfig, {
     autoDismiss: false,
     containerId: 'toast-container',
-    maxOpened: 0,    
+    maxOpened: 0,
     newestOnTop: true,
     positionClass: 'toast-top-right',
     preventDuplicates: false,
     preventOpenDuplicates: false,
+    updateTimerOnDuplicates: false,
     target: 'body'
   });
 });
@@ -177,6 +178,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **positionClass**: The position where the toasts are added.
 * **preventDuplicates**: Prevent duplicates of the last toast.
 * **preventOpenDuplicates**: Prevent duplicates of open toasts.
+* **updateTimerOnDuplicates**: When either preventDuplicates or preventOpenDuplicates is set, then this option will ensure that the timer on the duplicate value is refreshed rather than left alone.
 * **target**: The element to put the toastr container.
 
 To customize a `toast` you have two options. First, you can set a default option to be applied globally to all `toasts` in the same way you modified the `container`:
@@ -193,7 +195,7 @@ app.config(function(toastrConfig) {
       info: 'toast-info',
       success: 'toast-success',
       warning: 'toast-warning'
-    },  
+    },
     messageClass: 'toast-message',
     onHidden: null,
     onShown: null,
@@ -227,7 +229,7 @@ app.config(function(toastrConfig) {
 
 Toasts have 3 different callbacks:
 
-* **onHidden**: A callback function called when a toast gets hidden. 
+* **onHidden**: A callback function called when a toast gets hidden.
 	* First parameter: A boolean to see whether or not the toast was closed via click.
 	* Second parameter: The whole toast that got hidden.
 * **onShown**: A callback function called when a toast is shown.
