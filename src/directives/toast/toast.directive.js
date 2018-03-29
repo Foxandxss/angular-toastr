@@ -22,6 +22,7 @@
       scope.titleClass = scope.options.titleClass;
       scope.messageClass = scope.options.messageClass;
       scope.progressBar = scope.options.progressBar;
+      scope.progressBarInverse = scope.options.progressBarInverse;
 
       if (wantsCloseButton()) {
         var button = angular.element(scope.options.closeHtml),

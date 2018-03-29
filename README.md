@@ -219,6 +219,7 @@ app.config(function(toastrConfig) {
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
 * **progressBar**: A progress bar to see the timeout in real time.
+* **progressBarInverse**: Growing Progress Bar.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **templates**: To override the default path of the templates.
 * **timeOut**: The timeout before the toasts disappear.

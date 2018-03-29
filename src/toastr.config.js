@@ -25,6 +25,7 @@
       preventDuplicates: false,
       preventOpenDuplicates: false,
       progressBar: false,
+      progressBarInverse: false,
       tapToDismiss: true,
       target: 'body',
       templates: {

@@ -19,6 +19,7 @@
       var intervalId, currentTimeOut, hideTime;
 
       toastCtrl.progressBar = scope;
+      toastCtrl.progressBarInverse = "true" === attrs.progressBarInverse;
 
       scope.start = function(duration) {
         if (intervalId) {
@@ -38,6 +39,7 @@
 
       function updateProgress() {
         var percentage = ((hideTime - (new Date().getTime())) / currentTimeOut) * 100;
+        if(toastCtrl.progressBarInverse) percentage = 100 - percentage;
         element.css('width', percentage + '%');
       }
 
