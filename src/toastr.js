@@ -154,6 +154,9 @@
 
     function _notify(map) {
       var options = _getOptions();
+      if (map.optionsOverride) {
+        options = angular.extend({}, options, map.optionsOverride);
+      }
 
       if (shouldExit()) { return; }
 
