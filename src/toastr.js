@@ -132,7 +132,19 @@
     }
 
     function _createOrGetContainer(options) {
-      if(container) { return containerDefer.promise; }
+      if(container) {
+        var domClassList = container[0].classList;
+        var isSamePosition = domClassList.contains(options.positionClass);
+        
+        if (!isSamePosition) {
+          //remove old position class
+          domClassList.remove(domClassList[0]);
+          //insert new class
+          domClassList.add(options.positionClass);
+        }
+        
+        return containerDefer.promise;
+      }
 
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
@@ -154,6 +166,10 @@
 
     function _notify(map) {
       var options = _getOptions();
+
+      // rewrite global config
+      if (map.optionsOverride && map.optionsOverride.positionClass)
+        options.positionClass = map.optionsOverride.positionClass;
 
       if (shouldExit()) { return; }
 
