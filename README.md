@@ -214,14 +214,14 @@ app.config(function(toastrConfig) {
 * **allowHtml**: Your toast can use custom HTML here (See [Issue 3](https://github.com/Foxandxss/angular-toastr/issues/3))
 * **closeButton**: Whether to display an "X" close button on the toast.
 * **closeHtml**: Html element to be used as a close button.
-* **extendedTimeOut**: The timeout after you hover a toast.
+* **extendedTimeOut**: The timeout after you hover a toast. Setting to 0 will disable the extended timeout.
 * **extraData**: If you override the template, you can pass global extra data to your toasts.
 * **iconClasses**: The default type classes for the different toasts.
 * **messageClass**: The class for the toast's message.
 * **progressBar**: A progress bar to see the timeout in real time.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
 * **templates**: To override the default path of the templates.
-* **timeOut**: The timeout before the toasts disappear.
+* **timeOut**: The timeout before the toasts disappear. Setting to 0 will disable the timeout.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
 
