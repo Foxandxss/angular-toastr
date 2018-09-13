@@ -495,7 +495,7 @@ describe('toastr', function() {
 
       expect(function() {
         openToast('success', 'foo');
-      }).toThrow('Target for toasts doesn\'t exist');
+      }).toThrow('Possibly unhandled rejection: Target for toasts doesn\'t exist');
     });
   });
 
