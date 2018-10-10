@@ -137,7 +137,6 @@
       container = angular.element('<div></div>');
       container.attr('id', options.containerId);
       container.addClass(options.positionClass);
-      container.css({'pointer-events': 'auto'});
 
       var target = angular.element(document.querySelector(options.target));
 
